@@ -314,9 +314,9 @@
             success: function (arg) {
 
                 if (arg.status) {
-                    $("#status").html("分析完成，该火车票为" + arg.color).addClass("text-primary");
+                    $("#status").html("分析完成，该火车票为" + arg.color).toggleClass("text-primary");
                 } else {
-                    $("#status").html("图片处理过程中出错啦，请联系我们完善程序，换一张图片再试试").addClass("text-danger");
+                    $("#status").html("图片处理过程中出错啦，请联系我们完善程序，换一张图片再试试").toggleClass("text-danger");
                 }
 
                 var row = $("<div class='row'></div>");
