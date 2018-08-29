@@ -18,13 +18,16 @@ from django.conf.urls import url
 from home import views as home_views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^articles/(.*?)$',home_views.article),
-    url(r"^reg$",home_views.reg),
-    url(r"^login$", home_views.login),
+    # url(r'^admin/', admin.site.urls),
+    # url(r'^articles/(.*?)$',home_views.article),
+    # url(r"^reg$",home_views.reg),
+    # url(r"^login$", home_views.login),
+    #
+    # url(r"^logout$", home_views.logout),
+    # url(r"^list$", home_views.alist),
+    # url(r"^postarticles$", home_views.postarticles),
+
     url(r"^$", home_views.index),
-    url(r"^logout$", home_views.logout),
-    url(r"^list$", home_views.alist),
-    url(r"^postarticles$", home_views.postarticles),
     url(r"^detect$", home_views.surface),
+    url(r"^ocr$", home_views.ocr),
 ]

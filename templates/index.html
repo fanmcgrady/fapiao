@@ -96,106 +96,45 @@
                 <!-- Page-Title -->
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4 class="pull-left page-title">火车票识别</h4>
+                        <h4 class="pull-left page-title">首页</h4>
                         <ol class="breadcrumb pull-right">
-                            <li><a href="#">首页</a></li>
-                            <li><a href="/" target="_blank">发票识别系统</a></li>
-                            <li class="active">火车票识别</li>
+                            <li><a href="/">首页</a></li>
+                            <li class="active">发票识别系统</li>
                         </ol>
                     </div>
                 </div>
 
-                <div class="row" id="upload_div">
-                    <!-- Horizontal form -->
-                    <div class="col-md-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><h3 class="panel-title" id="status">上传火车票图片</h3></div>
+                <div class="row text-center">
+                    <div class="col-md-6 col-sm-6 col-lg-3">
+                        <div class="panel panel-border panel-purple widget-s-1">
+                            <div class="panel-heading"> </div>
                             <div class="panel-body">
-                                    <div class="input-group">
-                                        <input type="file" id="example-input1-group2" name="example-input1-group2"
-                                               class="form-control input-lg">
-                                        <span class="input-group-btn">
-                                                <button type="button"
-                                                        class="btn-lg btn waves-effect waves-light btn-primary w-md"
-                                                        id="search"><i class="md md-verified-user"></i>&nbsp;<span
-                                                        id="button-tips">识别</span></button>
-                                            </span>
-                                    </div>
-                            </div>
-
-{#                            <div class="panel-body">#}
-{#                                <div class="row">#}
-{#                                    <div class="col-md-12 col-sm-12 col-xs-12">#}
-{#                                        <table class="table table-bordered">#}
-{#                                            <thead>#}
-{#                                            <tr>#}
-{#                                                <th>图片名称</th>#}
-{#                                                <th>结果</th>#}
-{#                                                <th>操作</th>#}
-{#                                            </tr>#}
-{#                                            </thead>#}
-{#                                            <tbody id="result-table">#}
-{#                                            </tbody>#}
-{#                                        </table>#}
-{#                                    </div>#}
-{#                                    <div class="col-md-12 col-sm-12 col-xs-12">#}
-{#                                        共 <span class="text-primary" id="total">0</span> 个文件，已分析 <span#}
-{#                                            class="text-primary" id="current">0</span> 个文件#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-
-                        </div> <!-- panel -->
-                    </div> <!-- col -->
-
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">原始图片
-                                    &nbsp;&nbsp;<span class="text-primary" id="path_text"></span>
-                                </h3>
-
-                            </div>
-                            <div class="panel-body">
-                                <div style="text-align: center;vertical-align: middle">
-                                    <img style="height: 200px;" id="path_result"/>
+                                <div class="h2 text-purple">
+                                    <a href="detect" class="text-purple" target="_blank">火车票矫正展示</a>
+                                </div>
+                                <span class="text-muted">展示火车票预处理矫正的结果</span>
+                                <div class="text-right">
+                                    <i class="ion-ios7-refresh fa-2x text-purple"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">校正结果
-                                    &nbsp;&nbsp;<span class="text-primary" id="out_text"></span>
-                                </h3>
-                            </div>
+                    <div class="col-md-6 col-sm-6 col-lg-3">
+                        <div class="panel panel-border panel-primary widget-s-1">
+                            <div class="panel-heading"> </div>
                             <div class="panel-body">
-                                <div style="text-align: center;vertical-align: middle">
-                                    <img style="height: 200px;" id="out_result"/>
+                                <div class="h2 text-primary">
+                                    <a href="ocr" class="text-primary" target="_blank">火车票识别展示</a>
+                                </div>
+                                <span class="text-muted">展示火车票识别的结果</span>
+                                <div class="text-right">
+                                      <i class="ion-ios7-paper fa-2x text-primary"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">识别结果
-                                    &nbsp;&nbsp;<span class="text-primary" id="result_text"></span>
-                                </h3>
-                            </div>
-                            <div class="panel-body">
-                                <div style="min-height: 200px;">
-                                    <p class="text-primary" id="result"></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="row">
@@ -209,8 +148,7 @@
                                     <li>选择文件。</li>
                                     <li>点击“<span class="text-primary">识别</span>”按钮，开始火车票识别。</li>
                                     <li>分析完成后页面下方将显示结果。</li>
-                                    <li>本页面展示火车票识别结果
-                                    </li>
+                                    <li>本系统展示火车票识别的现有结果。</li>
                                 </ol>
                             </div>
                         </div>
@@ -228,30 +166,6 @@
     <!-- ============================================================== -->
     <!-- End Right content here -->
     <!-- ============================================================== -->
-
-    <!-- MODAL -->
-    <div id="dialog" class="modal-block mfp-hide">
-        <section class="panel panel-info panel-color">
-            <header class="panel-heading">
-                <h2 class="panel-title">确定要删除吗?</h2>
-            </header>
-            <div class="panel-body">
-                <div class="modal-wrapper">
-                    <div class="modal-text">
-                        <p>你确定要删除该列数据吗?</p>
-                    </div>
-                </div>
-
-                <div class="row m-t-20">
-                    <div class="col-md-12 text-right">
-                        <button id="dialogConfirm" class="btn btn-primary">确认</button>
-                        <button id="dialogCancel" class="btn btn-default">取消</button>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-    </div>
 
 </div>
 <!-- END wrapper -->
@@ -286,62 +200,11 @@
 <script>
     var resizefunc = [];
 
-    function upload() {
-        // 初始函数
-        $("#button-tips").html("处理中...");
-
-        // 验证
-        if ($("#example-input1-group2").val() == "") {
-            alert("请上传文件");
-            return;
-        }
-
-        $("#path_text").text("识别中...");
-        $("#out_text").text("识别中...");
-        $("#result_text").text("识别中...");
-
-        var dic = new FormData();
-        dic.append('fapiao', document.getElementById('example-input1-group2').files[0]);
-        $.ajax({
-            url: '/',
-            type: 'POST',
-            data: dic,
-            processData: false,  // tell jQuery not to process the data
-            contentType: false,  // tell jQuery not to set contentType
-            dataType: 'JSON',
-            success: function (arg) {
-                if (arg.status) {
-                    $("#status").html("识别完成，该火车票为" + arg.color).addClass("text-primary");
-
-                    $("#path_text").text("");
-                    $("#out_text").text("");
-                    $("#result_text").text("");
-                    $("#result").text(JSON.stringify(arg.result));
-                } else {
-                    $("#status").html("图片处理过程中出错啦，请联系我们完善程序，换一张图片再试试");
-                }
-
-                $("#path_result").attr("src", "static/" + arg.path);
-                if (arg.status)
-                        $("#out_result").attr("src", "static/" + arg.out);
-                    else
-                        $("#out_result").append($("<p class='text-danger' style='height:180px;'>" + arg.out + "</p>"));
-
-                $("#button-tips").html("识别");
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                $("#status").html("图片处理过程中出错啦，请联系我们完善程序，换一张图片再试试");
-                alert("出错了，请联系我们完善程序，错误信息如下：\n" + jqXHR.responseText);
-            }
-        })
-    }
-
     jQuery(document).ready(function () {
         $('#search').click(function () {
-            upload();
+            {#upload();#}
         });
     });
-
 
 </script>
 </body>

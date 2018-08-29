@@ -14,8 +14,11 @@ from .utils import detectType
 from .utils import Ocr
 
 # Create your views here.
-# 识别demo
 def index(request):
+    return render(request, 'index.html')
+
+# 识别demo
+def ocr(request):
     if request.method == 'GET':
         img_list = Img.objects.all()
         return render(request, 'index.html', {'img_list': img_list})
@@ -47,7 +50,7 @@ def index(request):
         except Exception as e:
             ret = {'status': False, 'path': file_path, 'out': str(e)}
 
-        return HttpResponse(json.dumps(ret))
+        return HttpResponse(json.dumps(ret, indent=2))
 
 # 矫正demo
 def surface(request):

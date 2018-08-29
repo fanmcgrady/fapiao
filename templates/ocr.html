@@ -53,7 +53,7 @@
         <!-- LOGO -->
         <div class="topbar-left">
             <div class="text-center">
-                <a href="../index.html" class="logo"><i class="md md-verified-user"></i> <span>发票识别系统 </span></a>
+                <a href="/" class="logo"><i class="md md-verified-user"></i> <span>发票识别系统 </span></a>
             </div>
         </div>
         <!-- Button mobile view to collapse sidebar menu -->
@@ -96,11 +96,11 @@
                 <!-- Page-Title -->
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4 class="pull-left page-title">火车票矫正展示</h4>
+                        <h4 class="pull-left page-title">火车票识别展示</h4>
                         <ol class="breadcrumb pull-right">
                             <li><a href="/">首页</a></li>
                             <li><a href="/">发票识别系统</a></li>
-                            <li class="active">火车票矫正</li>
+                            <li class="active">火车票识别</li>
                         </ol>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                                                 <button type="button"
                                                         class="btn-lg btn waves-effect waves-light btn-primary w-md"
                                                         id="search"><i class="md md-verified-user"></i>&nbsp;<span
-                                                        id="button-tips">矫正</span></button>
+                                                        id="button-tips">识别</span></button>
                                             </span>
                                     </div>
                             </div>
@@ -150,45 +150,66 @@
 
                 </div>
 
-                {% for img in img_list %}
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title">原始图片</h3>
+                                <h3 class="panel-title">原始图片
+                                </h3>
                             </div>
                             <div class="panel-body">
                                 <div style="text-align: center;vertical-align: middle">
-                                    <img style="height: 200px;" src="static/{{ img.path }}"/>
-                                    {% if img.color == '蓝底车票' %}
-                                        <p class="text-primary">{{ img.color }}</p>
-                                    {% else %}
-                                        <p class="text-danger">{{ img.color }}</p>
-                                    {% endif %}
+                                    <img style="height: 200px;" id="path_result"/>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title">校正结果</h3>
+                                <h3 class="panel-title">校正结果
+                                    &nbsp;&nbsp;<span class="text-primary" id="out_text"></span>
+                                </h3>
                             </div>
                             <div class="panel-body">
                                 <div style="text-align: center;vertical-align: middle">
-                                <img style="height: 200px;" src="static/{{ img.out }}"/>
-                                    {% if img.color == '蓝底车票' %}
-                                        <p class="text-primary">{{ img.color }}</p>
-                                    {% else %}
-                                        <p class="text-danger">{{ img.color }}</p>
-                                    {% endif %}
+                                    <img style="height: 200px;" id="out_result"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">识别结果
+                                    &nbsp;&nbsp;<span class="text-primary" id="result_text"></span>
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <div style="height: 200px;" id="simple_result">
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                {% endfor %}
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">全部JSON结果
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <p style="word-wrap:break-word;word-break:break-all;" id="result">
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col-md-12">
@@ -199,9 +220,9 @@
                             <div class="panel-body">
                                 <ol>
                                     <li>选择文件。</li>
-                                    <li>点击“<span class="text-primary">矫正</span>”按钮，开始火车票识别。</li>
+                                    <li>点击“<span class="text-primary">识别</span>”按钮，开始火车票识别。</li>
                                     <li>分析完成后页面下方将显示结果。</li>
-                                    <li>本页面展示火车票矫正结果。
+                                    <li>本页面展示火车票识别结果。
                                     </li>
                                 </ol>
                             </div>
@@ -278,73 +299,88 @@
 <script>
     var resizefunc = [];
 
-    var html = [];
-    html.push('<div class="col-md-6">');
-    html.push(' <div class="panel panel-default">');
-    html.push('     <div class="panel-heading">');
-    html.push('         <h3 class="panel-title"></h3>');
-    html.push('     </div>');
-    html.push('     <div class="panel-body">');
-    html.push('         <div style="text-align: center;vertical-align: middle">');
-    html.push('             <img style="height: 200px;" src=""/>');
-    html.push('         </div>');
-    html.push('     </div>');
-    html.push(' </div>');
-    html.push('</div>');
-
     function upload() {
+
         // 验证
         if ($("#example-input1-group2").val() == "") {
             alert("请上传文件");
             return;
         }
 
+        // 初始函数
         $("#button-tips").html("处理中...");
 
+        $("#out_text").text("识别中...");
+        $("#result_text").text("识别中...");
+
         var dic = new FormData();
-        dic.append('fapiao', document.getElementById('example-input1-group2').files[0]);
+        var file = document.getElementById('example-input1-group2').files[0];
+        dic.append('fapiao', file);
+
+        var reader = new FileReader();
+        // 将文件以Data URL形式进行读入页面
+        reader.readAsBinaryString(file);
+        reader.onload = function(f){
+            var src = "data:" + file.type + ";base64," + window.btoa(this.result);
+            $("#path_result").attr("src", src);
+        };
         $.ajax({
-            url: 'detect',
+            url: '/',
             type: 'POST',
             data: dic,
             processData: false,  // tell jQuery not to process the data
             contentType: false,  // tell jQuery not to set contentType
             dataType: 'JSON',
             success: function (arg) {
-
                 if (arg.status) {
-                    $("#status").html("分析完成，该火车票为" + arg.color).toggleClass("text-primary");
-                } else {
-                    $("#status").html("图片处理过程中出错啦，请联系我们完善程序，换一张图片再试试").toggleClass("text-danger");
-                }
-
-                var row = $("<div class='row'></div>");
-
-                // 原始图片
-                    var div = $(html.join(""));
-                    div.find(".panel-title").text("原始图片");
-                    div.find("img").attr("src", "static/" + arg.path);
-
-                    row.append(div);
-
+                    $("#status").html("识别完成，该火车票为" + arg.color).toggleClass("text-primary");
+                    // 原始图片
+                    $("#path_result").attr("src", "static/" + arg.path);
                     // 矫正图片
+                    $("#out_text").text("");
+                    $("#out_result").attr("src", "static/" + arg.out);
 
-                    var div = $(html.join(""));
-                    div.find(".panel-title").text("校正结果");
-                    if (arg.status)
-                        div.find("img").attr("src", "static/" + arg.out);
-                    else
-                        div.find("img").after($("<p class='text-danger' style='height:180px;'>" + arg.out + "</p>"));
+                    // 简单结果
+                    $("#result_text").text("");
+                    var invoice = arg.result.invoice;
+                    $("#simple_result")
+                        .append($("<p></p>").text(invoice.departCity + "-" + invoice.arriveCity + " " + invoice.trainNumber));
+                    $("#simple_result")
+                        .append($("<p></p>").text(invoice.passenger + " " + invoice.idNum));
+                    $("#simple_result")
+                        .append($("<p></p>").text(invoice.invoiceDate));
+                    $("#simple_result")
+                        .append($("<p></p>").text(invoice.totalAmount));
+                    $("#simple_result")
+                        .append($("<p></p>").text(invoice.m));
+                    $("#simple_result")
+                        .append($("<p></p>").text("票号：" + invoice.ticketsNum));
 
-                    row.append(div);
+                    // 详细结果
+                    $("#result").text(JSON.stringify(arg.result));
 
-                    $("#upload_div").after(row);
-                $("#button-tips").html("矫正");
+                    $("#button-tips").html("识别");
+                } else {
+                    $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试").toggleClass("text-danger");
+                    // 原始图片
+                    $("#path_text").text("");
+                    $("#path_result").attr("src", "static/" + arg.path);
+                    // 矫正图片
+                    $("#out_text").text("");
+                    $("#out_result").append($("<p class='text-danger' style='height:180px;'>" + arg.out + "</p>"));
+
+                    // 简单结果
+                    $("#result_text").text("");
+
+                    // 详细结果
+
+                    $("#button-tips").html("识别");
+                }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                $("#status").html("图片处理过程中出错啦，请联系我们完善程序，换一张图片再试试").toggleClass("text-danger");
+                $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试").toggleClass("text-danger");
                 alert("出错了，请联系我们完善程序，错误信息如下：\n" + jqXHR.responseText);
-                $("#button-tips").html("矫正");
+                $("#button-tips").html("识别");
             }
         })
     }
