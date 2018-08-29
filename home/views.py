@@ -21,7 +21,7 @@ def index(request):
 def ocr(request):
     if request.method == 'GET':
         img_list = Img.objects.all()
-        return render(request, 'index.html', {'img_list': img_list})
+        return render(request, 'ocr.html', {'img_list': img_list})
     elif request.method == "POST":
         obj = request.FILES.get('fapiao')
 
