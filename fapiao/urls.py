@@ -26,5 +26,5 @@ urlpatterns = [
     url(r"^logout$", home_views.logout),
     url(r"^list$", home_views.alist),
     url(r"^postarticles$", home_views.postarticles),
-    url(r"^detect$", home_views.upload),
+    url(r"^detect$", home_views.surface),
 ]

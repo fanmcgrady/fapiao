@@ -20,11 +20,11 @@ class Detect(object):
     default_pars_simple = dict()
     default_pars_textboxes = dict()
 
-    def __init__(self, method='simple', pars={}, debug=False):
+    def __init__(self, method='simple', pars={}):
         if method == 'simple':
-            self.detect = TextlineSimpleDetect(**pars, debug=debug)
+            self.detect = TextlineSimpleDetect(**pars)
         elif method == 'textboxes':
-            self.detect = TextlineTextBoxesDetect(**pars, debug=debug)
+            self.detect = TextlineTextBoxesDetect(**pars)
         else:
             raise NotImplemented
     
@@ -32,6 +32,9 @@ class Detect(object):
         '''
         return list of rects'''
         return self.detect(image)
+    
+def visualize_detect(image, rects):
+    return fp.core.draw.rects(image, rects)
 
     
 class Classify(object):

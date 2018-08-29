@@ -1,7 +1,3 @@
-'''
-* to find a best init state
-'''
-
 import os
 import importlib
 import numpy as np

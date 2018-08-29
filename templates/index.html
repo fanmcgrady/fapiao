@@ -96,10 +96,10 @@
                 <!-- Page-Title -->
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4 class="pull-left page-title">火车票矫正</h4>
+                        <h4 class="pull-left page-title">火车票识别</h4>
                         <ol class="breadcrumb pull-right">
                             <li><a href="#">首页</a></li>
-                            <li><a href="ocr" target="_blank">发票识别系统</a></li>
+                            <li><a href="/" target="_blank">发票识别系统</a></li>
                             <li class="active">火车票识别</li>
                         </ol>
                     </div>
@@ -118,7 +118,7 @@
                                                 <button type="button"
                                                         class="btn-lg btn waves-effect waves-light btn-primary w-md"
                                                         id="search"><i class="md md-verified-user"></i>&nbsp;<span
-                                                        id="button-tips">矫正</span></button>
+                                                        id="button-tips">识别</span></button>
                                             </span>
                                     </div>
                             </div>
@@ -150,45 +150,53 @@
 
                 </div>
 
-                {% for img in img_list %}
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title">原始图片</h3>
+                                <h3 class="panel-title">原始图片
+                                    &nbsp;&nbsp;<span class="text-primary" id="path_text"></span>
+                                </h3>
+
                             </div>
                             <div class="panel-body">
                                 <div style="text-align: center;vertical-align: middle">
-                                    <img style="height: 200px;" src="static/{{ img.path }}"/>
-                                    {% if img.color == '蓝底车票' %}
-                                        <p class="text-primary">{{ img.color }}</p>
-                                    {% else %}
-                                        <p class="text-danger">{{ img.color }}</p>
-                                    {% endif %}
+                                    <img style="height: 200px;" id="path_result"/>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title">校正结果</h3>
+                                <h3 class="panel-title">校正结果
+                                    &nbsp;&nbsp;<span class="text-primary" id="out_text"></span>
+                                </h3>
                             </div>
                             <div class="panel-body">
                                 <div style="text-align: center;vertical-align: middle">
-                                <img style="height: 200px;" src="static/{{ img.out }}"/>
-                                    {% if img.color == '蓝底车票' %}
-                                        <p class="text-primary">{{ img.color }}</p>
-                                    {% else %}
-                                        <p class="text-danger">{{ img.color }}</p>
-                                    {% endif %}
+                                    <img style="height: 200px;" id="out_result"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">识别结果
+                                    &nbsp;&nbsp;<span class="text-primary" id="result_text"></span>
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <div style="min-height: 200px;">
+                                    <p class="text-primary" id="result"></p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                {% endfor %}
 
                 <div class="row">
                     <div class="col-md-12">
@@ -199,9 +207,9 @@
                             <div class="panel-body">
                                 <ol>
                                     <li>选择文件。</li>
-                                    <li>点击“<span class="text-primary">矫正</span>”按钮，开始火车票识别。</li>
+                                    <li>点击“<span class="text-primary">识别</span>”按钮，开始火车票识别。</li>
                                     <li>分析完成后页面下方将显示结果。</li>
-                                    <li>本页面展示火车票矫正结果
+                                    <li>本页面展示火车票识别结果
                                     </li>
                                 </ol>
                             </div>
@@ -278,20 +286,6 @@
 <script>
     var resizefunc = [];
 
-    var html = [];
-    html.push('<div class="col-md-6">');
-    html.push(' <div class="panel panel-default">');
-    html.push('     <div class="panel-heading">');
-    html.push('         <h3 class="panel-title"></h3>');
-    html.push('     </div>');
-    html.push('     <div class="panel-body">');
-    html.push('         <div style="text-align: center;vertical-align: middle">');
-    html.push('             <img style="height: 200px;" src=""/>');
-    html.push('         </div>');
-    html.push('     </div>');
-    html.push(' </div>');
-    html.push('</div>');
-
     function upload() {
         // 初始函数
         $("#button-tips").html("处理中...");
@@ -302,53 +296,42 @@
             return;
         }
 
+        $("#path_text").text("识别中...");
+        $("#out_text").text("识别中...");
+        $("#result_text").text("识别中...");
+
         var dic = new FormData();
         dic.append('fapiao', document.getElementById('example-input1-group2').files[0]);
         $.ajax({
-            url: 'detect',
+            url: '/',
             type: 'POST',
             data: dic,
             processData: false,  // tell jQuery not to process the data
             contentType: false,  // tell jQuery not to set contentType
             dataType: 'JSON',
             success: function (arg) {
-
                 if (arg.status) {
-                    $("#status").html("分析完成，该火车票为" + arg.color).addClass("text-primary");
+                    $("#status").html("识别完成，该火车票为" + arg.color).addClass("text-primary");
+
+                    $("#path_text").text("");
+                    $("#out_text").text("");
+                    $("#result_text").text("");
+                    $("#result").text(JSON.stringify(arg.result));
                 } else {
                     $("#status").html("图片处理过程中出错啦，请联系我们完善程序，换一张图片再试试");
                 }
 
-                var row = $("<div class='row'></div>");
+                $("#path_result").attr("src", "static/" + arg.path);
+                if (arg.status)
+                        $("#out_result").attr("src", "static/" + arg.out);
+                    else
+                        $("#out_result").append($("<p class='text-danger' style='height:180px;'>" + arg.out + "</p>"));
 
-                // 原始图片
-                    var div = $(html.join(""));
-                    div.find(".panel-title").text("原始图片");
-                    div.find("img").attr("src", "static/" + arg.path);
-
-                    row.append(div);
-
-                    // 矫正图片
-
-                    var div = $(html.join(""));
-                    div.find(".panel-title").text("校正结果");
-                    div.find("img").attr("src", "static/" + arg.out);
-
-                    row.append(div);
-
-                    $("#upload_div").after(row);
-                $("#button-tips").html("矫正");
+                $("#button-tips").html("识别");
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                /*弹出jqXHR对象的信息*/
                 $("#status").html("图片处理过程中出错啦，请联系我们完善程序，换一张图片再试试");
                 alert("出错了，请联系我们完善程序，错误信息如下：\n" + jqXHR.responseText);
-                {#alert(jqXHR.status);#}
-                {#alert(jqXHR.readyState);#}
-                {#alert(jqXHR.statusText);#}
-                {#/*弹出其他两个参数的信息*/#}
-                {#alert(textStatus);#}
-                {#alert(errorThrown);#}
             }
         })
     }
