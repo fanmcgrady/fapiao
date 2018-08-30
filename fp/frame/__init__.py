@@ -11,6 +11,3 @@ importlib.reload(wireframe)
 
 from . import template
 importlib.reload(template)
-
-from . import detect
-importlib.reload(detect)

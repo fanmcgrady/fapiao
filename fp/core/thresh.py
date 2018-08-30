@@ -78,18 +78,20 @@ class LocalGaussianThreshold(_Threshold):
         return thr
         
 class HybridThreshold(_Threshold):
-    def __init__(self, rows, cols, ksize=11, c=3):
+    def __init__(self, mix_ratio=0.2, rows=8, cols=8, ksize=11, c=3):
         self.rows = rows
         self.cols = cols
         self.ksize = (ksize, ksize)
         self.c = c
+        self.mix_ratio = mix_ratio
     
-    def __call__(self, image, mixr):
+    def __call__(self, image):
         otsu_surf = adaptive_otsu_surface(image, self.rows, self.cols)
         mean_surf = local_mean_surface(image, self.ksize, self.c)
-        surf = cv2.addWeighted(otsu_surf, mixr, mean_surf, 1.-mixr, 0)
+        surf = cv2.addWeighted(otsu_surf, self.mix_ratio, 
+                               mean_surf, 1. - self.mix_ratio, 0)
 
-        imblur = cv2.GaussianBlur(image, (3,3), 1.2)
+        imblur = cv2.GaussianBlur(image, (3, 3), 1.2)
         #sobelx = cv2.Sobel(imblur, cv2.CV_32F, 1, 0, ksize=5)  # x
         #sobely = cv2.Sobel(imblur, cv2.CV_32F, 0, 1, ksize=5)  # y
         #ratio = np.sqrt(sobelx**2 + sobely**2)
@@ -104,7 +106,7 @@ class HybridThreshold(_Threshold):
         #iratio = 1.0 - ratiox
         #surf = mean_surf.astype(np.float32) * ratiox + otsu_surf.astype(np.float32) * iratio
         #surf = surf.astype(np.uint8)
-        surf = cv2.addWeighted(mean_surf, 0.8, otsu_surf, 0.2, 0.0)
+        #surf = cv2.addWeighted(mean_surf, 0.8, otsu_surf, 0.2, 0.0)
         result = cv2.compare(imblur, surf, cv2.CMP_GT)
         
         #if debug:
