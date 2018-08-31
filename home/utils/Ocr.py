@@ -1,37 +1,12 @@
 import copy
-import math
-import os
 
 import cv2
 
+import fp
+import lineToAttribute.getAtbt
 from home.utils import Detect
 from home.utils import detectType
 from home.utils import flow
-import fp
-import lineToAttribute.getAtbt
-
-
-def de_muban(muban, area_rate=0.8):
-    """
-    :param muban: 模板字典，[key:[x,y,width,height]]
-    :param area_rate: 新模板和旧模板面积比例，小于1为缩小
-    :return: 新模板字典
-    """
-    for key in muban:
-        lst = muban[key]
-        x = lst[0]
-        y = lst[1]
-        width = lst[2]
-        height = lst[3]
-        rate = 1 - math.sqrt(area_rate)
-        de_width = rate * width / 2
-        de_height = rate * height / 2
-        new_x = x + de_width
-        new_y = y + de_height
-        new_width = width - rate * width
-        new_height = height - (rate * height) * 2
-        muban[key] = [new_x, new_y, new_width, new_height]
-    return muban
 
 
 def init(filename):
@@ -60,9 +35,6 @@ def init(filename):
         'ticketsNum': [34, 40, 202, 47]
     }
 
-    blueTemplet = de_muban(blueTemplet, area_rate=0.9)
-    redTemplet = de_muban(redTemplet, area_rate=0.9)
-
     TemType = blueTemplet  # 默认蓝票
     if midProcessResult[1] == 1:
         TemType = blueTemplet
@@ -87,7 +59,10 @@ def textline(filepath):
     # jpgs = filepath
     # fp.util.path.files_in_dir(filepath)
     # 创建 字符行检测器 （检测结果为：若干可能为字符行的矩形框）
-    detect_textlines = fp.frame.textline.Detect()
+
+    thresh_pars = dict(mix_ratio=0.1, rows=1, cols=3, ksize=11, c=9)
+    train_ticket_pars = dict(thresh_pars=thresh_pars, char_expand_ratio=0.4)
+    detect_textlines = fp.frame.textline.Detect(pars=train_ticket_pars, debug=True)
     # 创建 字符行分类器 （分类结果为：印刷字符、针式打印字符等）
     # classify_textlines = fp.frame.textline.Classify()
     # print(jpgs[0])
@@ -97,7 +72,7 @@ def textline(filepath):
     rects = detect_textlines(im)
 
     # 绘制结果
-    vis_textline0 = fp.util.visualize.rects(im, rects)
+    # vis_textline0 = fp.util.visualize.rects(im, rects)
     # vis_textline1 = fp.util.visualize.rects(im, rects, types)
     # 显示
     '''pl.figure(figsize=(15, 10))
@@ -142,6 +117,7 @@ def sortBox(box):
         b.append(x[1])
 
     return [min(a), min(b), max(a), max(b)]
+
 
 if __name__ == "__main__":
     init('Image_065.jpg')

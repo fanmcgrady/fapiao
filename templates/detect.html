@@ -109,7 +109,7 @@
                     <!-- Horizontal form -->
                     <div class="col-md-12">
                         <div class="panel panel-default">
-                            <div class="panel-heading"><h3 class="panel-title" id="status">上传火车票图片</h3></div>
+                            <div class="panel-heading"><h3 class="panel-title text-danger" id="status">上传火车票图片</h3></div>
                             <div class="panel-body">
                                     <div class="input-group">
                                         <input type="file" id="example-input1-group2" name="example-input1-group2"
@@ -313,9 +313,9 @@
             success: function (arg) {
 
                 if (arg.status) {
-                    $("#status").html("分析完成，该火车票为" + arg.color).toggleClass("text-primary");
+                    $("#status").html("分析完成，该火车票为" + arg.color);
                 } else {
-                    $("#status").html("图片处理过程中出错啦，请联系我们完善程序，换一张图片再试试").toggleClass("text-danger");
+                    $("#status").html("图片处理过程中出错啦，请联系我们完善程序，换一张图片再试试");
                 }
 
                 var row = $("<div class='row'></div>");
@@ -342,7 +342,7 @@
                 $("#button-tips").html("矫正");
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                $("#status").html("图片处理过程中出错啦，请联系我们完善程序，换一张图片再试试").toggleClass("text-danger");
+                $("#status").html("图片处理过程中出错啦，请联系我们完善程序，换一张图片再试试");
                 alert("出错了，请联系我们完善程序，错误信息如下：\n" + jqXHR.responseText);
                 $("#button-tips").html("矫正");
             }
