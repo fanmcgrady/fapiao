@@ -13,6 +13,12 @@ from .models import Usermsg
 from .utils import detectType
 from .utils import Ocr
 
+from SemanticCorrect import ComputeDistance
+
+#取20个形似字
+print("读取全局字典")
+global_dic = ComputeDistance.load_dict('SemanticCorrect/hei_20.json')
+
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
