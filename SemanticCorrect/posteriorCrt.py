@@ -60,13 +60,15 @@ class posteriorCrt():
         self.dic['arriveCity'] = ac1
 
         # 分词去除站字
-        if self.dic['arriveCity'][len(self.dic['arriveCity']) - 1] == '站':
-            lf = copy.deepcopy(self.dic['arriveCity'][0:len(self.dic['arriveCity']) - 1])
-            self.dic['arriveCity'] = lf
+        if len(self.dic['arriveCity']) > 0:
+            if self.dic['arriveCity'][len(self.dic['arriveCity']) - 1] == '站':
+                lf = copy.deepcopy(self.dic['arriveCity'][0:len(self.dic['arriveCity']) - 1])
+                self.dic['arriveCity'] = lf
 
-        if self.dic['departCity'][len(self.dic['departCity']) - 1] == '站':
-            lf = copy.deepcopy(self.dic['departCity'][0:len(self.dic['departCity']) - 1])
-            self.dic['departCity'] = lf
+        if len(self.dic['departCity']) > 0:
+            if self.dic['departCity'][len(self.dic['departCity']) - 1] == '站':
+                lf = copy.deepcopy(self.dic['departCity'][0:len(self.dic['departCity']) - 1])
+                self.dic['departCity'] = lf
 
         if self.dic['departCity'] != None:
             print(self.dic['departCity'])
@@ -79,6 +81,11 @@ class posteriorCrt():
             print(self.dic['arriveCity'])
 
         if len(self.dic['invoiceDate']) > 10:
+
+            for index, x in enumerate(self.dic['invoiceDate']):
+                if x == '开':
+                    self.dic['invoiceDate'] = self.dic['invoiceDate'][:index + 1]
+                    break
             if self.isChinese(self.dic['invoiceDate'][4]):
                 self.dic['invoiceDate'] = self.dic['invoiceDate'][0:4] + '年' + self.dic['invoiceDate'][5:]
 
@@ -89,8 +96,8 @@ class posteriorCrt():
                 self.dic['invoiceDate'] = self.dic['invoiceDate'][0:10] + '日' + self.dic['invoiceDate'][11:]
 
         if len(self.dic['seatNum']) > 6:
-            if self.isChinese(self.dic['seatNum'][2]):
-                self.dic['seatNum'] = self.dic['seatNum'][0:2] + '车' + self.dic['seatNum'][3:]
+
+            self.dic['seatNum'] = self.dic['seatNum'][0:2] + '车' + self.dic['seatNum'][3:]
 
             if self.isChinese(self.dic['seatNum'][6]):
                 self.dic['seatNum'] = self.dic['seatNum'][0:6] + '号'
@@ -110,19 +117,26 @@ class posteriorCrt():
             print("idNum error")
 
         # price
-        if self.dic['totalAmount'][0] != '¥':
-            self.dic['totalAmount'] = '¥' + self.dic['totalAmount'][1:]
+        if len(self.dic['totalAmount']) > 2:
+            for index, x in enumerate(self.dic['totalAmount']):
+                if x == '元':
+                    self.dic['totalAmount'] = self.dic['totalAmount'][:index + 1]
+                    break
 
-        if self.dic['totalAmount'][len(self.dic['totalAmount']) - 1] != '元':
-            self.dic['totalAmount'] = self.dic['totalAmount'][0:len(self.dic['totalAmount']) - 1] + '元'
+            if self.dic['totalAmount'][0] != '¥':
+                self.dic['totalAmount'] = '¥' + self.dic['totalAmount'][1:]
 
-        if self.dic['totalAmount'][len(self.dic['totalAmount']) - 3].isdigit():
-            self.dic['totalAmount'] = self.dic['totalAmount'][0:len(self.dic['totalAmount']) - 3] + '.' + self.dic[
-                                                                                                              'totalAmount'][
-                                                                                                          len(self.dic[
-                                                                                                                  'totalAmount']) - 2:len(
-                                                                                                              self.dic[
-                                                                                                                  'totalAmount'])]
+            if self.dic['totalAmount'][len(self.dic['totalAmount']) - 1] != '元':
+                self.dic['totalAmount'] = self.dic['totalAmount'][0:len(self.dic['totalAmount']) - 1] + '元'
+
+            if self.dic['totalAmount'][len(self.dic['totalAmount']) - 3].isdigit():
+                self.dic['totalAmount'] = self.dic['totalAmount'][0:len(self.dic['totalAmount']) - 3] + '.' + self.dic[
+                                                                                                                  'totalAmount'][
+                                                                                                              len(
+                                                                                                                  self.dic[
+                                                                                                                      'totalAmount']) - 2:len(
+                                                                                                                  self.dic[
+                                                                                                                      'totalAmount'])]
 
         # self.dic['passenger  待定
         pger = ''

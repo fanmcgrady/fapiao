@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="02c985dd-de44-477b-ac6a-8d4bdc69cafd" name="Default" comment="allowed_hosts">
-      <change afterPath="$PROJECT_DIR$/fp/frame/_surface_check.py" afterDir="false" />
+    <list default="true" id="02c985dd-de44-477b-ac6a-8d4bdc69cafd" name="Default" comment="识别update">
+      <change afterPath="$PROJECT_DIR$/SemanticCorrect/hei_20.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fp/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fp/core/thresh.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/core/thresh.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fp/frame/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/frame/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fp/frame/_template_cost.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/frame/_template_cost.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fp/frame/_template_match.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/frame/_template_match.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fp/frame/_textline_lenet_classify.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/frame/_textline_lenet_classify.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fp/frame/_textline_simple_detect.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/frame/_textline_simple_detect.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fp/frame/surface.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/frame/surface.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fp/frame/template.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/frame/template.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fp/frame/textline.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/frame/textline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fp/util/path.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/util/path.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SemanticCorrect/SmtcCrt.py" beforeDir="false" afterPath="$PROJECT_DIR$/SemanticCorrect/SmtcCrt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SemanticCorrect/posteriorCrt.py" beforeDir="false" afterPath="$PROJECT_DIR$/SemanticCorrect/posteriorCrt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fapiao/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/fapiao/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/utils/Ocr.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/utils/Ocr.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/utils/flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/utils/flow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/ocr.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ocr.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -51,31 +46,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="detect.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/detect.html">
+      <file leaf-file-name="posteriorCrt.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SemanticCorrect/posteriorCrt.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3857">
-              <caret line="203" column="53" selection-start-line="203" selection-start-column="53" selection-end-line="203" selection-end-column="53" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="run.sh" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/run.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="57">
-              <caret line="3" selection-start-line="3" selection-end-line="3" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/home/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="760">
-              <caret line="40" column="34" selection-start-line="40" selection-start-column="34" selection-end-line="40" selection-end-column="34" />
+            <state relative-caret-position="19">
+              <caret line="10" selection-start-line="10" selection-end-line="10" />
               <folding>
-                <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SmtcCrt.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SemanticCorrect/SmtcCrt.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1590">
+              <caret line="100" column="23" selection-start-line="100" selection-start-column="23" selection-end-line="100" selection-end-column="23" />
+              <folding>
+                <element signature="e#15#24#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -84,64 +73,56 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
+            <state relative-caret-position="605">
               <caret line="138" selection-start-line="138" selection-end-line="138" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="line.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fp/core/line.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="16" column="21" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
-            </state>
-          </provider>
+      <file leaf-file-name="20180901074940_passenger.jpeg" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901074940/20180901074940_passenger.jpeg">
+          <provider selected="true" editor-type-id="images" />
         </entry>
       </file>
-      <file leaf-file-name="config.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fp/config.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="8" column="16" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="path.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fp/util/path.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
-              <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="textline.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fp/frame/textline.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="32" column="21" selection-start-line="32" selection-start-column="21" selection-end-line="32" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_textline_lenet_classify.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/fp/frame/_textline_lenet_classify.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ocr.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ocr.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/ocr.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6213">
-              <caret line="327" column="22" selection-start-line="327" selection-start-column="22" selection-end-line="327" selection-end-column="22" />
+            <state relative-caret-position="95">
+              <caret line="321" column="29" selection-start-line="321" selection-start-column="29" selection-end-line="321" selection-end-column="29" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="20180901074940_seatNum.jpeg" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901074940/20180901074940_seatNum.jpeg">
+          <provider selected="true" editor-type-id="images" />
+        </entry>
+      </file>
+      <file leaf-file-name="20180901074940_ticketsNum.jpeg" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901074940/20180901074940_ticketsNum.jpeg">
+          <provider selected="true" editor-type-id="images" />
+        </entry>
+      </file>
+      <file leaf-file-name="20180901074940_totalAmount.jpeg" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901074940/20180901074940_totalAmount.jpeg">
+          <provider selected="true" editor-type-id="images" />
+        </entry>
+      </file>
+      <file leaf-file-name="flow.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/home/utils/flow.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="366">
+              <caret line="48" lean-forward="true" selection-start-line="48" selection-end-line="48" />
+              <folding>
+                <element signature="e#14#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="20180901074940_trainNumber.jpeg" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901074940/20180901074940_trainNumber.jpeg">
+          <provider selected="true" editor-type-id="images" />
         </entry>
       </file>
     </leaf>
@@ -168,6 +149,14 @@
       <find>simple_result</find>
       <find>h2</find>
       <find>h4</find>
+      <find>appid</find>
+      <find>key 'words' doesn't exist!</find>
+      <find>client</find>
+      <find>火车站</find>
+      <find>hei_20</find>
+      <find>hei_20.json</find>
+      <find>getFamiliar</find>
+      <find>out_div</find>
     </findStrings>
     <replaceStrings>
       <replace>src=&quot;static/blue/</replace>
@@ -189,22 +178,24 @@
         <option value="$PROJECT_DIR$/allstatic/.gitignore" />
         <option value="$PROJECT_DIR$/run.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/fapiao/settings.py" />
         <option value="$PROJECT_DIR$/Ocr2/Ocr.py" />
         <option value="$PROJECT_DIR$/home/utils/xml2dict.py" />
         <option value="$PROJECT_DIR$/home/utils/xmlToDict.py" />
-        <option value="$PROJECT_DIR$/SemanticCorrect/SmtcCrt.py" />
         <option value="$PROJECT_DIR$/home/utils/surface.py" />
         <option value="$PROJECT_DIR$/SemanticCorrect/redict.py" />
-        <option value="$PROJECT_DIR$/home/utils/Ocr.py" />
-        <option value="$PROJECT_DIR$/home/utils/detectType.py" />
-        <option value="$PROJECT_DIR$/home/utils/flow.py" />
         <option value="$PROJECT_DIR$/fapiao/urls.py" />
-        <option value="$PROJECT_DIR$/templates/detect.html" />
         <option value="$PROJECT_DIR$/run.sh" />
         <option value="$PROJECT_DIR$/home/views.py" />
-        <option value="$PROJECT_DIR$/templates/ocr.html" />
         <option value="$PROJECT_DIR$/templates/index.html" />
+        <option value="$PROJECT_DIR$/templates/detect.html" />
+        <option value="$PROJECT_DIR$/SemanticCorrect/posteriorCrt.py" />
+        <option value="$PROJECT_DIR$/home/utils/detectType.py" />
+        <option value="$PROJECT_DIR$/home/utils/Ocr.py" />
+        <option value="$PROJECT_DIR$/SemanticCorrect/Spellingcheck.py" />
+        <option value="$PROJECT_DIR$/home/utils/flow.py" />
+        <option value="$PROJECT_DIR$/fapiao/settings.py" />
+        <option value="$PROJECT_DIR$/SemanticCorrect/SmtcCrt.py" />
+        <option value="$PROJECT_DIR$/templates/ocr.html" />
       </list>
     </option>
   </component>
@@ -231,6 +222,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -241,12 +233,33 @@
             <path>
               <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
               <item name="fapiao" type="462c0819:PsiDirectoryNode" />
-              <item name="fapiao" type="462c0819:PsiDirectoryNode" />
+              <item name="allstatic" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
               <item name="fapiao" type="462c0819:PsiDirectoryNode" />
-              <item name="fp" type="462c0819:PsiDirectoryNode" />
+              <item name="allstatic" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fapiao" type="462c0819:PsiDirectoryNode" />
+              <item name="allstatic" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="tmp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fapiao" type="462c0819:PsiDirectoryNode" />
+              <item name="allstatic" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
+              <item name="tmp" type="462c0819:PsiDirectoryNode" />
+              <item name="20180901074940" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fapiao" type="462c0819:PsiDirectoryNode" />
+              <item name="fapiao" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
@@ -255,13 +268,24 @@
             </path>
             <path>
               <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="fapiao" type="462c0819:PsiDirectoryNode" />
+              <item name="home" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fapiao" type="462c0819:PsiDirectoryNode" />
+              <item name="SemanticCorrect" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fapiao" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -280,10 +304,10 @@
       <recent name="$PROJECT_DIR$/templates" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/home/utils" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/allstatic/upload" />
       <recent name="$PROJECT_DIR$/fp" />
-      <recent name="$PROJECT_DIR$/home/utils" />
       <recent name="$PROJECT_DIR$/allstatic" />
     </key>
   </component>
@@ -453,24 +477,32 @@
       <option name="project" value="LOCAL" />
       <updated>1535553847397</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="识别update">
+      <created>1535700119104</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1535700119104</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1389" height="878" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2412769" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="right" id="Database" order="3" weight="0.1091314" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.29433498" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17743133" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="right" id="Database" order="3" weight="0.1091314" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32881773" />
       <window_info anchor="right" id="SciView" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.2992611" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -480,30 +512,30 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39901477" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32881773" />
+      <window_info anchor="bottom" id="Messages" order="7" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24795842" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.098522164" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32881773" />
-      <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" id="Database" order="4" weight="0.1091314" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.0" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="right" id="SciView" order="3" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32881773" />
+      <window_info anchor="bottom" id="Python Console" order="10" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -514,7 +546,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="allowed_hosts" />
-    <option name="LAST_COMMIT_MESSAGE" value="allowed_hosts" />
+    <MESSAGE value="识别update" />
+    <option name="LAST_COMMIT_MESSAGE" value="识别update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -529,243 +562,9 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Ocr2/flow.py" />
-    <entry file="file://$PROJECT_DIR$/Ocr2/Ocr.py" />
-    <entry file="file://$PROJECT_DIR$/home/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/utils/xmlToDict.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="10" column="11" lean-forward="true" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="32" column="11" selection-start-line="32" selection-start-column="11" selection-end-line="32" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/tests.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SemanticCorrect/ComputeDistance.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SemanticCorrect/posteriorCrt.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SemanticCorrect/Porter.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SemanticCorrect/fPter.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SemanticCorrect/test.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/utils/Detect.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret lean-forward="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/utils/xml2dict.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="17" column="27" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/utils/Image_065_turned.jpeg" />
-    <entry file="file://$PROJECT_DIR$/fp/frame/template.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fp/frame/_textline_simple_detect.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="29" column="47" selection-start-line="29" selection-start-column="32" selection-end-line="29" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fp/frame/_template_associate.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fp/frame/_template_match.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fp/frame/_template_remap.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fp/frame/_template_warp.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fp/frame/_template_cost.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fp/frame/detect.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fp/core/thresh.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fp/train_ticket/train_ticket.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fp/train_ticket/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/utils/Image_065.jpg" />
-    <entry file="file://$PROJECT_DIR$/home/utils/surface.py" />
-    <entry file="file://$PROJECT_DIR$/SemanticCorrect/Spellingcheck.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="3" column="9" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/allstatic/upload/20180829014037.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/utils/object_dict.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SemanticCorrect/火车站.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SemanticCorrect/SmtcCrt.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SemanticCorrect/redict.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="164" column="61" selection-start-line="164" selection-start-column="61" selection-end-line="164" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/utils/Ocr.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="78" column="42" selection-start-line="78" selection-start-column="42" selection-end-line="78" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fp/frame/surface.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="65" selection-start-line="65" selection-end-line="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/utils/detectType.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="41" column="30" selection-start-line="41" selection-start-column="30" selection-end-line="41" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/allstatic/out/20180829014037.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fapiao/settings.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/utils/flow.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="950">
-          <caret line="50" selection-start-line="50" selection-end-line="50" />
-          <folding>
-            <element signature="e#14#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/upload.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fapiao/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="551">
-          <caret line="29" column="31" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="31" />
-          <folding>
-            <element signature="e#630#662#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/run.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="760">
-          <caret line="40" column="34" selection-start-line="40" selection-start-column="34" selection-end-line="40" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/detect.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3857">
-          <caret line="203" column="53" selection-start-line="203" selection-start-column="53" selection-end-line="203" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/ocr.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6213">
-          <caret line="327" column="22" selection-start-line="327" selection-start-column="22" selection-end-line="327" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="138" selection-start-line="138" selection-end-line="138" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fp/core/line.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="16" column="21" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fp/config.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="8" column="16" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fp/util/path.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fp/frame/textline.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
+        <state relative-caret-position="513">
           <caret line="32" column="21" selection-start-line="32" selection-start-column="21" selection-end-line="32" selection-end-column="21" />
         </state>
       </provider>
@@ -774,6 +573,229 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="399">
           <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/detect.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="357" selection-start-line="357" selection-end-line="357" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/home/utils/muban.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/home/utils/Ocr.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2147">
+          <caret line="113" column="13" selection-start-line="113" selection-start-column="4" selection-end-line="113" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SemanticCorrect/fPter.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SemanticCorrect/Porter.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SemanticCorrect/Spellingcheck.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="2" column="11" selection-start-line="2" selection-start-column="11" selection-end-line="2" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SemanticCorrect/test.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lineToAttribute/getAtbt.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/InterfaceType/JsonInterface.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/home/utils/Detect.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/home/utils/detectType.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="741">
+          <caret line="39" selection-start-line="39" selection-end-line="39" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/django/lib/python3.6/site-packages/aip/ocr.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="143">
+          <caret line="47" column="4" selection-start-line="47" selection-start-column="4" selection-end-line="47" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SemanticCorrect/hei_20.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180829051036/20180829051036_arriveCity.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180829051036/20180829051036_departCity.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180829051036/20180829051036_idNum.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180829051036/20180829051036_invoiceDate.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180829051036/20180829051036_passenger.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180829051036/20180829051036_seatNum.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180829051036/20180829051036_ticketsNum.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180829051036/20180829051036_totalAmount.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180829051036/20180829051036_trainNumber.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901070209/20180901070209_arriveCity.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901070209/20180901070209_departCity.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901070209/20180901070209_trainNumber.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901070209/20180901070209_passenger.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901070209/20180901070209_seatNum.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901070209/20180901070209_ticketsNum.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901070209/20180901070209_totalAmount.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901070209/20180901070209_invoiceDate.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901070209/20180901070209_idNum.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SemanticCorrect/ComputeDistance.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="392">
+          <caret line="104" column="4" selection-start-line="104" selection-start-column="4" selection-end-line="104" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SemanticCorrect/redict.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="156" column="3" selection-start-line="156" selection-start-column="3" selection-end-line="156" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SemanticCorrect/火车站.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fapiao/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1128">
+          <caret line="118" selection-start-line="118" selection-end-line="118" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901074940/20180901074940_arriveCity.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901074940/20180901074940_departCity.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901074940/20180901074940_idNum.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901074940/20180901074940_invoiceDate.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901074940/20180901074940_passenger.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901074940/20180901074940_seatNum.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901074940/20180901074940_ticketsNum.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901074940/20180901074940_totalAmount.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901074940/20180901074940_trainNumber.jpeg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SemanticCorrect/posteriorCrt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SemanticCorrect/SmtcCrt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1590">
+          <caret line="100" column="23" selection-start-line="100" selection-start-column="23" selection-end-line="100" selection-end-column="23" />
+          <folding>
+            <element signature="e#15#24#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/home/utils/flow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="366">
+          <caret line="48" lean-forward="true" selection-start-line="48" selection-end-line="48" />
+          <folding>
+            <element signature="e#14#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="605">
+          <caret line="138" selection-start-line="138" selection-end-line="138" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/ocr.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="321" column="29" selection-start-line="321" selection-start-column="29" selection-end-line="321" selection-end-column="29" />
         </state>
       </provider>
     </entry>

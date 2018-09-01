@@ -7,6 +7,7 @@ import lineToAttribute.getAtbt
 from home.utils import Detect
 from home.utils import detectType
 from home.utils import flow
+from home.utils import muban
 
 
 def init(filename):
@@ -104,6 +105,13 @@ def adjustToTextLine(mubandict, box, typeT):  # box顺序需要调整
         mubandict[x][1] = midbox[3] - (int)((mubanBox[3] - tempArray[1]) / (mubanBox[3] - mubanBox[1]) * h)
         mubandict[x][2] = tempArray[2] / (mubanBox[2] - mubanBox[0]) * w
         mubandict[x][3] = tempArray[3] / (mubanBox[3] - mubanBox[1]) * h
+
+    if mubandict[x][0] < 0:
+        mubandict[x][0] = 0
+    if mubandict[x][1] < 0:
+        mubandict[x][1] = 0
+
+    mubandict = muban.de_muban(mubandict, 0.8)
 
     return mubandict
 

@@ -43,9 +43,9 @@ def Started_Ocr(filePath):
     SECRET_KEY = 'BjDp89wMg2InQprvRr20SZWjrTGFET6R'
     '''
 
-    APP_ID = '11743519'
-    API_KEY = 'pCdOjo5BLlZKSGyf3gMMySYD'
-    SECRET_KEY = '91GzoA35vZRiuxS86AbEKI8eiYjCrlNI'
+    APP_ID = '11757125'
+    API_KEY = 'mnr4S1KAr8t0C3Zjoc4rTbuv'
+    SECRET_KEY = 'GDFyYtVioPFmDCi2bcw2UklNmCjoi1nr'
 
     client = AipOcr(APP_ID, API_KEY, SECRET_KEY)
 
@@ -60,6 +60,7 @@ def Started_Ocr(filePath):
     result=client.receipt(image, options)
 
     data=json.loads(json.dumps(result).encode().decode("unicode-escape"))
+
     if 'words_result' in data.keys():
         if len(data['words_result'])>0 :
             ocrResult =""
@@ -73,6 +74,9 @@ def Started_Ocr(filePath):
             print(data)
             return ""
     else:
+        # 打印百度返回结果
+        print(data)
+
         print("key 'words' doesn't exist!")
         return ""
     '''if len(sys.argv)>3:

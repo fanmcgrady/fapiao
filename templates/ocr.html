@@ -173,7 +173,7 @@
                                 </h3>
                             </div>
                             <div class="panel-body">
-                                <div style="text-align: center;vertical-align: middle;min-height:200px;">
+                                <div style="text-align: center;vertical-align: middle;min-height:200px;" id="out_div">
                                     <img style="height: 200px;" id="out_result"/>
                                 </div>
                             </div>
@@ -318,6 +318,8 @@
         $("#simple_result").empty();
         $("#result").empty();
 
+        $("#out_div").find("p").text("");
+
         var dic = new FormData();
         var file = document.getElementById('example-input1-group2').files[0];
         dic.append('fapiao', file);
@@ -367,12 +369,13 @@
                     $("#button-tips").html("识别");
                 } else {
                     $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试");
+                    {#alert("出错了，请联系我们完善程序，错误信息如下：\n" + arg.out);#}
                     // 原始图片
                     $("#path_text").text("");
                     $("#path_result").attr("src", "static/" + arg.path);
                     // 矫正图片
                     $("#out_text").text("");
-                    $("#out_result").append($("<p class='text-danger' style='height:180px;'>" + arg.out + "</p>"));
+                    $("#out_div").append($("<p class='text-danger' style='height:180px;'>出错了，请联系我们完善程序，错误信息如下：" + arg.out + "</p>"));
 
                     // 简单结果
                     $("#result_text").text("");

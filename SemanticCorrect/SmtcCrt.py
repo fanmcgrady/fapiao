@@ -1,8 +1,8 @@
 ﻿#coding=utf-8
 
 import os
-import  SemanticCorrect.ComputeDistance
-import  SemanticCorrect.Porter
+import SemanticCorrect.ComputeDistance as CD
+import SemanticCorrect.Porter
 import copy
 
 #import  from      #字模库 wordTemp
@@ -72,7 +72,7 @@ def SmtcCrt(sentence , sentenceType , chooseMod):
 
             if sFPCM1 > 0:
                 return m['str']
-
+                #火车票单个词识别
 
 
     for indexM, m in enumerate(sentenceComb['porterStr']):
@@ -98,7 +98,7 @@ def SmtcCrt(sentence , sentenceType , chooseMod):
 #sentence 为list [字，置信度]   [word , confidentValue]
 
 def getFamiliar(word):
-    dc = ComputeDistance.load_dict('/home/ocr/Ocr2/hei_20.json')#取20个形似字
+    dc = CD.load_dict('/hei_20.json')#取20个形似字
     wt = dc[word]
     wt[word] = 1
     #wordTemp接口getFamiliar(word)
