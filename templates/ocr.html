@@ -183,12 +183,44 @@
                     <div class="col-md-4">
                         <div class="panel panel-default">
                             <div class="panel-heading">
+                                <h3 class="panel-title">行提取结果
+                                    &nbsp;&nbsp;<span class="text-primary" id="line_text"></span>
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <div style="text-align: center;vertical-align: middle;min-height:200px;">
+                                    <img style="height: 200px;" id="line_result"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
                                 <h3 class="panel-title">识别结果
                                     &nbsp;&nbsp;<span class="text-primary" id="result_text"></span>
                                 </h3>
                             </div>
                             <div class="panel-body">
                                 <div style="height: 200px;" id="simple_result">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">语义矫正结果（展示过程待完成）
+                                    &nbsp;&nbsp;<span class="text-primary" id=""></span>
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <div style="height: 200px;" id="">
 
                                 </div>
                             </div>
@@ -299,6 +331,25 @@
 <script>
     var resizefunc = [];
 
+    // 加载中显示
+    function loadingShow() {
+        $("#button-tips").html("处理中...");
+        $("#status").text("识别中...");
+
+        $("#out_text").text("识别中...");
+        $("#out_result").removeAttr("src");
+
+        $("#line_text").text("识别中...");
+        $("#line_result").removeAttr("src");
+
+        $("#result_text").text("识别中...");
+        $("#simple_result").empty();
+
+        $("#result").empty();
+
+        $("#out_div").find("p").remove();
+    }
+
     function upload() {
 
         // 验证
@@ -308,17 +359,7 @@
         }
 
         // 初始函数
-        $("#button-tips").html("处理中...");
-
-        $("#out_text").text("识别中...");
-        $("#result_text").text("识别中...");
-        $("#status").text("识别中...");
-
-        $("#out_result").removeAttr("src");
-        $("#simple_result").empty();
-        $("#result").empty();
-
-        $("#out_div").find("p").remove();
+        loadingShow();
 
         var dic = new FormData();
         var file = document.getElementById('example-input1-group2').files[0];
@@ -346,6 +387,9 @@
                     // 矫正图片
                     $("#out_text").text("");
                     $("#out_result").attr("src", "static/" + arg.out);
+                    // 行提取图片
+                    $("#line_text").text("");
+                    $("#line_result").attr("src", "static/" + arg.line);
 
                     // 简单结果
                     $("#result_text").text("");
@@ -376,7 +420,8 @@
                     // 矫正图片
                     $("#out_text").text("");
                     $("#out_div").append($("<p class='text-danger' style='height:180px;'>出错了，请联系我们完善程序，错误信息如下：" + arg.out + "</p>"));
-
+                    // 行提取
+                    $("#line_text").text("");
                     // 简单结果
                     $("#result_text").text("");
 

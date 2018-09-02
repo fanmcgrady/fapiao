@@ -1,6 +1,7 @@
 import copy
 
 import cv2
+import matplotlib.pyplot as pl
 
 import fp
 import lineToAttribute.getAtbt
@@ -10,6 +11,7 @@ from home.utils import flow
 from home.utils import muban
 
 
+# 矫正 -> 行提取 -> ocr
 def init(filename):
     midProcessResult = detectType.detectType('allstatic', filename)  # tangpeng 预处理
     # 行提取
@@ -47,9 +49,72 @@ def init(filename):
 
     attributeLine = lineToAttribute.getAtbt.compute(textline(midProcessResult[0]), Templet)
 
+    # 绘制行提取结果
+    plt_rects = []
+    for x in attributeLine:
+        plt_rects.append(attributeLine[x])
+    # 显示
+    vis_textline0 = fp.util.visualize.rects(cv2.imread(midProcessResult[0], 0), plt_rects)
+    pl.imshow(vis_textline0)
+    # 保存到plt目录
+    pltpath = midProcessResult[0].replace("out", "line")
+    pl.savefig(pltpath)
+
     jsonResult = flow.cropToOcr(midProcessResult[0], attributeLine, midProcessResult[1])  # ocr和分词
-    print(jsonResult)
+    # print(jsonResult)
     return jsonResult, midProcessResult[1]
+
+
+# 矫正 -> 行提取
+def surfaceDetect(filename):
+    midProcessResult = detectType.detectType('allstatic', filename)  # tangpeng 预处理
+    # 行提取
+    blueTemplet = {
+        'departCity': [48, 62, 222, 56],
+        'arriveCity': [412, 61, 228, 55],
+        'trainNumber': [264, 62, 170, 57],
+        'invoiceDate': [24, 139, 369, 42],
+        'seatNum': [408, 138, 160, 40],
+        'idNum': [22, 276, 306, 38],
+        'passenger': [328, 276, 150, 38],
+        'totalAmount': [33, 177, 151, 39],
+        'ticketsNum': [21, 10, 195, 66]
+    }
+
+    redTemplet = {
+        'departCity': [29, 74, 218, 54],
+        'arriveCity': [425, 68, 224, 64],
+        'trainNumber': [230, 65, 203, 62],
+        'invoiceDate': [0, 163, 357, 41],
+        'seatNum': [392, 164, 203, 46],
+        'idNum': [0, 343, 350, 45],
+        'totalAmount': [3, 206, 212, 52],
+        'ticketsNum': [34, 40, 202, 47]
+    }
+
+    TemType = blueTemplet  # 默认蓝票
+    if midProcessResult[1] == 1:
+        TemType = blueTemplet
+
+    if midProcessResult[1] == 2:
+        TemType = redTemplet
+
+    Templet = adjustToTextLine(TemType, Detect.detect(cv2.imread(midProcessResult[0]), 1), midProcessResult[1])  # 火车票
+
+    attributeLine = lineToAttribute.getAtbt.compute(textline(midProcessResult[0]), Templet)
+
+    # 绘制行提取结果
+    plt_rects = []
+    for x in attributeLine:
+        plt_rects.append(attributeLine[x])
+    # 显示
+    vis_textline0 = fp.util.visualize.rects(cv2.imread(midProcessResult[0], 0), plt_rects)
+    pl.imshow(vis_textline0)
+    # 保存到plt目录
+    pltpath = midProcessResult[0].replace("out", "line")
+    pl.savefig(pltpath)
+
+    return midProcessResult[1]
 
 
 def textline(filepath):
@@ -75,14 +140,17 @@ def textline(filepath):
     # 绘制结果
     # vis_textline0 = fp.util.visualize.rects(im, rects)
     # vis_textline1 = fp.util.visualize.rects(im, rects, types)
-    # 显示
-    '''pl.figure(figsize=(15, 10))
-    pl.subplot(2, 2, 1)
-    pl.imshow(im, 'gray')
 
-    pl.subplot(2, 2, 2)
-    pl.imshow(vis_textline0)
-    pl.show()'''
+    # 显示
+    # pl.figure(figsize=(15, 10))
+    # pl.subplot(2, 2, 1)
+    # pl.imshow(im, 'gray')
+
+    # pl.subplot(2, 2, 2)
+    # pl.imshow(vis_textline0)
+    # pltpath = filepath.replace("out", "plt")
+    # pl.savefig(pltpath)
+    # pl.show()
 
     return rects
 
@@ -106,10 +174,10 @@ def adjustToTextLine(mubandict, box, typeT):  # box顺序需要调整
         mubandict[x][2] = tempArray[2] / (mubanBox[2] - mubanBox[0]) * w
         mubandict[x][3] = tempArray[3] / (mubanBox[3] - mubanBox[1]) * h
 
-    if mubandict[x][0] < 0:
-        mubandict[x][0] = 0
-    if mubandict[x][1] < 0:
-        mubandict[x][1] = 0
+        if mubandict[x][0] < 0:
+            mubandict[x][0] = 0
+        if mubandict[x][1] < 0:
+            mubandict[x][1] = 0
 
     mubandict = muban.de_muban(mubandict, 0.8)
 

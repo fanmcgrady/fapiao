@@ -32,4 +32,5 @@ class Comment(models.Model):
 class Img(models.Model):
     path = models.CharField(max_length=50, default='')
     out = models.CharField(max_length=50, default='')
+    line = models.CharField(max_length=50, default='')
     color = models.CharField(max_length=50, default='')

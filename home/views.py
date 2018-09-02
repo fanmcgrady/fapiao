@@ -36,6 +36,7 @@ def ocr(request):
 
         file_path = os.path.join('upload', filename)
         out_filename = os.path.join('out', filename)
+        line_filename = os.path.join('line', filename)
 
         full_path = os.path.join('allstatic', file_path)
         f = open(full_path, 'wb')
@@ -49,6 +50,7 @@ def ocr(request):
                 'status': True,
                 'path': file_path,
                 'out': out_filename,
+                'line': line_filename,
                 'color': "蓝底车票" if flag == 1 else "红底车票",
                 'result' : json.loads(jsonResult)
             }
@@ -61,7 +63,7 @@ def ocr(request):
 # 矫正demo
 def surface(request):
     if request.method == 'GET':
-        img_list = Img.objects.all()
+        img_list = Img.objects.all().order_by('-id')
         return render(request, 'detect.html', {'img_list': img_list})
     elif request.method == "POST":
         obj = request.FILES.get('fapiao')
@@ -71,6 +73,7 @@ def surface(request):
 
         file_path = os.path.join('upload', filename)
         out_filename = os.path.join('out', filename)
+        line_filename = os.path.join('line', filename)
 
         # file_path = os.path.join('upload', obj.name)
 
@@ -81,15 +84,16 @@ def surface(request):
         f.close()
 
         try:
-            _, flag = detectType.detectType('allstatic', file_path)
+            flag = Ocr.surfaceDetect(file_path)
             color = "蓝底车票" if flag == 1 else "红底车票"
             ret = {
                 'status': True,
                 'path': file_path,
                 'out': out_filename,
+                'line': line_filename,
                 'color': color
             }
-            Img.objects.create(path=file_path, out=out_filename, color=color)
+            Img.objects.create(path=file_path, out=out_filename, line=line_filename, color=color)
         except Exception as e:
             print(e)
             ret = {'status': False, 'path': file_path, 'out': str(e)}

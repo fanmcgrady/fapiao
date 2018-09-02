@@ -152,7 +152,7 @@
 
                 {% for img in img_list %}
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title">原始图片</h3>
@@ -170,7 +170,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title">校正结果</h3>
@@ -187,7 +187,25 @@
                             </div>
                         </div>
                     </div>
-                </div>
+
+                    <div class="col-md-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">行提取结果</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div style="text-align: center;vertical-align: middle">
+                                    <img style="height: 200px;" src="static/{{ img.line }}"/>
+                                        {% if img.color == '蓝底车票' %}
+                                            <p class="text-primary">{{ img.color }}</p>
+                                        {% else %}
+                                            <p class="text-danger">{{ img.color }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
 
                 <div class="row">
@@ -279,7 +297,7 @@
     var resizefunc = [];
 
     var html = [];
-    html.push('<div class="col-md-6">');
+    html.push('<div class="col-md-4">');
     html.push(' <div class="panel panel-default">');
     html.push('     <div class="panel-heading">');
     html.push('         <h3 class="panel-title"></h3>');
@@ -335,6 +353,15 @@
                         div.find("img").attr("src", "static/" + arg.out);
                     else
                         div.find("img").after($("<p class='text-danger' style='height:180px;'>" + arg.out + "</p>"));
+
+                    row.append(div);
+
+                    // 行提取图片
+
+                    var div = $(html.join(""));
+                    div.find(".panel-title").text("行提取结果");
+                    if (arg.status)
+                        div.find("img").attr("src", "static/" + arg.line);
 
                     row.append(div);
 

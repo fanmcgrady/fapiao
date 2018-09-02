@@ -1,4 +1,6 @@
 upload/*
 out/*
+line/*
 !upload/.gitkeep
 !out/.gitkeep
+!line/.gitkeep
