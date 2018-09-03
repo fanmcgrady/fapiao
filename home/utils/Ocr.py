@@ -2,8 +2,8 @@ import copy
 
 import cv2
 import matplotlib
-import matplotlib.pyplot as pl
 matplotlib.use('Agg')
+import matplotlib.pyplot as pl
 
 import fp
 import lineToAttribute.getAtbt
