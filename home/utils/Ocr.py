@@ -1,8 +1,6 @@
 import copy
 
 import cv2
-import matplotlib
-matplotlib.use('Agg')
 import matplotlib.pyplot as pl
 
 import fp
@@ -15,7 +13,8 @@ from home.utils import muban
 
 # 矫正 -> 行提取 -> ocr
 def init(filename):
-    midProcessResult = detectType.detectType('allstatic', filename)  # tangpeng 预处理
+    # 预处理
+    midProcessResult = detectType.detectType('allstatic', filename)
     # 行提取
     blueTemplet = {
         'departCity': [48, 62, 222, 56],
@@ -62,8 +61,8 @@ def init(filename):
     pltpath = midProcessResult[0].replace("out", "line")
     pl.savefig(pltpath)
 
-    jsonResult = flow.cropToOcr(midProcessResult[0], attributeLine, midProcessResult[1])  # ocr和分词
-    # print(jsonResult)
+    # ocr和分词
+    jsonResult = flow.cropToOcr(midProcessResult[0], attributeLine, midProcessResult[1])
     return jsonResult, midProcessResult[1]
 
 

@@ -1,4 +1,4 @@
-﻿#coding=utf-8
+#coding=utf-8
 
 import os
 import SemanticCorrect.ComputeDistance as CD
@@ -47,6 +47,15 @@ def SmtcCrt(sentence , sentenceType , chooseMod):
     for c in Result:
         getWholeConfdt(c)
     '''
+    #检测多字
+    for index, mm in enumerate(sentence['word']):
+        words = ''.join(sentence['word'][:index]+sentence['word'][index+1:])
+        sFPCM2 = SemanticCorrect.redict.init(words)
+
+        if sFPCM2 > 0:
+            return words
+
+
     for index, i in enumerate(sentence['word']):
         if sentence['belief'][index] < standardCfdValue:
             wtf = getFamiliar(i)
@@ -74,6 +83,12 @@ def SmtcCrt(sentence , sentenceType , chooseMod):
             if sFPCM1 > 0:
                 return m['str']
                 #火车票单个词识别
+
+    longtimeCrtOn = False#关闭长时测试
+
+    if not longtimeCrtOn:
+        return ''.join(sentence['word'])
+
 
 
     for indexM, m in enumerate(sentenceComb['porterStr']):
