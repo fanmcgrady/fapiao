@@ -683,7 +683,7 @@ def DetectRedTrainTicket(box,filePath):
     return json.dumps(jsoni).encode().decode("unicode-escape")
 
 
-def cropToOcr(filePath, recT, typeT):
+def cropToOcr(filePath, recT):
 
     ocrResult = {}
     img = Image.open(filePath)

@@ -351,7 +351,7 @@
         $("#out_div").find("p").remove();
     }
 
-    function upload() {
+    function surface() {
 
         // 验证
         if ($("#example-input1-group2").val() == "") {
@@ -382,7 +382,7 @@
             dataType: 'JSON',
             success: function (arg) {
                 if (arg.status) {
-                    $("#status").html("识别完成，该火车票为" + arg.color);
+                    $("#status").html("预处理完成，该火车票为" + arg.color);
                     // 原始图片
                     $("#path_result").attr("src", "static/" + arg.path);
                     // 矫正图片
@@ -392,6 +392,45 @@
                     $("#line_text").text("");
                     $("#line_result").attr("src", "static/" + arg.line);
 
+                    // 继续下一步ocr
+                    ocr(arg);
+                } else {
+                    $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试");
+                    // 原始图片
+                    $("#path_text").text("");
+                    $("#path_result").attr("src", "static/" + arg.path);
+                    // 矫正图片
+                    $("#out_text").text("");
+                    $("#out_div").append($("<p class='text-danger' style='height:180px;'>出错了，请联系我们完善程序，错误信息如下：" + arg.out + "</p>"));
+                    // 行提取
+                    $("#line_text").text("");
+
+                    $("#button-tips").html("识别");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试");
+                alert("出错了，请联系我们完善程序，错误信息如下：\n" + jqXHR.responseText);
+                $("#button-tips").html("识别");
+            }
+        })
+    }
+
+    function ocr(result) {
+        var dic = new FormData();
+        dic.append('outFilename', result.out);
+        dic.append('lineResult', result.lineResult);
+
+        $.ajax({
+            url: '/ocrWithoutSurface',
+            type: 'POST',
+            data: dic,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            dataType: 'JSON',
+            success: function (arg) {
+                if (arg.status) {
+                    $("#status").html("识别完成，该火车票为" + arg.color);
                     // 简单结果
                     $("#result_text").text("");
                     var invoice = arg.result.invoice;
@@ -415,18 +454,9 @@
                 } else {
                     $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试");
                     {#alert("出错了，请联系我们完善程序，错误信息如下：\n" + arg.out);#}
-                    // 原始图片
-                    $("#path_text").text("");
-                    $("#path_result").attr("src", "static/" + arg.path);
-                    // 矫正图片
-                    $("#out_text").text("");
-                    $("#out_div").append($("<p class='text-danger' style='height:180px;'>出错了，请联系我们完善程序，错误信息如下：" + arg.out + "</p>"));
-                    // 行提取
-                    $("#line_text").text("");
+                    $("#simple_result").append($("<p class='text-danger' style='height:180px;'>出错了，请联系我们完善程序，错误信息如下：" + arg.out + "</p>"));
                     // 简单结果
                     $("#result_text").text("");
-
-                    // 详细结果
 
                     $("#button-tips").html("识别");
                 }
@@ -441,7 +471,7 @@
 
     jQuery(document).ready(function () {
         $('#search').click(function () {
-            upload();
+            surface();
         });
     });
 

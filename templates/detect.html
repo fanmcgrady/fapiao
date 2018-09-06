@@ -329,7 +329,6 @@
             contentType: false,  // tell jQuery not to set contentType
             dataType: 'JSON',
             success: function (arg) {
-
                 if (arg.status) {
                     $("#status").html("分析完成，该火车票为" + arg.color);
                 } else {

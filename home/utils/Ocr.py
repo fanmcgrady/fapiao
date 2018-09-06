@@ -13,6 +13,20 @@ from home.utils import muban
 
 # 矫正 -> 行提取 -> ocr
 def init(filename):
+    # 矫正 -> 行提取
+    out_file, flag, attributeLine = surface(filename)
+
+    # ocr和分词
+    jsonResult = flow.cropToOcr(out_file, attributeLine)
+    return jsonResult, flag
+
+def ocrWithoutSurface(out_file, line_result):
+    # ocr和分词
+    jsonResult = flow.cropToOcr(out_file, line_result)
+    return jsonResult
+
+# 矫正 -> 行提取
+def surface(filename):
     # 预处理
     midProcessResult = detectType.detectType('allstatic', filename)
     # 行提取
@@ -57,65 +71,11 @@ def init(filename):
     # 显示
     vis_textline0 = fp.util.visualize.rects(cv2.imread(midProcessResult[0], 0), plt_rects)
     pl.imshow(vis_textline0)
-    # 保存到plt目录
+    # 保存到line目录
     pltpath = midProcessResult[0].replace("out", "line")
     pl.savefig(pltpath)
 
-    # ocr和分词
-    jsonResult = flow.cropToOcr(midProcessResult[0], attributeLine, midProcessResult[1])
-    return jsonResult, midProcessResult[1]
-
-
-# 矫正 -> 行提取
-def surfaceDetect(filename):
-    midProcessResult = detectType.detectType('allstatic', filename)  # tangpeng 预处理
-    # 行提取
-    blueTemplet = {
-        'departCity': [48, 62, 222, 56],
-        'arriveCity': [412, 61, 228, 55],
-        'trainNumber': [264, 62, 170, 57],
-        'invoiceDate': [24, 139, 369, 42],
-        'seatNum': [408, 138, 160, 40],
-        'idNum': [22, 276, 306, 38],
-        'passenger': [328, 276, 150, 38],
-        'totalAmount': [33, 177, 151, 39],
-        'ticketsNum': [21, 10, 195, 66]
-    }
-
-    redTemplet = {
-        'departCity': [29, 74, 218, 54],
-        'arriveCity': [425, 68, 224, 64],
-        'trainNumber': [230, 65, 203, 62],
-        'invoiceDate': [0, 163, 357, 41],
-        'seatNum': [392, 164, 203, 46],
-        'idNum': [0, 343, 350, 45],
-        'totalAmount': [3, 206, 212, 52],
-        'ticketsNum': [34, 40, 202, 47]
-    }
-
-    TemType = blueTemplet  # 默认蓝票
-    if midProcessResult[1] == 1:
-        TemType = blueTemplet
-
-    if midProcessResult[1] == 2:
-        TemType = redTemplet
-
-    Templet = adjustToTextLine(TemType, Detect.detect(cv2.imread(midProcessResult[0]), 1), midProcessResult[1])  # 火车票
-
-    attributeLine = lineToAttribute.getAtbt.compute(textline(midProcessResult[0]), Templet)
-
-    # 绘制行提取结果
-    plt_rects = []
-    for x in attributeLine:
-        plt_rects.append(attributeLine[x])
-    # 显示
-    vis_textline0 = fp.util.visualize.rects(cv2.imread(midProcessResult[0], 0), plt_rects)
-    pl.imshow(vis_textline0)
-    # 保存到plt目录
-    pltpath = midProcessResult[0].replace("out", "line")
-    pl.savefig(pltpath)
-
-    return midProcessResult[1]
+    return midProcessResult[0], midProcessResult[1], attributeLine
 
 
 def textline(filepath):

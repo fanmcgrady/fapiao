@@ -6,22 +6,46 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
+from SemanticCorrect import ComputeDistance
 from .models import Article
 from .models import Img
 from .models import Typemsg
 from .models import Usermsg
-from .utils import detectType
 from .utils import Ocr
 
-from SemanticCorrect import ComputeDistance
-
-#取20个形似字
+# 取20个形似字
 print("读取全局字典")
 global_dic = ComputeDistance.load_dict('SemanticCorrect/hei_20.json')
+
 
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
+
+
+# 识别demo
+def ocrWithoutSurface(request):
+    if request.method == "POST":
+        out_filename = request.POST["outFilename"]
+        line_result = request.POST["lineResult"]
+        print(out_filename)
+        print(line_result)
+
+        out_filename = os.path.join('allstatic', out_filename)
+
+        # try:
+        jsonResult = Ocr.ocrWithoutSurface(out_filename, json.loads(line_result.replace("'", "\"")))
+        ret = {
+            'status': True,
+            'out': out_filename,
+            'result': json.loads(jsonResult)
+        }
+    # except Exception as e:
+    #     print(e)
+    #     ret = {'status': False, 'out': str(e)}
+
+    return HttpResponse(json.dumps(ret, indent=2))
+
 
 # 识别demo
 def ocr(request):
@@ -45,22 +69,24 @@ def ocr(request):
         f.close()
 
         try:
-            jsonResult, flag = Ocr.init(file_path)
+            _, flag, line_result = Ocr.surface(file_path)
+            color = "蓝底车票" if flag == 1 else "红底车票"
             ret = {
                 'status': True,
                 'path': file_path,
                 'out': out_filename,
                 'line': line_filename,
-                'color': "蓝底车票" if flag == 1 else "红底车票",
-                'result' : json.loads(jsonResult)
+                'color': color,
+                'lineResult': str(line_result)
             }
-            # Img.objects.create(path=file_path, out=out_filename, color=color)
         except Exception as e:
+            print(e)
             ret = {'status': False, 'path': file_path, 'out': str(e)}
 
-        return HttpResponse(json.dumps(ret, indent=2))
+        return HttpResponse(json.dumps(ret))
 
-# 矫正demo
+
+# 矫正demo，detect.html页面调用
 def surface(request):
     if request.method == 'GET':
         img_list = Img.objects.all().order_by('-id')
@@ -84,14 +110,15 @@ def surface(request):
         f.close()
 
         try:
-            flag = Ocr.surfaceDetect(file_path)
+            _, flag, line_result = Ocr.surface(file_path)
             color = "蓝底车票" if flag == 1 else "红底车票"
             ret = {
                 'status': True,
                 'path': file_path,
                 'out': out_filename,
                 'line': line_filename,
-                'color': color
+                'color': color,
+                'lineResult': str(line_result)
             }
             Img.objects.create(path=file_path, out=out_filename, line=line_filename, color=color)
         except Exception as e:
@@ -99,8 +126,6 @@ def surface(request):
             ret = {'status': False, 'path': file_path, 'out': str(e)}
 
         return HttpResponse(json.dumps(ret))
-        # img_list = Img.objects.all()
-        # return render(request, 'upload.html', {'img_list': img_list})
 
 
 def article(request, aid):
@@ -207,6 +232,7 @@ def postarticles(request):
         return HttpResponseRedirect('/')
     return render(request, 'postarticles.html',
                   {"typeidandname": typeidandname, "nav1": nav1, "nav2": nav2, "nav3": nav3, "nav4": nav4})
+
 
 def generate_random_name():
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
