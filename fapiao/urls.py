@@ -30,4 +30,5 @@ urlpatterns = [
     url(r"^$", home_views.index),
     url(r"^detect$", home_views.surface),
     url(r"^ocr$", home_views.ocr),
+    url(r"^ocrWithoutSurface$", home_views.ocrWithoutSurface),
 ]

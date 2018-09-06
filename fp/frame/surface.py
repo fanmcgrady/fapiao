@@ -9,10 +9,6 @@ importlib.reload(trans)
 from ..core import line
 importlib.reload(line)
 
-from . import _surface_check
-importlib.reload(_surface_check)
-from ._surface_check import is_raw_scan
-
 class Find(object):
     '''find rects in image'''
     def __init__(self):
@@ -64,9 +60,6 @@ class Detect(object):
     def __call__(self, image):
         assert image is not None, 'Empty image'
         assert len(image.shape) == 3
-        if not is_raw_scan(image):
-            return image
-        
         fx = 1. * self.std_size / np.min(image.shape[:2])
         im = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         im = cv2.resize(im, None, fx=fx, fy=fx)

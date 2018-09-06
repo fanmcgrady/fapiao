@@ -63,22 +63,19 @@ class Template(object):
         self.warp = Warp(warp_method)
         self.cost = TemplateCost(std_size=self.std_size)
         self.match = TemplateMatch(cost=self.cost, warp=self.warp, 
-                                   learning_rate=learning_rate, iteration=max_iters, debug=debug)
+                                   learning_rate=learning_rate, iteration=max_iters)
         self.associate = TemplateAssociate()
         #print(self.anchors)
         #print(self.center)
         self.debug = dict() if debug else None
-        if self.debug is not None:
-            print('Template in debug mode')
         
     def __call__(self, detected_rects, para_init=None, update=False):
         detected_rects = torch.tensor(detected_rects).float()
         para_final, warped_abs_anchors = self.match(self.anchors, self.center, self.aligns, 
                                                 detected_rects, para_init)
-        
-        if self.debug is not None:
+        if self.debug is not None and self.match.warped_abs_anchors_history is not None:
             warped_rects_history = []
-            for warped_abs_anchors_i in self.match.debug['warp_history']:
+            for warped_abs_anchors_i in self.match.warped_abs_anchors_history:
                 warped_rects_i = torch.stack([ReMap(align, self.std_size).to_rect(anchor) \
                                              for align, anchor in zip(self.aligns, warped_abs_anchors_i)])
                 warped_rects_history.append(warped_rects_i)
@@ -91,7 +88,6 @@ class Template(object):
         #print('new_rects:\n', new_rects)
 
         if update:
-            # TODO: fix this
             self._update(new_rects)
             
         if self.debug is not None:
