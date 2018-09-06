@@ -200,12 +200,12 @@
                     <div class="col-md-4">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title">语义矫正结果（展示过程待完成）
-                                    &nbsp;&nbsp;<span class="text-primary" id=""></span>
+                                <h3 class="panel-title">语义矫正结果
+                                    &nbsp;&nbsp;<span class="text-primary" id="correct_text"></span>
                                 </h3>
                             </div>
                             <div class="panel-body">
-                                <div style="height: 200px;" id="">
+                                <div style="height: 200px;" id="correct_result">
 
                                 </div>
                             </div>
@@ -343,6 +343,9 @@
         $("#line_text").text("识别中...");
         $("#line_result").removeAttr("src");
 
+        $("#correct_text").text("识别中...");
+        $("#correct_result").empty();
+
         $("#result_text").text("识别中...");
         $("#simple_result").empty();
 
@@ -430,7 +433,15 @@
             dataType: 'JSON',
             success: function (arg) {
                 if (arg.status) {
-                    $("#status").html("识别完成，该火车票为" + arg.color);
+                    $("#status").html("识别完成");
+                    // 语义矫正
+                    $("#correct_text").text("");
+                    var diff = arg.diff;
+                    for(var key in diff){
+                        $("#correct_result")
+                            .append($("<p></p>").text(diff[key]));
+                    }
+
                     // 简单结果
                     $("#result_text").text("");
                     var invoice = arg.result.invoice;

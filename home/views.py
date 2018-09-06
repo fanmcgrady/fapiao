@@ -27,22 +27,31 @@ def index(request):
 def ocrWithoutSurface(request):
     if request.method == "POST":
         out_filename = request.POST["outFilename"]
-        line_result = request.POST["lineResult"]
-        print(out_filename)
-        print(line_result)
-
         out_filename = os.path.join('allstatic', out_filename)
 
-        # try:
-        jsonResult = Ocr.ocrWithoutSurface(out_filename, json.loads(line_result.replace("'", "\"")))
-        ret = {
-            'status': True,
-            'out': out_filename,
-            'result': json.loads(jsonResult)
-        }
-    # except Exception as e:
-    #     print(e)
-    #     ret = {'status': False, 'out': str(e)}
+        line_result = request.POST["lineResult"]
+
+        try:
+            result, origin = Ocr.ocrWithoutSurface(out_filename, json.loads(line_result.replace("'", "\"")))
+
+            result_dict = json.loads(result)
+            origin_dict = json.loads(origin)
+
+            # 找出两个字典不同
+            diff_dict = {}
+            for k in origin_dict:
+                if result_dict['invoice'][k] != origin_dict[k]:
+                    diff_dict[k] = "{} -> {}".format(origin_dict[k], result_dict['invoice'][k])
+
+            ret = {
+                'status': True,
+                'out': out_filename,
+                'result': result_dict,
+                'diff': diff_dict
+            }
+        except Exception as e:
+            print(e)
+            ret = {'status': False, 'out': str(e)}
 
     return HttpResponse(json.dumps(ret, indent=2))
 

@@ -17,13 +17,13 @@ def init(filename):
     out_file, flag, attributeLine = surface(filename)
 
     # ocr和分词
-    jsonResult = flow.cropToOcr(out_file, attributeLine)
-    return jsonResult, flag
+    jsonResult, origin = flow.cropToOcr(out_file, attributeLine)
+    return jsonResult, flag, origin
 
 def ocrWithoutSurface(out_file, line_result):
     # ocr和分词
-    jsonResult = flow.cropToOcr(out_file, line_result)
-    return jsonResult
+    jsonResult, origin = flow.cropToOcr(out_file, line_result)
+    return jsonResult, origin
 
 # 矫正 -> 行提取
 def surface(filename):

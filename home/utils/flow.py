@@ -717,7 +717,7 @@ def cropToOcr(filePath, recT):
     js.setValueWithDict(pC.dic)
     jsoni = js.dic
 
-    return json.dumps(jsoni).encode().decode("unicode-escape")
+    return json.dumps(jsoni).encode().decode("unicode-escape"), json.dumps(ocrResult).encode().decode("unicode-escape")
 
 
 
