@@ -22,21 +22,18 @@ def detectType(dset_root, file_name):
 
     # 初步矫正
     detect = fp.frame.surface.Detect()
-    out_im = detect(raw_im)
 
-    if out_im.shape[0] > out_im.shape[1]:
-        out_im = np.rot90(out_im)
-    if fp.train_ticket.is_upside_down(out_im):
-        std_out_im = fp.core.trans.rotate180(out_im)  # turn around if it's upside down
+    # 检查是否上下颠倒火车票
+    is_upside_down = fp.train_ticket.train_ticket.UpsideDownCheck_v2()
+
+    # 检测提取
+    out_im = detect(raw_im)
+    # 是否上下颠倒，是则旋转180°
+    if is_upside_down(out_im):
+        # 旋转
+        std_out_im = fp.core.trans.rotate180(out_im)
     else:
         std_out_im = out_im
-
-    if std_out_im.shape[0] > std_out_im.shape[1]:
-        std_out_im = np.rot90(std_out_im)
-
-    # 微调
-    adjust = fp.frame.surface.Adjust()
-    std_out_im = adjust(std_out_im)
 
     out_filename = file_name.replace('upload', 'out')
     out_filename = os.path.join(dset_root, out_filename)

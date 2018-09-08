@@ -3,10 +3,16 @@
   <component name="ChangeListManager">
     <list default="true" id="02c985dd-de44-477b-ac6a-8d4bdc69cafd" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home/utils/Ocr.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/utils/Ocr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home/utils/flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/utils/flow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/ocr.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ocr.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fp/frame/Untitled.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/fp/frame/Untitled.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fp/frame/_surface_check.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/frame/_surface_check.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fp/frame/_template_associate.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/frame/_template_associate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fp/frame/_template_match.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/frame/_template_match.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fp/frame/surface.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/frame/surface.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fp/frame/template.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/frame/template.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fp/frame/textline.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/frame/textline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fp/train_ticket/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/train_ticket/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fp/train_ticket/train_ticket.py" beforeDir="false" afterPath="$PROJECT_DIR$/fp/train_ticket/train_ticket.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/utils/detectType.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/utils/detectType.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -49,7 +55,7 @@
       <file leaf-file-name="flow.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/home/utils/flow.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-312">
+            <state relative-caret-position="3218">
               <caret line="685" column="4" selection-start-line="685" selection-start-column="4" selection-end-line="685" selection-end-column="4" />
               <folding>
                 <element signature="e#14#25#0" expanded="true" />
@@ -67,69 +73,85 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="posteriorCrt.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SemanticCorrect/posteriorCrt.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="817">
-              <caret line="46" column="8" selection-start-line="46" selection-start-column="8" selection-end-line="46" selection-end-column="8" />
-              <folding>
-                <element signature="e#6267#6402#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Ocr.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Ocr.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/home/utils/Ocr.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="22" column="15" selection-start-line="22" selection-start-column="15" selection-end-line="22" selection-end-column="15" />
+            <state relative-caret-position="345">
+              <caret line="72" column="12" selection-start-line="72" selection-start-column="12" selection-end-line="72" selection-end-column="12" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
-                <element signature="e#1994#3615#0" />
-                <element signature="e#3598#4677#0" />
-                <element signature="e#4743#5612#0" />
-                <element signature="e#5637#5821#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fapiao/settings.py">
+      <file leaf-file-name="Porter.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SemanticCorrect/Porter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-346">
-              <caret line="68" column="37" selection-start-line="68" selection-start-column="37" selection-end-line="68" selection-end-column="37" />
+            <state relative-caret-position="470">
+              <caret line="57" column="4" selection-start-line="57" selection-start-column="4" selection-end-line="57" selection-end-column="4" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fapiao/urls.py">
+      <file leaf-file-name="detectType.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/home/utils/detectType.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="369">
-              <caret line="33" column="1" selection-start-line="33" selection-start-column="1" selection-end-line="33" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ocr.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/ocr.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="337">
-              <caret line="441" column="58" selection-start-line="441" selection-start-column="58" selection-end-line="441" selection-end-column="58" />
+            <state relative-caret-position="627">
+              <caret line="33" column="34" selection-start-line="33" selection-start-column="29" selection-end-line="33" selection-end-column="34" />
               <folding>
-                <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="e#0#9#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SmtcCrt.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SemanticCorrect/SmtcCrt.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="877">
+              <caret line="117" column="25" selection-start-line="117" selection-start-column="15" selection-end-line="117" selection-end-column="25" />
+              <folding>
+                <element signature="e#15#24#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="redict.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SemanticCorrect/redict.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="280">
+              <caret line="164" column="60" selection-start-line="164" selection-start-column="45" selection-end-line="164" selection-end-column="60" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fp/train_ticket/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="38">
+              <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="train_ticket.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fp/train_ticket/train_ticket.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-251">
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/home/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="701">
-              <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
+            <state relative-caret-position="323">
+              <caret line="17" column="10" selection-start-line="17" selection-end-line="17" selection-end-column="10" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -137,37 +159,9 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="template.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fp/frame/template.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="228">
-              <caret line="12" column="29" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="surface.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fp/frame/surface.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="66" column="28" selection-start-line="66" selection-start-column="28" selection-end-line="66" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_template_match.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fp/frame/_template_match.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="21" column="40" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="40" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
+      <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SemanticCorrect/test.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -233,7 +227,6 @@
         <option value="$PROJECT_DIR$/home/utils/surface.py" />
         <option value="$PROJECT_DIR$/SemanticCorrect/redict.py" />
         <option value="$PROJECT_DIR$/SemanticCorrect/posteriorCrt.py" />
-        <option value="$PROJECT_DIR$/home/utils/detectType.py" />
         <option value="$PROJECT_DIR$/SemanticCorrect/Spellingcheck.py" />
         <option value="$PROJECT_DIR$/fapiao/settings.py" />
         <option value="$PROJECT_DIR$/run.sh" />
@@ -250,6 +243,7 @@
         <option value="$PROJECT_DIR$/home/utils/flow.py" />
         <option value="$PROJECT_DIR$/templates/ocr.html" />
         <option value="$PROJECT_DIR$/home/views.py" />
+        <option value="$PROJECT_DIR$/home/utils/detectType.py" />
       </list>
     </option>
   </component>
@@ -264,8 +258,8 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="y" value="22" />
-    <option name="width" value="1389" />
-    <option name="height" value="878" />
+    <option name="width" value="1234" />
+    <option name="height" value="778" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="false" id="Update" />
@@ -277,7 +271,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -288,36 +281,7 @@
             <path>
               <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
               <item name="fapiao" type="462c0819:PsiDirectoryNode" />
-              <item name="fapiao" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="fapiao" type="462c0819:PsiDirectoryNode" />
               <item name="fp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="fapiao" type="462c0819:PsiDirectoryNode" />
-              <item name="fp" type="462c0819:PsiDirectoryNode" />
-              <item name="frame" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="fapiao" type="462c0819:PsiDirectoryNode" />
-              <item name="fp" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="fapiao" type="462c0819:PsiDirectoryNode" />
-              <item name="fp" type="462c0819:PsiDirectoryNode" />
-              <item name="train_ticket" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="fapiao" type="462c0819:PsiDirectoryNode" />
-              <item name="fp" type="462c0819:PsiDirectoryNode" />
-              <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
@@ -340,25 +304,11 @@
               <item name="fapiao" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
-            <path>
-              <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="&lt; Python 3.6 (django) &gt;" type="70bed36:NamedLibraryElementNode" />
-            </path>
-            <path>
-              <item name="fapiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="&lt; Python 3.6 (django) &gt;" type="70bed36:NamedLibraryElementNode" />
-              <item name="site-packages" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -710,58 +660,65 @@
       <option name="project" value="LOCAL" />
       <updated>1536240712189</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="识别加入语义矫正">
+      <created>1536244328145</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1536244328145</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1389" height="878" extended-state="0" />
+    <frame x="0" y="22" width="1234" height="778" extended-state="0" />
     <editor active="true" />
     <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2751678" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Messages" order="7" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="right" id="Database" order="3" weight="0.1091314" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.32881773" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.049261082" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.38793105" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1328879" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="right" id="Database" order="3" weight="0.1091314" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32881773" />
       <window_info anchor="right" id="SciView" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.21629213" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.36576355" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.049261082" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.36576355" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32881773" />
+      <window_info anchor="bottom" id="Messages" order="7" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24795842" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.098522164" />
-      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32881773" />
+      <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" id="Database" order="4" weight="0.1091314" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.0" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32881773" />
-      <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info id="Favorites" order="2" side_tool="true" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -778,7 +735,8 @@
     <MESSAGE value="关闭多词检索" />
     <MESSAGE value="浏览器兼容性提示" />
     <MESSAGE value="识别异步" />
-    <option name="LAST_COMMIT_MESSAGE" value="识别异步" />
+    <MESSAGE value="识别加入语义矫正" />
+    <option name="LAST_COMMIT_MESSAGE" value="识别加入语义矫正" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -793,22 +751,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901150538/20180901150538_ticketsNum.jpeg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901150538/20180901150538_totalAmount.jpeg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/allstatic/out/tmp/20180901150538/20180901150538_trainNumber.jpeg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/run.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/anaconda3/envs/django/lib/python3.6/copy.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="261">
@@ -921,23 +863,6 @@
         <state relative-caret-position="-34105" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SemanticCorrect/Porter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1026">
-          <caret line="57" column="4" selection-start-line="57" selection-start-column="4" selection-end-line="57" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/utils/detectType.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-196">
-          <caret line="18" column="4" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="422">
@@ -945,58 +870,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/home/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="15" column="20" selection-start-line="15" selection-start-column="15" selection-end-line="15" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SemanticCorrect/SmtcCrt.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="86" column="17" selection-start-line="86" selection-start-column="4" selection-end-line="86" selection-end-column="17" />
-          <folding>
-            <element signature="e#15#24#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SemanticCorrect/redict.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/home/main.py" />
     <entry file="file://$PROJECT_DIR$/fapiao/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-346">
+        <state relative-caret-position="1292">
           <caret line="68" column="37" selection-start-line="68" selection-start-column="37" selection-end-line="68" selection-end-column="37" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fp/frame/template.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
+        <state relative-caret-position="95">
           <caret line="12" column="29" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fp/frame/surface.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="66" column="28" selection-start-line="66" selection-start-column="28" selection-end-line="66" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fapiao/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
-          <caret line="33" column="1" selection-start-line="33" selection-start-column="1" selection-end-line="33" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -1009,7 +897,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fp/frame/_template_match.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
+        <state relative-caret-position="266">
           <caret line="21" column="40" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="40" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
@@ -1027,9 +915,86 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/fp/frame/surface.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1016">
+          <caret line="95" column="8" selection-start-line="95" selection-start-column="8" selection-end-line="95" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/ocr.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="441" column="58" selection-start-line="441" selection-start-column="58" selection-end-line="441" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fapiao/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="33" column="1" selection-start-line="33" selection-start-column="1" selection-end-line="33" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fp/train_ticket/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fp/train_ticket/train_ticket.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-251">
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fp/core/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/home/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="17" column="10" selection-start-line="17" selection-end-line="17" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SemanticCorrect/test.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SemanticCorrect/Porter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="470">
+          <caret line="57" column="4" selection-start-line="57" selection-start-column="4" selection-end-line="57" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SemanticCorrect/SmtcCrt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="877">
+          <caret line="117" column="25" selection-start-line="117" selection-start-column="15" selection-end-line="117" selection-end-column="25" />
+          <folding>
+            <element signature="e#15#24#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SemanticCorrect/redict.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="164" column="60" selection-start-line="164" selection-start-column="45" selection-end-line="164" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/home/utils/flow.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-312">
+        <state relative-caret-position="3218">
           <caret line="685" column="4" selection-start-line="685" selection-start-column="4" selection-end-line="685" selection-end-column="4" />
           <folding>
             <element signature="e#14#25#0" expanded="true" />
@@ -1046,36 +1011,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/home/utils/detectType.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="627">
+          <caret line="33" column="34" selection-start-line="33" selection-start-column="29" selection-end-line="33" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/home/utils/Ocr.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="22" column="15" selection-start-line="22" selection-start-column="15" selection-end-line="22" selection-end-column="15" />
+        <state relative-caret-position="345">
+          <caret line="72" column="12" selection-start-line="72" selection-start-column="12" selection-end-line="72" selection-end-column="12" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <element signature="e#1994#3615#0" />
-            <element signature="e#3598#4677#0" />
-            <element signature="e#4743#5612#0" />
-            <element signature="e#5637#5821#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/ocr.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="441" column="58" selection-start-line="441" selection-start-column="58" selection-end-line="441" selection-end-column="58" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="701">
-          <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>

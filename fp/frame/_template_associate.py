@@ -52,7 +52,8 @@ class TemplateAssociate(object):
         self.tiny_th = tiny_th
         
     def __call__(self, warped_rects, aligns, detected_rects):
-        new_rects = torch.zeros_like(warped_rects)
+        new_rects = warped_rects.clone()
+        succeed = torch.zeros((len(warped_rects),), dtype=torch.uint8)
         for i, (align_code, warped_rect) in enumerate(zip(aligns, warped_rects)):
             warped_rect_area = warped_rect[2] * warped_rect[3]
             assoc_detected_rects = []
@@ -72,4 +73,5 @@ class TemplateAssociate(object):
             bound_rect = bounding_rect(assoc_detected_rects)
             if bound_rect is not None:
                 new_rects[i, :] = torch.from_numpy(bound_rect)
-        return new_rects
+                succeed[i] = 1
+        return new_rects, succeed

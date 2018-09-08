@@ -31,11 +31,19 @@ importlib.reload(fp.model.pascal_voc)
 import fp.core.stats
 importlib.reload(fp.core.stats)
 
+import fp.util.check
+importlib.reload(fp.util.check)
 
 def named_rects_from_xml(xmlfile):
     '''use pascal voc as named rects'''
     objects = fp.model.pascal_voc.parse_xml(xmlfile)['objects']
     return {item['name'] : item['bndbox'] for item in objects}
+
+def _vector_update(vec_mean, vec_var, new_vec, count):
+    assert len(vec_mean) == len(vec_var) and len(vec_mean) == len(new_vec)
+    for i in range(len(vec_mean)):
+        vec_mean[i] = fp.core.stats.online_mean(vec_mean[i], new_vec[i], count)
+        vec_var[i] = fp.core.stats.online_var(vec_mean[i], vec_var[i], new_vec[i], count)
 
 
 class Template(object):
@@ -46,36 +54,37 @@ class Template(object):
                  learning_rate=0.01, max_iters=3000, debug=False):
         self.count = 1
         self.std_size = std_size
-        # should be pytorch tensor
+        
         self.names = list(named_rects.keys())
         self.aligns = list(map(align_code, named_rects.keys()))
-        self.anchors = torch.stack([ReMap(align, self.std_size).to_anchor(rect) \
-                                   for align, rect in zip(self.aligns, named_rects.values())])
-        #print(self.anchors)
-        self.center = torch.mean(self.anchors[:, :2], dim=0)
-        #print(self.center)
-        self.anchors[:, :2] -= self.center
-        #print(self.anchors)
-
-        #print(self.template)
+        # should be pytorch tensor
+        self.center, self.anchors = self.__rects_to_anchors(named_rects.values())
+        self.center_var = torch.tensor([0.,0.])
         self.anchors_var = torch.tensor([[0.,0.,0.,0.]] * len(self.anchors))
         
         self.warp = Warp(warp_method)
         self.cost = TemplateCost(std_size=self.std_size)
         self.match = TemplateMatch(cost=self.cost, warp=self.warp, 
-                                   learning_rate=learning_rate, iteration=max_iters)
+                                   learning_rate=learning_rate, iteration=max_iters, debug=debug)
         self.associate = TemplateAssociate()
         #print(self.anchors)
         #print(self.center)
         self.debug = dict() if debug else None
+        if self.debug is not None:
+            print('Template in debug mode')
         
     def __call__(self, detected_rects, para_init=None, update=False):
+        fp.util.check.valid_rects(detected_rects)
+        if para_init is not None:
+            assert isinstance(para_init, list) or isinstance(para_init, tuple)
+            
         detected_rects = torch.tensor(detected_rects).float()
         para_final, warped_abs_anchors = self.match(self.anchors, self.center, self.aligns, 
                                                 detected_rects, para_init)
-        if self.debug is not None and self.match.warped_abs_anchors_history is not None:
+        
+        if self.debug is not None:
             warped_rects_history = []
-            for warped_abs_anchors_i in self.match.warped_abs_anchors_history:
+            for warped_abs_anchors_i in self.match.debug['warp_history']:
                 warped_rects_i = torch.stack([ReMap(align, self.std_size).to_rect(anchor) \
                                              for align, anchor in zip(self.aligns, warped_abs_anchors_i)])
                 warped_rects_history.append(warped_rects_i)
@@ -83,33 +92,43 @@ class Template(object):
         
         warped_rects = torch.stack([ReMap(align, self.std_size).to_rect(anchor) \
                                    for align, anchor in zip(self.aligns, warped_abs_anchors)])
-        new_rects = self.associate(warped_rects, self.aligns, detected_rects)
-        new_named_rects = {name : rect for name, rect in zip(self.names, new_rects)}
-        #print('new_rects:\n', new_rects)
-
-        if update:
-            self._update(new_rects)
-            
         if self.debug is not None:
             self.debug['warped_rects'] = warped_rects
+            
+        new_rects, succeed = self.associate(warped_rects, self.aligns, detected_rects)
+        new_named_rects = {name : rect for name, rect in zip(self.names, new_rects)}
+        print('new_rects:\n', new_rects)
+
+        if update:
+            # TODO: fix this
+            new_center, new_anchors = self.__rects_to_anchors(new_rects, inline=False)
+            self._update(new_center, new_anchors, para_final, succeed)
+            
+        
                 
         return new_named_rects
                 
-    def _update(self, new_rects):
-        assert new_rects is not None
-        n_anchors = len(self.anchors)
-        for j in range(n_anchors):
-            new_rect = new_rects[j]
-            if new_rect[2] * new_rect[3] == 0:
+    def _update(self, new_center, new_anchors, para_final, succeed):
+        assert new_anchors is not None
+        assert len(new_anchors) == len(self.anchors)
+        
+        # todo : update center
+        _vector_update(self.center, self.center_var, new_center, self.count)
+        
+        for j in range(len(self.anchors)):
+            if succeed[j] == 0:
                 continue
-            new_anchor = ReMap(self.aligns[j], self.std_size).to_anchor(new_rect, False)
-            for i in range(4):
-                self.anchors[j, i] = fp.core.stats.online_mean(self.anchors[j, i], 
-                                                               new_anchor[i], 
-                                                               self.count)
-                self.anchors_var[j, i] = fp.core.stats.online_var(self.anchors[j, i], 
-                                                                  self.anchors_var[j, i], 
-                                                                  new_anchor[i], 
-                                                                  self.count)
+            new_anchor = new_anchors[j]
+            _vector_update(self.anchors[j], self.anchors_var[j], new_anchor, self.count)
+
         self.count += 1
         
+
+    def __rects_to_anchors(self, rects, inline=True):
+        # todo : copy cvt ?
+        assert len(rects) == len(self.aligns)
+        anchors = torch.stack([ReMap(align, self.std_size).to_anchor(rect, inline) \
+                              for align, rect in zip(self.aligns, rects)])
+        center = torch.mean(anchors[:, :2], dim=0)
+        anchors[:, :2] -= center
+        return center, anchors

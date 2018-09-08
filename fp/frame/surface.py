@@ -9,6 +9,13 @@ importlib.reload(trans)
 from ..core import line
 importlib.reload(line)
 
+from . import _surface_check
+importlib.reload(_surface_check)
+from ._surface_check import is_crop_ready
+
+import fp.util.check
+importlib.reload(fp.util.check)
+
 class Find(object):
     '''find rects in image'''
     def __init__(self):
@@ -50,16 +57,72 @@ def _restore_box(box, fx):
     dsize = ifx * dsize[0], ifx * dsize[1]
     return center, dsize, angle
 
+class Adjust(object):
+    def __init__(self, line_length_ratio=0.2):
+        self.lsd = cv2.createLineSegmentDetector()
+        self.th_ratio = 0.8
+        # assumed: max(detected_line_length) > min(w, h) * line_length_ratio
+        self.line_length_ratio = line_length_ratio
+        
+    def __call__(self, std_im):
+        assert std_im is not None, 'Empty image'
+        assert isinstance(std_im, np.ndarray), 'Must numpy'
+        assert len(std_im.shape) == 3, 'Must color'
+        im = cv2.cvtColor(std_im, cv2.COLOR_BGR2GRAY)
+        lines0 = self._detect_region(im[:40, :])
+        lines1 = self._detect_region(im[-40:, :])
+        lines = np.concatenate((lines0, lines1))
+        
+        max_line_len = np.max(list(map(line.line_length, lines)))
+        ref_size = np.min(std_im.shape[:2])
+        if max_line_len < self.line_length_ratio * ref_size:
+            return std_im
+        line_lens_th = max_line_len * self.th_ratio
+        strong_lines = list(filter(lambda x : line.line_length(x) > line_lens_th, lines))
+        line_angs = np.array(list(map(line.line_angle, strong_lines)))
+        line_lens = np.array(list(map(line.line_length, strong_lines)))
+        ang = np.sum(line_angs * line_lens) / np.sum(line_lens)
+        h, w = std_im.shape[:2]
+        im_ft = trans.rotate_crop(std_im, center=(w/2, h/2), angle=ang, dsize=(w,h), 
+                                  border_color=(255,255,255))
+        return im_ft
+        
+    def _detect_region(self, sub_im):
+        _lines, width, prec, nfa = self.lsd.detect(sub_im)
+        _lines = np.squeeze(_lines)
+        return _lines
+
 class Detect(object):
-    def __init__(self, debug=False):
+    def __init__(self, aspect_ratio_th=0.5, adjust_pars={}, debug=False):
+        '''
+        aspect_ratio < _th : roll-ticket (thin)
+                     > _th : other ticket or invoice (fat)
+        '''
         self.std_size = 400
         self.find_frame = Find()
         self.crop_frame = Crop()
+        self.adjust = Adjust(**adjust_pars)
+        self.aspect_ratio_th = aspect_ratio_th
         self.debug = dict() if debug else None
-    
+        
     def __call__(self, image):
-        assert image is not None, 'Empty image'
-        assert len(image.shape) == 3
+        # check input
+        fp.util.check.valid_image(image, colored=1)
+        
+        # if image is cropped, just return
+        if not is_crop_ready(image):
+            std_image = self._detect(image)
+            if std_image is None:
+                return None
+        else:
+            std_image = image
+        
+        std_image = self.adjust(std_image)
+        if self._is_misorient(std_image):
+            std_image = np.rot90(std_image, k=1, axes=(0, 1))
+        return std_image
+    
+    def _detect(self, image):
         fx = 1. * self.std_size / np.min(image.shape[:2])
         im = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         im = cv2.resize(im, None, fx=fx, fy=fx)
@@ -81,32 +144,15 @@ class Detect(object):
             return None
         box = _restore_box(box, fx)
         box_im = self.crop_frame(image, box)
+        
         return box_im
         
-class Adjust(object):
-    def __init__(self):
-        self.lsd = cv2.createLineSegmentDetector()
-        self.th_ratio = 0.8
-        
-    def __call__(self, std_im):
-        im = cv2.cvtColor(std_im, cv2.COLOR_BGR2GRAY)
-        lines0 = self._detect_region(im[:40, :])
-        lines1 = self._detect_region(im[-40:, :])
-        lines = np.concatenate((lines0, lines1))
-        
-        line_lens_th = np.max(list(map(line.line_length, lines))) * self.th_ratio
-        strong_lines = list(filter(lambda x : line.line_length(x) > line_lens_th, lines))
-        line_angs = np.array(list(map(line.line_angle, strong_lines)))
-        line_lens = np.array(list(map(line.line_length, strong_lines)))
-        ang = np.sum(line_angs * line_lens) / np.sum(line_lens)
-        h, w = std_im.shape[:2]
-        im_ft = trans.rotate_crop(std_im, center=(w/2, h/2), angle=ang, dsize=(w,h), 
-                                  border_color=(255,255,255))
-        return im_ft
-        
-    def _detect_region(self, sub_im):
-        _lines, width, prec, nfa = self.lsd.detect(sub_im)
-        _lines = np.squeeze(_lines)
-        return _lines
-        
+    def _is_misorient(self, std_image):
+        h, w = std_image.shape[:2]
+        aspect_ratio = min(h, w) / max(h, w)
+        # Fat and h>w, or Thin and h<w
+        return (aspect_ratio > self.aspect_ratio_th) == (h > w)
+    
+
+            
     

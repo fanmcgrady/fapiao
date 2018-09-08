@@ -8,41 +8,52 @@ import torchvision
 import fp.config
 
 class TemplateMatch(object):
-    def __init__(self, cost, warp, learning_rate=0.01, iteration=1000):
+    def __init__(self, cost, warp, learning_rate=0.2, iteration=2000, num_try=20, 
+                 debug=False):
         self.warp = warp
         self.cost = cost
         self.learning_rate = learning_rate
         self.iteration = iteration
+        self.num_try = num_try
+        self.debug = dict() if debug else None
+        if self.debug is not None:
+            print('TemplateMatch is in debug mode')
         
-    def __call__(self, anchors, center, align, detected_rects, para_init=None, to_show=True):
+    def __call__(self, anchors, center, align, detected_rects, para_init=None):
         '''input should be tensors'''
-        self.warped_abs_anchors_history = []
-        if para_init is not None:
-            para, warped_abs_anchors, loss = self.one_try(anchors, center, align, 
-                                                          detected_rects, para_init, to_show)
-            return para, warped_abs_anchors
-        else:
-            best_loss = None
-            best_para = None
-            best_warped_abs_anchors = None
-            for try_count in range(4):
-                para, warped_abs_anchors, loss = self._one_try(anchors, center, align, 
-                                                               detected_rects, None, to_show)
-                if best_loss is None or best_loss > loss:
-                    best_para = para
-                    best_warped_abs_anchors = warped_abs_anchors
-            return best_para, best_warped_abs_anchors
+        if self.debug is not None:
+            self.debug['warp_history'] = []
         
-    def _one_try(self, anchors, center, align, detected_rects, para_init=None, to_show=True):
+        # use given init para or choose from random guess
+        if para_init is not None:
+            para = self.warp.init(para_init)
+        else:
+            loss = None
+            para = None
+            for try_count in range(self.num_try):
+                _para = self.warp.init()
+                _warped_abs_anchors = self.warp(anchors, center, _para)
+                _loss = self.cost(_warped_abs_anchors, align, detected_rects)
+                _loss = _loss.detach().item()
+                if loss is None or loss > _loss:
+                    loss = _loss
+                    para = _para
+                    
+        para, warped_abs_anchors, loss = self._one_try(anchors, center, align, 
+                                                       detected_rects, para)
+        return para, warped_abs_anchors
+        
+    def _one_try(self, anchors, center, align, detected_rects, para):
         '''input should be tensors'''
         #t = torch.tensor(t_init, requires_grad=True)
-        para = self.warp.init(para_init)
-        if to_show:
+        
+        if self.debug is not None:
             print('{:>4s}|{:>10s}|{:^24s}|{:^24s}'.format('i', 'loss', 't', 't_grad'))
             
         for i in range(self.iteration):
             warped_abs_anchors = self.warp(anchors, center, para)
-            self.warped_abs_anchors_history.append(warped_abs_anchors)
+            if self.debug is not None:
+                self.debug['warp_history'].append(warped_abs_anchors.detach())
             loss = self.cost(warped_abs_anchors, align, detected_rects)
             ## @TODO: add prior restriction
             if len(para) == 4:
@@ -51,21 +62,22 @@ class TemplateMatch(object):
                 loss += 0.002 * prior_sx + 0.001 * prior_sy
             loss.backward()
             
-            if to_show and i % (self.iteration//10) == 0:
+            if self.debug is not None and i % (self.iteration//10) == 0:
                 t_str = ' '.join(['{:10.4f}'.format(ti) for ti in para])
                 tg_str = ' '.join(['{:10.4f}'.format(ti) for ti in para.grad])
                 print('{:4d}|{:10.4f}|{:24s}|{:24s}'.format(i, loss.item(), t_str, tg_str))
                 
-            if to_show and torch.norm(para.grad) < fp.config.EPSILON:
-                print('early break')
+            if torch.norm(para.grad) < fp.config.EPSILON:
                 break
+                if self.debug is not None:
+                    print('early break')
 
             with torch.no_grad():
                 para -= self.learning_rate * para.grad
                 # Manually zero the gradients after updating weights
                 para.grad.zero_()
         
-        return para, warped_abs_anchors.detach().cpu(), loss.detach().item()
+        return para.detach().cpu(), warped_abs_anchors.detach().cpu(), loss.detach().item()
     
     #def _anchor_candiates(self, warped_rects):
     #    x, y = warped_rects[:, 0], warped_rects[:, 1]
