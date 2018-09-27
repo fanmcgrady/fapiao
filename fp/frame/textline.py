@@ -15,7 +15,6 @@ importlib.reload(_textline_lenet_classify)
 from ._textline_lenet_classify import TextlineLenetClassify
 
 from ..util import check
-
 importlib.reload(check)
 
 

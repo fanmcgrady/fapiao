@@ -20,7 +20,7 @@ class TemplateMatch(object):
         if self.debug is not None:
             print('TemplateMatch is in debug mode')
 
-    def __call__(self, anchors_mean, center_mean, aligns,
+    def __call__(self, anchors_mean, center_mean, aligns, 
                  detected_candidates, para_init=None):
         '''input should be tensors'''
         if self.debug is not None:
@@ -41,7 +41,7 @@ class TemplateMatch(object):
                     loss = _loss
                     para = _para
 
-        para, warped_anchors, loss = self._one_try(anchors_mean, center_mean, aligns,
+        para, warped_anchors, loss = self._one_try(anchors_mean, center_mean, aligns, 
                                                    detected_candidates, para)
         return para, warped_anchors
 

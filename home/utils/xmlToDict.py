@@ -10,8 +10,8 @@ def XmlTodict(xmlFilePath):
     for item in r.annotation.object:
         dic.setdefault(item.name, []).append(int(item.bndbox.xmin))
         dic.setdefault(item.name, []).append(int(item.bndbox.ymin))
-        dic.setdefault(item.name, []).append(int(item.bndbox.xmax))
-        dic.setdefault(item.name, []).append(int(item.bndbox.ymax))
+        dic.setdefault(item.name, []).append(int(item.bndbox.xmax) - int(item.bndbox.xmin))
+        dic.setdefault(item.name, []).append(int(item.bndbox.ymax) - int(item.bndbox.ymin))
 
 
     #print(dic)

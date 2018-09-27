@@ -55,7 +55,6 @@ def named_rects(image, named_rects, image_shape=None):
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, (155,155,155), 2, cv2.LINE_AA)
     return image
 
-
 def fixed_color_array(n):
     np.random.seed(0)
     color_array = []

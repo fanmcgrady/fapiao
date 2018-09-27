@@ -5,15 +5,12 @@ import numpy as np
 import cv2
 
 from . import _blue_train_ticket_pipeline
-
 importlib.reload(_blue_train_ticket_pipeline)
 from ._blue_train_ticket_pipeline import BlueTrainTicketPipeline
 
 from . import _excess_train_ticket_pipeline
-
 importlib.reload(_excess_train_ticket_pipeline)
 from ._excess_train_ticket_pipeline import ExcessTrainTicketPipeline
-
 
 class TrainTicketPipeline(object):
     def __init__(self, invoice_type, debug=False):

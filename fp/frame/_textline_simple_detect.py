@@ -18,6 +18,7 @@ def make_rects_mask(mask_shape, rects):
 
 class TextlineSimpleDetect(object):
     '''Simple Textline Detector Based on Connected Component'''
+
     def __init__(self, std_image_size=None,
                  thresh_pars=dict(mix_ratio=0.2, rows=4, cols=6, ksize=11, c=3),
                  char_expand_ratio=1.5, textline_shrink_ratio=0.4,

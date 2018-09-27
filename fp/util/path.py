@@ -1,6 +1,5 @@
 import os
 
-
 def files_in_dir(directory, exts=['.png'], include_dir=False):
     '''returns filenames with exts in directory.'''
     if isinstance(exts, str):

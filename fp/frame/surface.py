@@ -14,7 +14,6 @@ importlib.reload(_surface_check)
 from ._surface_check import is_crop_ready
 
 from ..util import check
-
 importlib.reload(check)
 
 class Find(object):

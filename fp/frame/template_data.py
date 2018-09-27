@@ -7,18 +7,14 @@ import torchvision
 import yaml
 
 from ..model import pascal_voc
-
 importlib.reload(pascal_voc)
 # from ..util import path
 # importlib.reload(path)
 from ..core import stats
-
 importlib.reload(stats)
 from . import _template_remap as remap
-
 importlib.reload(remap)
 from ..util import visualize
-
 importlib.reload(visualize)
 
 
@@ -43,13 +39,11 @@ def normalized_anchors(named_rects, std_size, keys):
     anchors[:, :2] -= center
     return anchors, center
 
-
 def sort_keys(keys):
     striped_keys = [key.strip('_') for key in keys]
     sorted_idx = sorted(range(len(striped_keys)), key=lambda k: striped_keys[k])
     sorted_keys = [keys[i] for i in sorted_idx]
     return sorted_keys
-
 
 def _vector_update(vec_mean, vec_std, new_vec, count):
     assert len(vec_mean) == len(vec_std) and len(vec_mean) == len(new_vec)
@@ -57,13 +51,11 @@ def _vector_update(vec_mean, vec_std, new_vec, count):
         vec_mean[i] = stats.online_mean(vec_mean[i], new_vec[i], count)
         vec_std[i] = stats.online_std(vec_mean[i], vec_std[i], new_vec[i], count)
 
-
 def tensor_to_list(tensor):
     if tensor.device != torch.device('cpu'):
         return tensor.detach().cpu().numpy().tolist()
     else:
         return tensor.detach().numpy().tolist()
-
 
 class TemplateData(object):
     def __init__(self, keys=None, debug=False):

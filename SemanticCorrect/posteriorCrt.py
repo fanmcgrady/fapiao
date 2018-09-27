@@ -70,12 +70,12 @@ class posteriorCrt():
                 lf = copy.deepcopy(self.dic['departCity'][0:len(self.dic['departCity']) - 1])
                 self.dic['departCity'] = lf
 
-        if self.dic['departCity'] != None:
+        if self.dic['departCity'] != '':
             print(self.dic['departCity'])
             self.dic['departCity'] = self.startPorter(self.dic['departCity'])
             print(self.dic['departCity'])
 
-        if self.dic['arriveCity'] != None:
+        if self.dic['arriveCity'] != '':
             print(self.dic['arriveCity'])
             self.dic['arriveCity'] = self.startPorter(self.dic['arriveCity'])
             print(self.dic['arriveCity'])
@@ -127,7 +127,10 @@ class posteriorCrt():
                 self.dic['totalAmount'] = '¥' + self.dic['totalAmount'][1:]
 
             if self.dic['totalAmount'][len(self.dic['totalAmount']) - 1] != '元':
-                self.dic['totalAmount'] = self.dic['totalAmount'][0:len(self.dic['totalAmount']) - 1] + '元'
+                if self.isChinese(self.dic['totalAmount'][len(self.dic['totalAmount']) - 1]):  # ‘元’识别错误
+                    self.dic['totalAmount'] = self.dic['totalAmount'][0:len(self.dic['totalAmount']) - 1] + '元'
+                if self.dic['totalAmount'][len(self.dic['totalAmount']) - 1].isdigit():  # ‘元’漏
+                    self.dic['totalAmount'] = self.dic['totalAmount'] + '元'
 
             if self.dic['totalAmount'][len(self.dic['totalAmount']) - 3].isdigit():
                 self.dic['totalAmount'] = self.dic['totalAmount'][0:len(self.dic['totalAmount']) - 3] + '.' + self.dic[
@@ -202,3 +205,7 @@ pC = posteriorCrt()
 l = pC.startPorter('咱尔滨')
 print(l)
 '''
+# sp = posteriorCrt()
+# sp.setTrainTicketPara('', '', '', '', '', '', '', '¥20.1')
+# sp.startTrainTicketCrt()
+# print(sp.dic)

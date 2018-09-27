@@ -5,7 +5,6 @@ import torchvision
 
 from .. import config
 
-
 def relative_points(y_ratios, x_ratiox):
     ps = []
     y_ratios = [0., *y_ratios, 1.]
@@ -24,7 +23,6 @@ def relative_points(y_ratios, x_ratiox):
         ps.append(sorted(psj, key=lambda x: x[0]))
     return ps
 
-
 class WireframeTemplateData(object):
     def __init__(self, y_ratios, x_ratiox):
         px = relative_points(y_ratios, x_ratiox)
@@ -35,7 +33,7 @@ class WireframeTemplateData(object):
         self.points_std = torch.ones((len(ps),), dtype=torch.float32)
         # self.points = None
         # self.points_std = None
-
+    
     def fit(self, xml_files):
         pass
 
@@ -51,7 +49,6 @@ def min_dist_loss(self, ps, detection):
         global_dists.append(dist_min)
     global_dists = torch.stack(global_dists)
     return torch.mean(global_diss)
-
 
 class WireframeTemplate(object):
     def __init__(self, data, loss):

@@ -76,4 +76,4 @@ print(type(jwkj_get_filePath_fileName_fileExt('Image_00001.jpg')))
 print(jwkj_get_filePath_fileName_fileExt('Image_00001.jpg')[1])
 '''
 
-#print(detect(cv2.imread('Image_065_turned.jpeg'),1).tolist())
+# print(detect(cv2.imread('TR003.jpg'),2.0  ).tolist())

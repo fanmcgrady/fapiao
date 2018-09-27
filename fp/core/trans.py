@@ -29,6 +29,5 @@ def rotate180(image):
     '''rotate the image in 180 degrees, used when the image is upside down'''
     return np.fliplr(np.flipud(image))
 
-
 def rotate90(image):
     return np.rot90(image, k=1, axes=(0, 1))

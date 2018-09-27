@@ -74,9 +74,6 @@ def Started_Ocr(filePath):
             print(data)
             return ""
     else:
-        # 打印百度返回结果
-        print(data)
-
         print("key 'words' doesn't exist!")
         return ""
     '''if len(sys.argv)>3:
@@ -369,7 +366,8 @@ def MakeFileM(templetStOrig , box , filePath , extraName):
 
     return sFPN;
 
-def MakeFileInV(templetStOrig , box , symbol ,filePath , extraName):
+
+def MakeFileInV(templetStOrig, box, symbol, filePath, extraName, templet):
 
 
     #circle_center_pos:(755.0, 2159.0)
@@ -377,7 +375,7 @@ def MakeFileInV(templetStOrig , box , symbol ,filePath , extraName):
     h = symbol[1]-(box.tolist()[0][1] + box.tolist()[1][1])/2
     w = symbol[0]-(box.tolist()[2][0] + box.tolist()[1][0])/2
 
-    templet = [[228.5, 1098.5], [755, 2159]]
+    # templet = [[228.5, 1098.5], [755, 2159]]
     img = Image.open(filePath)
     #print("h:" + str(h))
     #print("w:" + str(w))
@@ -567,12 +565,20 @@ def DetectVATInvoice(box,symbol,filePath):#识别增值税发票种类1
 
     dic = xmlToDict.XmlTodict('ModeLabel_00001.xml')
 
+    tplt = [dic['QRCode'][0], dic['QRCode'][1], dic['figureX'][2], dic['figureX'][3]]
+    for c in tplt:
+        if c == None:
+            print('Templet VATInvoice error')
+
     for item in dic:
         if item != 'QRCode' and item != 'figureX':
             #print(item)
-            tmp = MakeFileInV([[int(dic.get(item)[0]),int(dic.get(item)[1])],[int(dic.get(item)[2]),int(dic.get(item)[3])]], box, symbol, filePath, item)
+            tmp = MakeFileInV(
+                [[int(dic.get(item)[0]), int(dic.get(item)[1])], [int(dic.get(item)[2]), int(dic.get(item)[3])]], box,
+                symbol, filePath, item, tplt)
 
             print(item + ":   " + OcrPic(tmp))
+
 
     js = InterfaceType.JsonInterface.invoice()
     js.addVATInvoiceInfo
@@ -683,7 +689,7 @@ def DetectRedTrainTicket(box,filePath):
     return json.dumps(jsoni).encode().decode("unicode-escape")
 
 
-def cropToOcr(filePath, recT):
+def cropToOcr(filePath, recT, typeT):
 
     ocrResult = {}
     img = Image.open(filePath)
@@ -709,9 +715,9 @@ def cropToOcr(filePath, recT):
         ocrResult[x] = midResult
     print(ocrResult)
     pC = SemanticCorrect.posteriorCrt.posteriorCrt()
-
-    pC.setTrainTicketParaFromDict(ocrResult)
-    pC.startTrainTicketCrt()
+    if typeT != 11:
+        pC.setTrainTicketParaFromDict(ocrResult)
+        pC.startTrainTicketCrt()
 
     js = InterfaceType.JsonInterface.invoice()
     js.setValueWithDict(pC.dic)

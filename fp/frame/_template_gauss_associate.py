@@ -5,9 +5,9 @@ import torch
 import torchvision
 
 from . import _template_remap
-
 importlib.reload(_template_remap)
 from ._template_remap import ReMap, align_code, LEFT, CENTER, RIGHT
+
 
 
 def _overlap_area(rect, rect_ref):
@@ -17,11 +17,9 @@ def _overlap_area(rect, rect_ref):
     dyv = min(y1, v1) - max(y0, v0)
     return dxu * dyv if dxu > 0 and dyv > 0 else 0
 
-
 def rect_to_limit(rect):
     x, y, w, h = rect
     return x, x + w, y, y + h
-
 
 def bounding_rect(rects):
     assert torch.is_tensor(rects) and rects.shape[1] == 4
@@ -30,7 +28,6 @@ def bounding_rect(rects):
     x1 = torch.max(rects[:, 0] + rects[:, 2])
     y1 = torch.max(rects[:, 1] + rects[:, 3])
     return torch.stack([x0, y0, x1 - x0, y1 - y0])
-
 
 class RangeSaturate(object):
     def __init__(self, x_range, y_range):
@@ -46,14 +43,13 @@ class RangeSaturate(object):
         else:
             return (x - self.x0) * self.k + self.y0
 
-
 class TemplateAssociate_v2(object):
     def __init__(self, debug=False):
         self.inter_ratio = 0.4
         self.weights = torch.tensor([0.25, 0.25, 0.25, 0.25])
         self.debug = dict() if debug else None
 
-    def __call__(self, warped_anchors, anchors_std, warped_rects,
+    def __call__(self, warped_anchors, anchors_std, warped_rects, 
                  aligns, detected_candidates, detected_rects, image_size, keys=None):
         assert len(warped_anchors) == len(aligns)
         n_anchors = len(aligns)
@@ -71,7 +67,7 @@ class TemplateAssociate_v2(object):
             anchor_std = anchors_std[i]
             warped_rect = warped_rects[i]
             if align == LEFT:
-                candidate_idx = 0
+                candidate_idx = 0  
             elif align == RIGHT:
                 candidate_idx = 2
             else:
@@ -89,26 +85,26 @@ class TemplateAssociate_v2(object):
                 print('  diff_min:{:.4f} '.format(diff_min))
 
             # broken into pieces
-            assoc_rects = []
+            assoc_rects = []    
             for j in range(n_detects):
                 # if the detected is inside the template item
                 detected_rect = detected_rects[j]
                 inter_area = _overlap_area(detected_rect, warped_rect)
                 inside_ratio = inter_area / detected_rects_area[j]
                 outside_ratio = (detected_rects_area[j] - inter_area) / warped_rects_area[i]
-                # print('    {:.4f}~{:.4f}'.format(inside_ratio, outside_ratio))
+                #print('    {:.4f}~{:.4f}'.format(inside_ratio, outside_ratio))
                 if inside_ratio > self.inter_ratio and outside_ratio < 0.2:
                     assoc_rects.append(detected_rect)
 
             if len(assoc_rects) > 0:
-                # print('#assoc {}'.format(assoc_rects), end='')
+                #print('#assoc {}'.format(assoc_rects), end='')
                 new_rect = bounding_rect(torch.stack(assoc_rects))
                 new_anchor = ReMap(align, image_size).to_anchor(new_rect)
                 element_diff = torch.abs(new_anchor - warped_anchor) / anchor_std
                 # print('new_anchor {}'.format(new_anchor))
                 # print('warped_anchor {}'.format(warped_anchor))
                 # print('anchor_std {}'.format(anchor_std))
-                # print('element_diff {}'.format(element_diff), end='')
+                #print('element_diff {}'.format(element_diff), end='')
                 overall_diff = torch.dot(element_diff, self.weights)
                 if self.debug is not None:
                     print('  assoc rects')

@@ -1,5 +1,3 @@
-import numpy as np
-
 def compute(hang, muban):
     h, w = hang.shape
     m = muban.copy()
@@ -19,7 +17,7 @@ def compute(hang, muban):
             t = hang[i]
             x = t[0]
             y = t[1]
-            width= t[2]
+            width = t[2]
             height = t[3]
             next_x = x + width
             next_y = y + height
@@ -30,23 +28,27 @@ def compute(hang, muban):
             y_2 = v_next_y - y
             if x_1 > 0 and x_2 > 0 and y_1 > 0 and y_2 > 0:
                 area = min(x_1, x_2) * min(y_1, y_2)
-                if (v_x < x and v_y < y and v_next_x > next_x and v_next_y > next_y): # 模板完全包含行提取，返回模板
+                if (v_x < x and v_y < y and v_next_x > next_x and v_next_y > next_y):  # 模板完全包含行提取，返回模板
                     break
-                elif (v_x > x and v_y > y and v_next_x < next_x and v_next_y < next_y): # 行提取完全包含模板，返回行提取
+                elif (v_x > x and v_y > y and v_next_x < next_x and v_next_y < next_y):  # 行提取完全包含模板，返回行提取
                     max_area = area
                     m[key] = t
-                elif width * height > h_area + 100: # 行提取远大于又不包含，认为没有切好，返回模板（参数可能需要修改，身份证姓名行发现的问题）
+                elif width * height > h_area + 100:  # 行提取远大于又不包含，认为没有切好，返回模板（参数可能需要修改，身份证姓名行发现的问题）
                     break
-                if max_area < area: # 相交，结合模板与行提取返回
+                if max_area < area:  # 相交，结合模板与行提取返回
                     max_area = area
                     x_0 = min(v_x, x)
                     y_0 = min(v_y, y)
                     nx_0 = max(v_next_x, next_x)
                     ny_0 = max(v_next_y, next_y)
 
-                    lst = [x_0, y_0, nx_0-x_0, ny_0-y_0]
+                    lst = [x_0, y_0, nx_0 - x_0, ny_0 - y_0]
                     m[key] = lst
+        m[key][2] = int(m[key][2])
+        m[key][3] = int(m[key][3])
     return m
+
+
 '''
 hang = [[210 424 120  17]
  [349 409 101  31]

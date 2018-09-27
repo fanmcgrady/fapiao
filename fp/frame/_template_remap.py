@@ -78,7 +78,6 @@ def anchors_to_rects(aligns, anchors, std_size, inline=False):
     return torch.stack([ReMap(align, std_size).to_rect(anchor, inline) \
                         for align, anchor in zip(aligns, anchors)])
 
-
 def rects_to_anchors(aligns, rects, std_size, inline=True):
     return torch.stack([ReMap(align, std_size).to_anchor(rect, inline) \
                         for align, rect in zip(aligns, rects)])

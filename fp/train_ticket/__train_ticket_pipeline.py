@@ -5,22 +5,17 @@ import numpy as np
 import cv2
 
 from ..util import check
-
 importlib.reload(check)
 from ..core import trans
-
 importlib.reload(trans)
 
 from . import train_ticket
-
 importlib.reload(train_ticket)
-
 
 class _TrainTicketPipeline(object):
     '''
     textline extraction and template match for blue train ticket
     '''
-
     def __init__(self, detect_surface, is_upside_down,
                  detect_textlines, match_template, debug=False):
         '''
@@ -76,8 +71,8 @@ class _TrainTicketPipeline(object):
         # 是否上下颠倒，是则旋转180°
         if self.check_upside_down(surface_image):
             surface_image = trans.rotate180(surface_image)
-        self.surface_image = surface_image
-
+        self.surface_image = surface_image   
+        
         gray_surface_image = cv2.cvtColor(surface_image, cv2.COLOR_BGR2GRAY)
         std_size = surface_image.shape[1], surface_image.shape[0]
 

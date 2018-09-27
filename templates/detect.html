@@ -321,6 +321,7 @@
 
         var dic = new FormData();
         dic.append('fapiao', document.getElementById('example-input1-group2').files[0]);
+        dic.append('type', '{{ type }}');
         $.ajax({
             url: 'detect',
             type: 'POST',
