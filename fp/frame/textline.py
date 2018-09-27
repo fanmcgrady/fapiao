@@ -14,8 +14,9 @@ from . import _textline_lenet_classify
 importlib.reload(_textline_lenet_classify)
 from ._textline_lenet_classify import TextlineLenetClassify
 
-import fp.util.check
-importlib.reload(fp.util.check)
+from ..util import check
+
+importlib.reload(check)
 
 
 class Detect(object):
@@ -34,7 +35,7 @@ class Detect(object):
     def __call__(self, image):
         '''
         return list of rects'''
-        fp.util.check.valid_image(image, colored=0)
+        check.valid_image(image, colored=0)
         return self.detect(image)
 
     
@@ -49,6 +50,6 @@ class Classify(object):
             raise NotImplemented
     
     def __call__(self, image, rects):
-        fp.util.check.valid_image(image, colored=0)
-        fp.util.check.valid_rects(rects)
+        check.valid_image(image, colored=0)
+        check.valid_rects(rects)
         return self.classify(image, rects)

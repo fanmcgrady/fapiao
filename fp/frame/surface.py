@@ -13,8 +13,9 @@ from . import _surface_check
 importlib.reload(_surface_check)
 from ._surface_check import is_crop_ready
 
-import fp.util.check
-importlib.reload(fp.util.check)
+from ..util import check
+
+importlib.reload(check)
 
 class Find(object):
     '''find rects in image'''
@@ -107,7 +108,7 @@ class Detect(object):
         
     def __call__(self, image):
         # check input
-        fp.util.check.valid_image(image, colored=1)
+        check.valid_image(image, colored=1)
         
         # if image is cropped, just return
         if not is_crop_ready(image):

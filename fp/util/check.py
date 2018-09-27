@@ -8,22 +8,46 @@ def valid_image(im, colored=-1):
               0 must be gray image
              -1 both are ok
     '''
-    assert im is not None, 'Empty image'
-    assert isinstance(im, np.ndarray), 'Must be numpy array'
+    if im is None:
+        return False
+    if not isinstance(im, np.ndarray):
+        return False
     if colored >= 0:
-        assert len(im.shape) == 3 if colored == 1 else 2
+        if not (len(im.shape) == 3 if colored == 1 else 2):
+            return False
+    return True
         
 def valid_rect(rect, strict=False):
-    assert rect is not None
-    assert len(rect) == 4
+    if rect is None:
+        return False
+    if len(rect) != 4:
+        return False
     if strict:
-        assert rect[2] > 0 and rect[3] > 0
+        if rect[2] < 0 or rect[3] < 0:
+            return False
+    return True
     
 def valid_rects(rects, strict=False):
-    assert rects is not None
-    assert isinstance(rects, np.ndarray)
-    assert len(rects.shape) == 2
-    assert rects.shape[1] == 4
+    if rects is None:
+        return False
+    if not isinstance(rects, np.ndarray):
+        return False
+    if len(rects.shape) != 2:
+        return False
+    if rects.shape[1] != 4:
+        return False
     if strict:
         for rect in rects:
-            assert rect[2] > 0 and rect[3] > 0
+            if rect[2] < 0 or rect[3] < 0:
+                return False
+    return True
+
+
+def valid_size(size):
+    if size is None:
+        return False
+    if len(size) != 2:
+        return False
+    if size[0] < 0 or size[1] < 0:
+        return False
+    return True

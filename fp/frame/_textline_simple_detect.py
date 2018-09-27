@@ -18,8 +18,8 @@ def make_rects_mask(mask_shape, rects):
 
 class TextlineSimpleDetect(object):
     '''Simple Textline Detector Based on Connected Component'''
-    def __init__(self, std_image_size=None, 
-                 thresh_pars=dict(mix_ratio=0.2, thresh_grid_shape=(4, 6), ksize=11, c=3), 
+    def __init__(self, std_image_size=None,
+                 thresh_pars=dict(mix_ratio=0.2, rows=4, cols=6, ksize=11, c=3),
                  char_expand_ratio=1.5, textline_shrink_ratio=0.4,
                  char_size_range=(14,60,14,60), textline_rule=None, debug=False):
         self.std_image_size = std_image_size
@@ -29,13 +29,14 @@ class TextlineSimpleDetect(object):
         self.textline_rule = textline_rule
         self.threshold = thresh.HybridThreshold(**thresh_pars)
         self.debug = dict() if debug else None
-        if debug:
-            print('TextlineSimpleDetect in debug mode')
     
     def __call__(self, image):
+        inv_fx, inv_fy = 1.0, 1.0
         if self.std_image_size is not None:
+            inv_fx = image.shape[1] / self.std_image_size[0]
+            inv_fy = image.shape[0] / self.std_image_size[1]
             image = cv2.resize(image, self.std_image_size)
-        h, w = image.shape
+        h, w = image.shape[:2]
         raw_segm_im = self.threshold(image)
         if self.debug is not None:
             self.debug['binary'] = raw_segm_im
@@ -67,6 +68,9 @@ class TextlineSimpleDetect(object):
         textline_rects = filter(self._is_textline, textline_rects)
         textline_rects = map(self._shrink_textline_rect, textline_rects)
         textline_rects = np.array(list(textline_rects))
+        if self.std_image_size is not None:
+            textline_rects[:, 0::2] *= inv_fx
+            textline_rects[:, 1::2] *= inv_fy
         if self.debug is not None:
             self.debug['textline_rects'] = textline_rects
         return textline_rects

@@ -8,7 +8,8 @@ import torchvision
 import fp.config
 
 class TemplateMatch(object):
-    def __init__(self, cost, warp, learning_rate=0.2, iteration=2000, num_try=20, 
+    def __init__(self, cost, warp,
+                 learning_rate=0.2, iteration=2000, num_try=20,
                  debug=False):
         self.warp = warp
         self.cost = cost
@@ -18,8 +19,9 @@ class TemplateMatch(object):
         self.debug = dict() if debug else None
         if self.debug is not None:
             print('TemplateMatch is in debug mode')
-        
-    def __call__(self, anchors, center, align, detected_rects, para_init=None):
+
+    def __call__(self, anchors_mean, center_mean, aligns,
+                 detected_candidates, para_init=None):
         '''input should be tensors'''
         if self.debug is not None:
             self.debug['warp_history'] = []
@@ -32,18 +34,18 @@ class TemplateMatch(object):
             para = None
             for try_count in range(self.num_try):
                 _para = self.warp.init()
-                _warped_abs_anchors = self.warp(anchors, center, _para)
-                _loss = self.cost(_warped_abs_anchors, align, detected_rects)
+                _warped_anchors = self.warp(anchors_mean, center_mean, _para)
+                _loss = self.cost(_warped_anchors, aligns, detected_candidates)
                 _loss = _loss.detach().item()
                 if loss is None or loss > _loss:
                     loss = _loss
                     para = _para
-                    
-        para, warped_abs_anchors, loss = self._one_try(anchors, center, align, 
-                                                       detected_rects, para)
-        return para, warped_abs_anchors
-        
-    def _one_try(self, anchors, center, align, detected_rects, para):
+
+        para, warped_anchors, loss = self._one_try(anchors_mean, center_mean, aligns,
+                                                   detected_candidates, para)
+        return para, warped_anchors
+
+    def _one_try(self, anchors_mean, center_mean, align, detected_candidates, para):
         '''input should be tensors'''
         #t = torch.tensor(t_init, requires_grad=True)
         
@@ -51,10 +53,10 @@ class TemplateMatch(object):
             print('{:>4s}|{:>10s}|{:^24s}|{:^24s}'.format('i', 'loss', 't', 't_grad'))
             
         for i in range(self.iteration):
-            warped_abs_anchors = self.warp(anchors, center, para)
+            warped_anchors = self.warp(anchors_mean, center_mean, para)
             if self.debug is not None:
-                self.debug['warp_history'].append(warped_abs_anchors.detach())
-            loss = self.cost(warped_abs_anchors, align, detected_rects)
+                self.debug['warp_history'].append(warped_anchors.detach())
+            loss = self.cost(warped_anchors, align, detected_candidates)
             ## @TODO: add prior restriction
             if len(para) == 4:
                 prior_sx = torch.norm(para[2] - 1.)
@@ -76,8 +78,8 @@ class TemplateMatch(object):
                 para -= self.learning_rate * para.grad
                 # Manually zero the gradients after updating weights
                 para.grad.zero_()
-        
-        return para.detach().cpu(), warped_abs_anchors.detach().cpu(), loss.detach().item()
+
+        return para.detach().cpu(), warped_anchors.detach().cpu(), loss.detach().item()
     
     #def _anchor_candiates(self, warped_rects):
     #    x, y = warped_rects[:, 0], warped_rects[:, 1]
@@ -90,19 +92,20 @@ class TemplateMatch(object):
     #    detect_anchor_r = torch.stack((xr, yc, w, h), dim=1)
     #    
     #    return detect_anchor_l, detect_anchor_c, detect_anchor_r
-    
-def evaluate(anchors, detection, im_shape):
+
+
+def evaluate(anchors_mean, detection, im_shape):
     im_tpl = np.zeros(im_shape, np.uint8)
     im_dtc = np.zeros(im_shape, np.uint8)
-    if torch.is_tensor(list(anchors.values())[0]):
-        for x, y, w, h in anchors.values():
+    if torch.is_tensor(list(anchors_mean.values())[0]):
+        for x, y, w, h in anchors_mean.values():
             x = int(round(x.item()))
             y = int(round(y.item()))
             w = int(round(w.item()))
             h = int(round(h.item()))
             im_tpl[y:y+h, x:x+w] = 255
     else:
-        for x, y, w, h in anchors.values():
+        for x, y, w, h in anchors_mean.values():
             x = int(round(x))
             y = int(round(y))
             w = int(round(w))

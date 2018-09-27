@@ -1,5 +1,6 @@
 import copy
 import os
+import shutil
 
 import cv2
 import matplotlib.pyplot as pl
@@ -146,6 +147,7 @@ def sortBox(box):
 if __name__ == "__main__":
     root = "/Users/fangzhiyang/pic"
     upload = os.path.join(root, "upload")
+    samples = os.path.join(root, "samples")
     dirs = os.listdir(upload)
 
     index = 1
@@ -153,9 +155,10 @@ if __name__ == "__main__":
         try:
             if (d.startswith('.')):
                 continue
-            print("{}:{}".format(index, os.path.join(root, d)))
             surface("upload/{}".format(d))
         except Exception as e:
-            print("{} error".format(e))
+            print("{}:{}".format(index, os.path.join(root, d)))
+            shutil.copy(os.path.join(upload, d), samples)
+            print("{}".format(e))
         else:
             index += 1

@@ -54,3 +54,14 @@ def named_rects(image, named_rects, image_shape=None):
         cv2.putText(image, name, (int(x), int(y)-6), \
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, (155,155,155), 2, cv2.LINE_AA)
     return image
+
+
+def fixed_color_array(n):
+    np.random.seed(0)
+    color_array = []
+    for i in range(n):
+        r = np.random.randint(256)
+        g = np.random.randint(256)
+        b = np.random.randint(256)
+        color_array.append([r, g, b])
+    return color_array

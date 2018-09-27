@@ -52,6 +52,15 @@ class TemplateAssociate(object):
         self.tiny_th = tiny_th
         
     def __call__(self, warped_rects, aligns, detected_rects):
+        return self._simple_associate(warped_rects, aligns, detected_rects)
+
+    def _simple_associate(self, warped_rects, aligns, detected_rects):
+        '''
+        Args:
+            warped_rects   : warped template
+            aligns         : alignment of each template rects
+            detected_rects : detected rects, maybe clutted or missing
+        '''
         new_rects = warped_rects.clone()
         succeed = torch.zeros((len(warped_rects),), dtype=torch.uint8)
         for i, (align_code, warped_rect) in enumerate(zip(aligns, warped_rects)):
@@ -64,14 +73,30 @@ class TemplateAssociate(object):
                 detected_rect_area = detected_rect[2] * detected_rect[3]
                 union_area = detected_rect_area + detected_rect_area - overlap_area
                 iou = overlap_area / union_area
+
+                # found
                 if iou > self.iou_th:
                     assoc_detected_rects.append(detected_rect)
-                elif iou > 0.8 * self.iou_th and approx(warped_rect[3], detected_rect[3]) < self.height_th:
+                    break
+
+                # found
+                if iou > 0.5 * self.iou_th and approx(warped_rect[3], detected_rect[3]) < self.height_th:
                     assoc_detected_rects.append(detected_rect)
-                elif overlap_area / detected_rect_area > self.tiny_th:
+                    break
+
+                # if detection is cluttered, detected rect are small
+                # found a piece
+                if overlap_area / detected_rect_area > self.tiny_th:
                     assoc_detected_rects.append(detected_rect)
+
             bound_rect = bounding_rect(assoc_detected_rects)
+            # compare the bound_rect to template, 
             if bound_rect is not None:
                 new_rects[i, :] = torch.from_numpy(bound_rect)
                 succeed[i] = 1
         return new_rects, succeed
+
+    def _good_detect(self, warped_rect, new_rect):
+        '''
+        '''
+        return True
