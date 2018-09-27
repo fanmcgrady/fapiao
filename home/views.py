@@ -18,7 +18,7 @@ print("读取全局字典")
 global_dic = ComputeDistance.load_dict('SemanticCorrect/hei_20.json')
 
 
-# Create your views here.
+# 请求显示首页index.html
 def index(request):
     return render(request, 'index.html')
 
@@ -26,6 +26,7 @@ def index(request):
 # 识别demo
 def ocrWithoutSurface(request):
     if request.method == "POST":
+        # 图片文件存入allstatic目录
         out_filename = request.POST["outFilename"]
         out_filename = os.path.join('allstatic', out_filename)
 
@@ -33,16 +34,20 @@ def ocrWithoutSurface(request):
 
         try:
             result, origin = Ocr.ocrWithoutSurface(out_filename, json.loads(line_result.replace("'", "\"")))
-
+            # 解码result和origin对象
             result_dict = json.loads(result)
             origin_dict = json.loads(origin)
 
             # 找出两个字典不同
             diff_dict = {}
+            # 遍历链表
             for k in origin_dict:
+                # 找到不同时
                 if result_dict['invoice'][k] != origin_dict[k]:
+                    # 格式化输出字符串形如origin_dict[k] -> result_dict['invoice'][k]
                     diff_dict[k] = "{} -> {}".format(origin_dict[k], result_dict['invoice'][k])
 
+            # 定义子程序返回字典ret
             ret = {
                 'status': True,
                 'out': out_filename,
@@ -50,18 +55,25 @@ def ocrWithoutSurface(request):
                 'diff': diff_dict
             }
         except Exception as e:
+            # 发生错误修改字典值false 输出错误原因
             print(e)
             ret = {'status': False, 'out': str(e)}
 
+    # 返回字典编码成的Json字符串
     return HttpResponse(json.dumps(ret, indent=2))
 
 
 # 识别demo
 def ocr(request):
+    # GET方法
     if request.method == 'GET':
+        # 全部的图片
         img_list = Img.objects.all()
+        # 返回ocr.html界面 全部图片集是用于渲染呈现的数据
         return render(request, 'ocr.html', {'img_list': img_list})
+    # POST方法
     elif request.method == "POST":
+        # 上传图片须以name='fapiao'上传  (if not obj:???)
         obj = request.FILES.get('fapiao')
 
         # 随机文件名
@@ -71,13 +83,17 @@ def ocr(request):
         out_filename = os.path.join('out', filename)
         line_filename = os.path.join('line', filename)
 
+        # 完整路径 +/allstatic
         full_path = os.path.join('allstatic', file_path)
+        # 进入路径full_path 可写
         f = open(full_path, 'wb')
+        # 该文件路径写入上传图片
         for chunk in obj.chunks():
             f.write(chunk)
         f.close()
 
         try:
+            # 调用矫正函数 默认蓝票
             _, flag, line_result = Ocr.surface(file_path)
             color = "蓝底车票" if flag == 1 else "红底车票"
             ret = {
@@ -141,8 +157,9 @@ def article(request, aid):
     thisarticle = list(Article.objects.filter(id=aid).values("id", "title", "author", "content"))[0]
     return render(request, "detail.html", {"thisarticle": thisarticle, })
 
-
+# 注册
 def reg(request):
+    # 验证键值
     if request.session.has_key("name617826782"):
         return HttpResponseRedirect("/")
     if request.method == "POST":
@@ -154,7 +171,7 @@ def reg(request):
         return HttpResponse("注册成功！")
     return render(request, "reg.html")
 
-
+# 登录验证
 def login(request):
     if request.session.has_key("name617826782"):
         return HttpResponseRedirect("/")
@@ -169,7 +186,7 @@ def login(request):
             return HttpResponse("登录失败！")
     return render(request, "login.html")
 
-
+# 注销
 def logout(request):
     del request.session["name617826782"]
     return HttpResponseRedirect("/")
