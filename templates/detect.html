@@ -151,6 +151,7 @@
                 </div>
 
                 {% for img in img_list %}
+                    {% if img.type == type %}
                 <div class="row">
                     <div class="col-md-4">
                         <div class="panel panel-default">
@@ -206,6 +207,7 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                 {% endfor %}
 
                 <div class="row">

@@ -131,7 +131,7 @@ def surface(request):
                 'color': color,
                 'lineResult': str(line_result)
             }
-            Img.objects.create(path=file_path, out=out_filename, line=line_filename, color=color)
+            Img.objects.create(path=file_path, out=out_filename, line=line_filename, color=color, type=type)
         except Exception as e:
             print(e)
             ret = {'status': False, 'path': file_path, 'out': str(e)}

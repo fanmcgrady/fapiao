@@ -34,3 +34,4 @@ class Img(models.Model):
     out = models.CharField(max_length=50, default='')
     line = models.CharField(max_length=50, default='')
     color = models.CharField(max_length=50, default='')
+    type = models.CharField(max_length=20, default='blue')
