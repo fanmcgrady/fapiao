@@ -31,4 +31,7 @@ urlpatterns = [
     url(r"^detect$", home_views.surface),
     url(r"^ocr$", home_views.ocr),
     url(r"^ocrWithoutSurface$", home_views.ocrWithoutSurface),
+
+    # 找工作同学提交简历
+    url(r"^resume$", home_views.resume),
 ]
