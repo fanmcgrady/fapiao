@@ -235,6 +235,7 @@ def getArrayFromStr(strRes):
 
 
 def init(filepath):
+    filepath = '/home/public/Pics/INVSpecial.300DPI.Color/Image_00179.jpg'
     '''
     mage = cv2.imread(filepath,0)
     str_info, position = recog_qrcode(image, roi=None)
@@ -267,4 +268,3 @@ def init(filepath):
 jpgs = fp.util.path.files_in_dir(dset_dir, '.png')
 print(jpgs[9])
 '''
-init('/home/public/Pics/INVSpecial.300DPI.Color/Image_00179.jpg')

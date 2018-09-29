@@ -8,11 +8,15 @@ from django.shortcuts import render
 from SemanticCorrect import ComputeDistance
 from .models import Img
 from .utils import Ocr
+from .utils import OcrForVat
 
 # 取20个形似字
 print("读取全局字典")
 global_dic = ComputeDistance.load_dict('SemanticCorrect/hei_20.json')
 
+
+def ocrForVat(request):
+    OcrForVat.init()
 
 # Create your views here.
 def index(request):
