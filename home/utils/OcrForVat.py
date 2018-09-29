@@ -235,7 +235,7 @@ def getArrayFromStr(strRes):
 
 
 def init(filepath):
-    filepath = '/home/public/Pics/INVSpecial.300DPI.Color/Image_00179.jpg'
+    print("init")
     '''
     mage = cv2.imread(filepath,0)
     str_info, position = recog_qrcode(image, roi=None)
