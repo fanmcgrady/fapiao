@@ -243,7 +243,9 @@ def init(filepath):
     if str_info == None:
     '''
     res = scanQRc(filepath)
+    print("res")
     if res[0] != '':
+        print("二维码")
         resArray = getArrayFromStr(res[0])
         js = InterfaceType.JsonInterface.invoice()
         js.setVATInvoiceFromArray(resArray)
@@ -252,6 +254,7 @@ def init(filepath):
         print(jsoni)
         return json.dumps(jsoni).encode().decode("unicode-escape")
     else:
+        print("mubanDetect")
         return mubanDetect(filepath)
     '''
     else:
