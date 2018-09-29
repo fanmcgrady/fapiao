@@ -16,9 +16,34 @@ global_dic = ComputeDistance.load_dict('SemanticCorrect/hei_20.json')
 
 
 def ocrForVat(request):
-    print(ocrForVat)
-    OcrForVat.init('/home/public/Pics/INVSpecial.300DPI.Color/Image_00181.jpg')
-    return render(request, 'index.html')
+    if request.method == 'GET':
+        return render(request, 'ocrForVat.html')
+    elif request.method == "POST":
+        obj = request.FILES.get('fapiao')
+
+        # 随机文件名
+        filename = generate_random_name()
+
+        file_path = os.path.join('upload', filename)
+
+        full_path = os.path.join('allstatic', file_path)
+        f = open(full_path, 'wb')
+        for chunk in obj.chunks():
+            f.write(chunk)
+        f.close()
+
+        try:
+            json_result = OcrForVat.init(full_path)
+            ret = {
+                'status': True,
+                'path': file_path,
+                'result': json_result
+            }
+        except Exception as e:
+            print(e)
+            ret = {'status': False, 'path': file_path, 'out': str(e)}
+
+        return HttpResponse(json.dumps(ret))
 
 # Create your views here.
 def index(request):
