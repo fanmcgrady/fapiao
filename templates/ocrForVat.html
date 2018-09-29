@@ -362,9 +362,28 @@
             dataType: 'JSON',
             success: function (arg) {
                 if (arg.status) {
+
+                    var invoice = arg.result.invoice;
+                    // 发票代码：invoiceCode
+                    $("#simple_result")
+                        .append($("<p></p>").text("发票代码：" + invoice.invoiceCode));
+                    // 发票号码：invoiceNo
+                    $("#simple_result")
+                        .append($("<p></p>").text("发票号码：" + invoice.invoiceNo));
+                    // 发票日期：invoiceDate
+                    $("#simple_result")
+                        .append($("<p></p>").text("发票日期：" + invoice.invoiceDate));
+                    // 不含税金额：invoiceAmount
+                    $("#simple_result")
+                        .append($("<p></p>").text("不含税金额：" + invoice.invoiceAmount));
+                    // 总金额：totalAmount
+                    $("#simple_result")
+                        .append($("<p></p>").text("总金额：" + invoice.totalAmount));
+
                     // 详细结果
                     $("#result").text(JSON.stringify(arg.result));
                     $("#status").html("识别完成");
+
                     // 原始图片
                     {#$("#path_result").attr("src", "static/" + arg.path);#}
                     // 矫正图片
