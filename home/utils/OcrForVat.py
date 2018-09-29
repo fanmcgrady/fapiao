@@ -235,7 +235,6 @@ def getArrayFromStr(strRes):
 
 
 def init(filepath):
-    print("init")
     '''
     mage = cv2.imread(filepath,0)
     str_info, position = recog_qrcode(image, roi=None)
