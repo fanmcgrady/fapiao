@@ -267,4 +267,4 @@ def init(filepath):
 jpgs = fp.util.path.files_in_dir(dset_dir, '.png')
 print(jpgs[9])
 '''
-init('/Users/fangzhiyang/pic/upload/Image_00175.jpg')
+init('/home/public/Pics/INVSpecial.300DPI.Color/Image_00179.jpg')

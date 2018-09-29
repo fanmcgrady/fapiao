@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 import os
 
-lib = cdll.LoadLibrary(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'scanQRCode/libtdc3.so'))
+lib = cdll.LoadLibrary(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'libtdc3.so'))
 
 
 class ocr_qrcode(object):
