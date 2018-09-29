@@ -361,34 +361,34 @@
             contentType: false,  // tell jQuery not to set contentType
             dataType: 'JSON',
             success: function (arg) {
-                alert(arg);
-                return;
                 if (arg.status) {
-                    $("#status").html("预处理完成，该火车票为" + arg.color);
+                    // 详细结果
+                    $("#result").text(JSON.stringify(arg.result));
+                    $("#status").html("识别完成");
                     // 原始图片
-                    $("#path_result").attr("src", "static/" + arg.path);
+                    {#$("#path_result").attr("src", "static/" + arg.path);#}
                     // 矫正图片
-                    $("#out_text").text("");
-                    $("#out_result").attr("src", "static/" + arg.out);
+                    {#$("#out_text").text("");#}
+                    {#$("#out_result").attr("src", "static/" + arg.out);#}
                     // 行提取图片
-                    $("#line_text").text("");
-                    $("#line_result").attr("src", "static/" + arg.line);
+                    {#$("#line_text").text("");#}
+                    {#$("#line_result").attr("src", "static/" + arg.line);#}
 
                     // 继续下一步ocr
-                    ocr(arg);
+                    {#ocr(arg);#}
                 } else {
+                    $("#result").text("出错了，请联系我们完善程序，错误信息如下：" + arg.out);
                     $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试");
                     // 原始图片
-                    $("#path_text").text("");
-                    $("#path_result").attr("src", "static/" + arg.path);
+                    {#$("#path_text").text("");#}
+                    {#$("#path_result").attr("src", "static/" + arg.path);#}
                     // 矫正图片
-                    $("#out_text").text("");
-                    $("#out_div").append($("<p class='text-danger' style='height:180px;'>出错了，请联系我们完善程序，错误信息如下：" + arg.out + "</p>"));
+                    {#$("#out_text").text("");#}
+                    {#$("#out_div").append($("<p class='text-danger' style='height:180px;'>出错了，请联系我们完善程序，错误信息如下：" + arg.out + "</p>"));#}
                     // 行提取
-                    $("#line_text").text("");
-
-                    $("#button-tips").html("识别");
+                    {#$("#line_text").text("");#}
                 }
+                $("#button-tips").html("识别");
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试");
