@@ -244,11 +244,14 @@ def init(filepath):
     if str_info == None:
     '''
     res = scanQRc(filepath)
+    print("0")
     if res[0] != '':
+        print("1")
         resArray = getArrayFromStr(res[0])
         js = InterfaceType.JsonInterface.invoice()
         js.setVATInvoiceFromArray(resArray)
 
+        print("2")
         jsoni = js.dic
         print(jsoni)
         return json.dumps(jsoni).encode().decode("unicode-escape")

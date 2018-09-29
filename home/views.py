@@ -17,6 +17,7 @@ global_dic = ComputeDistance.load_dict('SemanticCorrect/hei_20.json')
 
 def ocrForVat(request):
     OcrForVat.init()
+    return render(request, 'index.html')
 
 # Create your views here.
 def index(request):
