@@ -23,7 +23,7 @@ def mubanDetect(filepath):
     VATInvoiceTemplet = {
     }
 
-    dic = xmlToDict.XmlTodict('/home/utils/VATInvoiceSimpleMuban.xml')
+    dic = xmlToDict.XmlTodict('home/utils/VATInvoiceSimpleMuban.xml')
 
     # tplt = [dic['QRCode'][0], dic['QRCode'][1], dic['figureX'][0] + dic['figureX'][2] / 2, dic['figureX'][1] + dic['figureX'][3] / 2]
     tplt = [dic['figureX'][0] + dic['figureX'][2] / 2, dic['figureX'][1] + dic['figureX'][3] / 2]
