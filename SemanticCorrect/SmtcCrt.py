@@ -5,7 +5,7 @@ import SemanticCorrect.ComputeDistance as CD
 import SemanticCorrect.Porter
 import copy
 
-# from home import views
+from home import views
 
 #import  from      #字模库 wordTemp
 # type:dict   {'一':1.0,'二':0.6}
@@ -115,8 +115,8 @@ def SmtcCrt(sentence , sentenceType , chooseMod):
 #sentence 为list [字，置信度]   [word , confidentValue]
 
 def getFamiliar(word):
-    dc = CD.load_dict('SemanticCorrect/hei_20.json')  # 取20个形似字
-    # dc = views.global_dic
+    # dc = CD.load_dict('SemanticCorrect/hei_20.json')  # 取20个形似字
+    dc = views.global_dic
     wt = dc[word]
     wt[word] = 1
     #wordTemp接口getFamiliar(word)

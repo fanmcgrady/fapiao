@@ -151,7 +151,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title">原始图片
@@ -165,54 +165,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">校正结果
-                                    &nbsp;&nbsp;<span class="text-primary" id="out_text"></span>
-                                </h3>
-                            </div>
-                            <div class="panel-body">
-                                <div style="text-align: center;vertical-align: middle;min-height:200px;" id="out_div">
-                                    <img style="height: 200px;" id="out_result"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">行提取结果
-                                    &nbsp;&nbsp;<span class="text-primary" id="line_text"></span>
-                                </h3>
-                            </div>
-                            <div class="panel-body">
-                                <div style="text-align: center;vertical-align: middle;min-height:200px;">
-                                    <img style="height: 200px;" id="line_result"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">语义矫正结果
-                                    &nbsp;&nbsp;<span class="text-primary" id="correct_text"></span>
-                                </h3>
-                            </div>
-                            <div class="panel-body">
-                                <div style="height: 200px;" id="correct_result">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title">识别结果
@@ -226,7 +179,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="row">
@@ -314,21 +266,21 @@
         $("#button-tips").html("处理中...");
         $("#status").text("识别中...");
 
-        $("#out_text").text("识别中...");
-        $("#out_result").removeAttr("src");
-
-        $("#line_text").text("识别中...");
-        $("#line_result").removeAttr("src");
-
-        $("#correct_text").text("识别中...");
-        $("#correct_result").empty();
+        {#$("#out_text").text("识别中...");#}
+        {#$("#out_result").removeAttr("src");#}
+        {##}
+        {#$("#line_text").text("识别中...");#}
+        {#$("#line_result").removeAttr("src");#}
+        {##}
+        {#$("#correct_text").text("识别中...");#}
+        {#$("#correct_result").empty();#}
 
         $("#result_text").text("识别中...");
         $("#simple_result").empty();
 
         $("#result").empty();
 
-        $("#out_div").find("p").remove();
+        {#$("#out_div").find("p").remove();#}
     }
 
     function ocrForVat() {
