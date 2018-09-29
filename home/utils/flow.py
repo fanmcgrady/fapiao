@@ -1,25 +1,23 @@
-#coding=gbk
+# coding=gbk
 
 
 import json
-import numpy as np
-import cv2
 import os
-from PIL import Image
 import sys
+
 import aircv as ac
-from home.utils import Detect
-from home.utils import xmlToDict
+import cv2
+from PIL import Image
+from aip import AipOcr
+
 import InterfaceType.JsonInterface
 import SemanticCorrect.posteriorCrt
+from home.utils import Detect
+from home.utils import xmlToDict
+
+
 ##aip
-
-from aip import AipOcr
-import json
-#import jsonpath
-
-
-
+# import jsonpath
 
 
 # 读取图片
@@ -27,12 +25,12 @@ def get_file_content(filePath):
     with open(filePath, 'rb') as fp:
         return fp.read()
 
-def Started_Ocr(filePath):
 
+def Started_Ocr(filePath):
     image = get_file_content(filePath)
 
     # 调用通用文字识别, 图片参数为本地图片
-    #client.basicGeneral(image);
+    # client.basicGeneral(image);
 
     '''
     APP_ID = '11428388'
@@ -57,13 +55,13 @@ def Started_Ocr(filePath):
     options["detect_direction"] = "true"
 
     # 带参数调用通用票据识别
-    result=client.receipt(image, options)
+    result = client.receipt(image, options)
 
-    data=json.loads(json.dumps(result).encode().decode("unicode-escape"))
+    data = json.loads(json.dumps(result).encode().decode("unicode-escape"))
 
     if 'words_result' in data.keys():
-        if len(data['words_result'])>0 :
-            ocrResult =""
+        if len(data['words_result']) > 0:
+            ocrResult = ""
             for i in list(data['words_result']):
                 ocrResult += str(i['words'])
             '''if len(sys.argv) > 3:
@@ -80,13 +78,14 @@ def Started_Ocr(filePath):
         if sys.argv[3]=='-D': #show detail
             print(type(data))'''
 
-    #print(json.dumps(result, sort_keys=True, indent=4, separators=(',', ': ')).encode().decode("unicode-escape"))
+    # print(json.dumps(result, sort_keys=True, indent=4, separators=(',', ': ')).encode().decode("unicode-escape"))
 
     return ocrResult
 
+
 def FindSymbol(filePath):
     imsrc = ac.imread(filePath)
-    #imsrcgray = cv2.cvtColor(imsrc, cv2.COLOR_BGR2GRAY)
+    # imsrcgray = cv2.cvtColor(imsrc, cv2.COLOR_BGR2GRAY)
     imobj = ac.imread('figure.jpg')
 
     # find the match position
@@ -103,6 +102,7 @@ def FindSymbol(filePath):
     print("circle_center_pos:" + str(circle_center_pos))
 
     return circle_center_pos
+
 
 '''
 def Detect(filePath):
@@ -148,6 +148,7 @@ def Detect(filePath):
     return box
 '''
 
+
 def MakeFile1(box, filePath):
     # 起点
     # 火车票1 蓝色  起点切片：
@@ -164,7 +165,7 @@ def MakeFile1(box, filePath):
     # 起点[48,62][205,118]          终点[412,61][572,116]
 
     templet = [[526, 379], [526, 272], [634, 272], [634, 379]]
-    templetSt = [[48, 62],[270, 118]]
+    templetSt = [[48, 62], [270, 118]]
     # 原点[634,379]     dh1=56    dw1=157
 
     # listStandard = self.Detect(filePath).tolist()
@@ -181,11 +182,15 @@ def MakeFile1(box, filePath):
     img = Image.open(filePath)
     secFilePath = img.crop((SecLeftUp[0], SecLeftUp[1], SecRightBottom[0], SecRightBottom[1]))
 
-    if  os.path.exists(jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[1]) == False:
-        os.mkdir(jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[1])
+    if os.path.exists(
+            jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
+                1]) == False:
+        os.mkdir(
+            jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[1])
 
-    sFP1=jwkj_get_filePath_fileName_fileExt(filePath)[0]  +"tmp/"+jwkj_get_filePath_fileName_fileExt(filePath)[1]+"/"+ jwkj_get_filePath_fileName_fileExt(filePath)[
-            1] +"_01.jpeg"
+    sFP1 = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
+        1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
+               1] + "_01.jpeg"
     secFilePath.save(sFP1)
 
     return sFP1;
@@ -207,7 +212,7 @@ def MakeFile2(box, filePath):
     # 起点[48,62][205,118]          终点[412,61][572,116]
 
     templet = [[526, 379], [526, 272], [634, 272], [634, 379]]
-    templetSt = [[412, 61],[640, 116]]
+    templetSt = [[412, 61], [640, 116]]
     # 原点[634,379]     dh1=56    dw1=157
 
     # listStandard = self.Detect(filePath).tolist()
@@ -225,25 +230,26 @@ def MakeFile2(box, filePath):
             print("SecLeftUp[0]:" + str(SecLeftUp[0]) + "   SecLeftUp[1]:" + str(SecLeftUp[1]))
             print("SecRightBottom[0]:" + str(SecRightBottom[0]) + "   SecRightBottom[1]:" + str(SecRightBottom[1]))'''
 
-
     img = Image.open(filePath)
     secFilePath = img.crop((SecLeftUp[0], SecLeftUp[1], SecRightBottom[0], SecRightBottom[1]))
 
-    sFP2 = jwkj_get_filePath_fileName_fileExt(filePath)[0]  +"tmp/"+jwkj_get_filePath_fileName_fileExt(filePath)[1]+"/"+ jwkj_get_filePath_fileName_fileExt(filePath)[
-        1] + "_02.jpeg"
+    sFP2 = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
+        1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
+               1] + "_02.jpeg"
     secFilePath.save(sFP2)
 
     return sFP2;
 
-def jwkj_get_filePath_fileName_fileExt(filename):#提取路径
+
+def jwkj_get_filePath_fileName_fileExt(filename):  # 提取路径
     (filepath, tempfilename) = os.path.split(filename);
     (shotname, extension) = os.path.splitext(tempfilename);
     return filepath, shotname, extension
 
-def MakeFileN(templetStOrig , box , filePath , extraName):
+
+def MakeFileN(templetStOrig, box, filePath, extraName):
     # 通用
     # 火车票1 蓝色  起点切片：
-
 
     h = box.tolist()[0][1] - box.tolist()[1][1]
     w = box.tolist()[2][0] - box.tolist()[1][0]
@@ -253,7 +259,7 @@ def MakeFileN(templetStOrig , box , filePath , extraName):
     # 通用templetSt
 
     templet = [[526, 379], [526, 272], [634, 272], [634, 379]]
-    #templetStOrig = [[412, 61], [572, 116]]
+    # templetStOrig = [[412, 61], [572, 116]]
 
     # 原点[634,379]     dh1=56    dw1=157
 
@@ -302,19 +308,21 @@ def MakeFileN(templetStOrig , box , filePath , extraName):
 
     secFilePath = img.crop((SecLeftUp[0], SecLeftUp[1], SecRightBottom[0], SecRightBottom[1]))
 
-    sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] +"tmp/" +jwkj_get_filePath_fileName_fileExt(filePath)[1]+"/"+ jwkj_get_filePath_fileName_fileExt(filePath)[
-        1] + "_"+extraName+".jpeg"
+    sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
+        1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
+               1] + "_" + extraName + ".jpeg"
     secFilePath.save(sFPN)
 
     return sFPN;
 
-def MakeFileM(templetStOrig , box , filePath , extraName):
+
+def MakeFileM(templetStOrig, box, filePath, extraName):
     # 火车票2 红色  起点切片：
 
     h = box.tolist()[0][1] - box.tolist()[1][1]
     w = box.tolist()[2][0] - box.tolist()[1][0]
 
-    #[[483, 439], [483, 259], [632, 259], [632, 439]]
+    # [[483, 439], [483, 259], [632, 259], [632, 439]]
 
     templet = [[483, 439], [483, 259], [632, 259], [632, 439]]
     img = Image.open(filePath)
@@ -327,22 +335,23 @@ def MakeFileM(templetStOrig , box , filePath , extraName):
         if SecLeftUp_h < 0:
             SecLeftUp_h = 0
 
-        SecRightBottom_w = box[3][0] - (int)((templet[3][0] - templetStOrig[1][0]) / (templet[3][0] - templet[1][0]) * w)
-        SecRightBottom_h = box[3][1] - (int)((templet[3][1] - templetStOrig[1][1]) / (templet[3][1] - templet[2][1]) * h)
+        SecRightBottom_w = box[3][0] - (int)(
+            (templet[3][0] - templetStOrig[1][0]) / (templet[3][0] - templet[1][0]) * w)
+        SecRightBottom_h = box[3][1] - (int)(
+            (templet[3][1] - templetStOrig[1][1]) / (templet[3][1] - templet[2][1]) * h)
 
         if SecRightBottom_w > img.size[0]:
             SecRightBottom_w = img.size[0]
         if SecRightBottom_h > img.size[1]:
             SecRightBottom_h = img.size[1]
 
-
         '''SecLeftUp = [box[3][0] - (int)((templet[3][0] - templetStOrig[0][0]) / (templet[3][0] - templet[1][0]) * w),
                      box[3][1] - (int)((templet[3][1] - templetStOrig[0][1]) / (templet[3][1] - templet[2][1]) * h)]
         SecRightBottom = [box[3][0] - (int)((templet[3][0] - templetStOrig[1][0]) / (templet[3][0] - templet[1][0]) * w),
                           box[3][1] - (int)((templet[3][1] - templetStOrig[1][1]) / (templet[3][1] - templet[2][1]) * h)]
                           '''
-        SecLeftUp = [SecLeftUp_w,SecLeftUp_h]
-        SecRightBottom = [SecRightBottom_w,SecRightBottom_h]
+        SecLeftUp = [SecLeftUp_w, SecLeftUp_h]
+        SecRightBottom = [SecRightBottom_w, SecRightBottom_h]
 
     except:
         print("SecFile build error!")
@@ -352,36 +361,33 @@ def MakeFileM(templetStOrig , box , filePath , extraName):
             print("SecLeftUp[0]:" + str(SecLeftUp[0]) + "   SecLeftUp[1]:" + str(SecLeftUp[1]))
             print("SecRightBottom[0]:" + str(SecRightBottom[0]) + "   SecRightBottom[1]:" + str(SecRightBottom[1]))'''
 
-
     secFilePath = img.crop((SecLeftUp[0], SecLeftUp[1], SecRightBottom[0], SecRightBottom[1]))
 
-    if  os.path.exists(jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[1]) == False:
-        os.mkdir(jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[1])
+    if os.path.exists(
+            jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
+                1]) == False:
+        os.mkdir(
+            jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[1])
 
     sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
         1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
                1] + "_" + extraName + ".jpeg"
     secFilePath.save(sFPN)
 
-
     return sFPN;
 
 
 def MakeFileInV(templetStOrig, box, symbol, filePath, extraName, templet):
-
-
-    #circle_center_pos:(755.0, 2159.0)
-    #[[132, 1197], [132, 1000], [325, 1000], [325, 1197]]
-    h = symbol[1]-(box.tolist()[0][1] + box.tolist()[1][1])/2
-    w = symbol[0]-(box.tolist()[2][0] + box.tolist()[1][0])/2
+    # circle_center_pos:(755.0, 2159.0)
+    # [[132, 1197], [132, 1000], [325, 1000], [325, 1197]]
+    h = symbol[1] - (box.tolist()[0][1] + box.tolist()[1][1]) / 2
+    w = symbol[0] - (box.tolist()[2][0] + box.tolist()[1][0]) / 2
 
     # templet = [[228.5, 1098.5], [755, 2159]]
     img = Image.open(filePath)
-    #print("h:" + str(h))
-    #print("w:" + str(w))
-    #print(symbol[0]+"-("+templet[1][0]+"-"+templetStOrig[0][0]+"/"+templet[1][0]+"-"+templet[0][0] +"*"+str(h))
-
-
+    # print("h:" + str(h))
+    # print("w:" + str(w))
+    # print(symbol[0]+"-("+templet[1][0]+"-"+templetStOrig[0][0]+"/"+templet[1][0]+"-"+templet[0][0] +"*"+str(h))
 
     try:
         SecLeftUp_w = symbol[0] - (int)((templet[1][0] - templetStOrig[0][0]) / (templet[1][0] - templet[0][0]) * w)
@@ -391,7 +397,7 @@ def MakeFileInV(templetStOrig, box, symbol, filePath, extraName, templet):
         if SecLeftUp_h < 0:
             SecLeftUp_h = 0
 
-    #print("SecLeftUp[0]:" + str(SecLeftUp_w) + "   SecLeftUp[1]:" + str(SecLeftUp_h))
+        # print("SecLeftUp[0]:" + str(SecLeftUp_w) + "   SecLeftUp[1]:" + str(SecLeftUp_h))
 
         SecRightBottom_w = symbol[0] - (int)(
             (templet[1][0] - templetStOrig[1][0]) / (templet[1][0] - templet[0][0]) * w)
@@ -419,24 +425,23 @@ def MakeFileInV(templetStOrig, box, symbol, filePath, extraName, templet):
             print("SecLeftUp[0]:" + str(SecLeftUp[0]) + "   SecLeftUp[1]:" + str(SecLeftUp[1]))
             print("SecRightBottom[0]:" + str(SecRightBottom[0]) + "   SecRightBottom[1]:" + str(SecRightBottom[1]))'''
 
-
     secFilePath = img.crop((SecLeftUp[0], SecLeftUp[1], SecRightBottom[0], SecRightBottom[1]))
 
-    if  os.path.exists(jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[1]) == False:
-        os.mkdir(jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[1])
+    if os.path.exists(
+            jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
+                1]) == False:
+        os.mkdir(
+            jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[1])
 
     sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
         1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
                1] + "_" + extraName + ".jpeg"
     secFilePath.save(sFPN)
 
-
     return sFPN;
 
 
-
 def OcrPic(secFilePath):
-
     '''
     data = json.loads(json.dumps(Started_Ocr(secFilePath)).encode().decode("unicode-escape"))
     print(type(data))
@@ -444,8 +449,7 @@ def OcrPic(secFilePath):
     '''
     return Started_Ocr(secFilePath)
 
-
-    #return data['words_result'][0]['words']  # .encode().decode("unicode-escape"))
+    # return data['words_result'][0]['words']  # .encode().decode("unicode-escape"))
     '''
         except:
             print("Print error")
@@ -455,29 +459,29 @@ def OcrPic(secFilePath):
             '''
 
 
-def DetectBlueTrainTicket(box,filePath):
+def DetectBlueTrainTicket(box, filePath):
     secP1 = MakeFile1(box, filePath)
-    #print(type(secP1))
-    #print(secP1)
+    # print(type(secP1))
+    # print(secP1)
 
     secP2 = MakeFile2(box, filePath)
-    #print(type(secP2))
-    #print(secP2)
+    # print(type(secP2))
+    # print(secP2)
 
     result1 = OcrPic(secP1)
-    #print(type(result1))
-    #print(result1)
+    # print(type(result1))
+    # print(result1)
 
     result2 = OcrPic(secP2)
-    #print(type(result2))
-    #print(result2)
+    # print(type(result2))
+    # print(result2)
 
     # 乘客信息
     templetStPassagerInfo = [[22, 276], [328, 314]]
     secP4 = MakeFileN(templetStPassagerInfo, box, filePath, 'PassagerInfo')
     result4 = OcrPic(secP4)
     # 乘客信息
-    templetStPassagerInfoName = [[328, 276], [478,314]]
+    templetStPassagerInfoName = [[328, 276], [478, 314]]
     secP4_1 = MakeFileN(templetStPassagerInfoName, box, filePath, 'PassagerInfoName')
     result4_1 = OcrPic(secP4_1)
 
@@ -540,28 +544,30 @@ def DetectBlueTrainTicket(box,filePath):
     print(line3)
     print(line4)
     '''
-    #后矫正
+    # 后矫正
     pC = SemanticCorrect.posteriorCrt.posteriorCrt()
-    pC.setTrainTicketPara(result1, result2, result3, result5, result6, result4, result4_1, result9)#(self, departCity, arriveCity, trainNumber, invoiceDate, seatNum, idNum, passenger)
+    pC.setTrainTicketPara(result1, result2, result3, result5, result6, result4, result4_1,
+                          result9)  # (self, departCity, arriveCity, trainNumber, invoiceDate, seatNum, idNum, passenger)
     pC.startTrainTicketCrt()
 
-    #传入参数
+    # 传入参数
     js = InterfaceType.JsonInterface.invoice()
-    js.addTrainCardInfo(pC.dic['departCity'], pC.dic['arriveCity'], pC.dic['trainNumber'], pC.dic['invoiceDate'], pC.dic['price'], pC.dic['seatNum'], pC.dic['passenger'], pC.dic['idNum'], result10,'0000','0000')
+    js.addTrainCardInfo(pC.dic['departCity'], pC.dic['arriveCity'], pC.dic['trainNumber'], pC.dic['invoiceDate'],
+                        pC.dic['price'], pC.dic['seatNum'], pC.dic['passenger'], pC.dic['idNum'], result10, '0000',
+                        '0000')
     # 始发站，终到站，车次，日期，金额，座位号，姓名，身份证号，车票序号
     jsoni = js.dic
     print(jsoni)
 
-
-
-    #return json.dumps(jsoni).encode().decode("unicode-escape")
+    # return json.dumps(jsoni).encode().decode("unicode-escape")
     return json.dumps(jsoni).encode().decode("unicode-escape")
 
-def DetectVATInvoice(box,symbol,filePath):#识别增值税发票种类1
 
-    #定位二维码
+def DetectVATInvoice(box, symbol, filePath):  # 识别增值税发票种类1
 
-    #定位×
+    # 定位二维码
+
+    # 定位×
 
     dic = xmlToDict.XmlTodict('ModeLabel_00001.xml')
 
@@ -572,27 +578,26 @@ def DetectVATInvoice(box,symbol,filePath):#识别增值税发票种类1
 
     for item in dic:
         if item != 'QRCode' and item != 'figureX':
-            #print(item)
+            # print(item)
             tmp = MakeFileInV(
                 [[int(dic.get(item)[0]), int(dic.get(item)[1])], [int(dic.get(item)[2]), int(dic.get(item)[3])]], box,
                 symbol, filePath, item, tplt)
 
             print(item + ":   " + OcrPic(tmp))
 
-
     js = InterfaceType.JsonInterface.invoice()
     js.addVATInvoiceInfo
 
-def DetectRedTrainTicket(box,filePath):
-    #红色车票识别
+
+def DetectRedTrainTicket(box, filePath):
+    # 红色车票识别
 
     # 起点
-    templetStStartPlace =[[29,74],[247,128]]
+    templetStStartPlace = [[29, 74], [247, 128]]
     secP1 = MakeFileM(templetStStartPlace, box, filePath, 'StartPlace')
     result1 = OcrPic(secP1)
 
-
-    templetStEndPlace = [[425,68], [649,132]]
+    templetStEndPlace = [[425, 68], [649, 132]]
     secP2 = MakeFileM(templetStEndPlace, box, filePath, 'EndPlace')
     result2 = OcrPic(secP2)
 
@@ -602,7 +607,7 @@ def DetectRedTrainTicket(box,filePath):
     result3 = OcrPic(secP3)
 
     # 乘客信息
-    templetStPassagerInfo = [[0,343], [350,388]]
+    templetStPassagerInfo = [[0, 343], [350, 388]]
     secP4 = MakeFileM(templetStPassagerInfo, box, filePath, 'PassagerInfo')
     result4 = OcrPic(secP4)
 
@@ -613,32 +618,32 @@ def DetectRedTrainTicket(box,filePath):
     '''
 
     # 车次时间
-    templetStTrainTime = [[0,163], [357,204]]
+    templetStTrainTime = [[0, 163], [357, 204]]
     secP5 = MakeFileM(templetStTrainTime, box, filePath, 'trainTime')
     result5 = OcrPic(secP5)
 
     # 座位
-    templetStSeatNum = [[392,164], [595, 210]]
+    templetStSeatNum = [[392, 164], [595, 210]]
     secP6 = MakeFileM(templetStSeatNum, box, filePath, "seatNum")
     result6 = OcrPic(secP6)
 
     # 座次类型
-    templetStSeatType = [[425,211], [552,254]]
+    templetStSeatType = [[425, 211], [552, 254]]
     secP7 = MakeFileM(templetStSeatType, box, filePath, "seatType")
     result7 = OcrPic(secP7)
 
     # 车号
-    templetStCheckNum = [[34,40], [236,87]]
+    templetStCheckNum = [[34, 40], [236, 87]]
     secP8 = MakeFileM(templetStCheckNum, box, filePath, "trainNo")
     result8 = OcrPic(secP8)
 
     # 票价
-    templetStPrice = [[3,206], [215, 258]]
+    templetStPrice = [[3, 206], [215, 258]]
     secP9 = MakeFileM(templetStPrice, box, filePath, "price")
     result9 = OcrPic(secP9)
 
     # 车次码
-    templetStPrice = [[0,388], [319,428]]
+    templetStPrice = [[0, 388], [319, 428]]
     secP10 = MakeFileM(templetStPrice, box, filePath, "TraintNoNum")
     result10 = OcrPic(secP10)
 
@@ -674,23 +679,25 @@ def DetectRedTrainTicket(box,filePath):
     # 后矫正
     pC = SemanticCorrect.posteriorCrt.posteriorCrt()
     pC.setTrainTicketPara(result1, result2, result3, result5, result6, result4,
-                          '', result9)  # (self, departCity, arriveCity, trainNumber, invoiceDate, seatNum, idNum, passenger)
+                          '',
+                          result9)  # (self, departCity, arriveCity, trainNumber, invoiceDate, seatNum, idNum, passenger)
     pC.startTrainTicketCrt()
 
     js = InterfaceType.JsonInterface.invoice()
 
-    js.addTrainCardInfo(pC.dic['departCity'], pC.dic['arriveCity'], pC.dic['trainNumber'], pC.dic['invoiceDate'], pC.dic['price'], pC.dic[
-        'seatNum'],'', pC.dic['idNum'], result10, '0000', '0000')#始发站，终到站，车次，日期，金额，座位号，姓名，身份证号，车票序号
+    js.addTrainCardInfo(pC.dic['departCity'], pC.dic['arriveCity'], pC.dic['trainNumber'], pC.dic['invoiceDate'],
+                        pC.dic['price'], pC.dic[
+                            'seatNum'], '', pC.dic['idNum'], result10, '0000',
+                        '0000')  # 始发站，终到站，车次，日期，金额，座位号，姓名，身份证号，车票序号
 
     jsoni = js.dic
 
-    #print(jsoni)
-    #return json.dumps(jsoni).encode().decode("unicode-escape")
+    # print(jsoni)
+    # return json.dumps(jsoni).encode().decode("unicode-escape")
     return json.dumps(jsoni).encode().decode("unicode-escape")
 
 
 def cropToOcr(filePath, recT, typeT):
-
     ocrResult = {}
     img = Image.open(filePath)
 
@@ -702,8 +709,7 @@ def cropToOcr(filePath, recT, typeT):
                 1])
 
     for x in recT:
-
-        sp = img.crop((recT[x][0], recT[x][1], recT[x][0]+recT[x][2], recT[x][1]+recT[x][3]))
+        sp = img.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
 
         sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
             1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
@@ -726,7 +732,6 @@ def cropToOcr(filePath, recT, typeT):
     return json.dumps(jsoni).encode().decode("unicode-escape"), json.dumps(ocrResult).encode().decode("unicode-escape")
 
 
-
 def detect(filePath, recT, type):
     # 调用接口
     # type:1 蓝火车票
@@ -736,25 +741,24 @@ def detect(filePath, recT, type):
         if type == 1:
             box = Detect.detect(cv2.imread(filePath), 1)
             jsR = DetectBlueTrainTicket(box, filePath)
-            #print(jsR)
+            # print(jsR)
             return jsR
 
         if type == 2:
             box = Detect.detect(cv2.imread(filePath), 1)
             jsR = DetectRedTrainTicket(box, filePath)
-            #print(jsR)
+            # print(jsR)
             return jsR
 
         if type == 3:
             box = Detect.detect(cv2.imread(filePath), 0.3)
             symbol = FindSymbol(filePath)
             jsR = DetectVATInvoice(box, symbol, filePath)
-            #print(jsR)
+            # print(jsR)
             return jsR
 
     else:
         print("Can't open file " + filePath)
-
 
 
 def __init__():
@@ -773,7 +777,7 @@ def __init__():
                 # 红色火车票
             if sys.argv[2] == '11':
                 chooseMod = 3
-                #专用增值税发票1
+                # 专用增值税发票1
 
     else:
         filePath = 'Image_00066.jpg'
@@ -795,8 +799,4 @@ def __init__():
     else:
         print("Can't open file " + filePath)
 
-
-#__init__()
-
-
-
+# __init__()

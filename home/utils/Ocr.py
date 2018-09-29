@@ -1,5 +1,6 @@
 import copy
 import os
+import shutil
 
 import cv2
 import matplotlib.pyplot as pl
@@ -44,8 +45,15 @@ def surface(filename, type='blue'):
         else:
             ##type == 'red'
             midProcessResult = [None, None, None]
-            midProcessResult[0] = filepath
+            out_filename = filename.replace('upload', 'out')
+            out_filename = os.path.join('allstatic', out_filename)
+
+            # 拷贝到out
+            shutil.copy(filepath, out_filename)
+
+            midProcessResult[0] = out_filename
             midProcessResult[1] = 2  # 专票
+            # 暂时用原图，不用校正后的图
             midProcessResult[2] = textline(midProcessResult[0])
     # 行提取
     blueTemplet = {

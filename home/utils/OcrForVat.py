@@ -1,15 +1,18 @@
-import xmlToDict
-import cv2
-import Detect
-import FindCircle
-import matplotlib.pyplot as pl
-import muban
-import fp
-import flow
-import lineToAttribute.getAtbt
 import copy
-import muban
+import json
 
+from home.utils import xmlToDict
+from home.utils import FindCircle
+from home.utils import flow
+from home.utils import muban
+
+import matplotlib.pyplot as pl
+import cv2
+
+import InterfaceType
+import fp
+import lineToAttribute.getAtbt
+from scanQRCode.scan_qrcode import recog_qrcode, recog_qrcode_ex
 
 def mubanDetect(filepath):
     # 预留
@@ -198,6 +201,39 @@ def sortBox(box):
     return [min(a), min(b), max(a), max(b)]
 
 
+def scanQRc(filepath):
+    image = cv2.imread(filepath, 0)
+
+    str_info, position = recog_qrcode(image, roi=None)
+    print("info:", str_info)
+    print("pos:", position)
+
+    # ***** if conventnal method is invalid ******
+    # ***** then use the enhanced method   *******
+    if str_info is '':
+        height, width = image.shape[:2]
+        roi = [0, 0, int(width / 4), int(height / 4)]
+        # roi = None
+        str_info, position = recog_qrcode_ex(image, roi)
+        print("info(ex):", str_info)
+        print("pos(ex):", position)
+    # ***** **************************************
+
+    return str_info, position
+
+
+def getArrayFromStr(strRes):
+    sR = copy.deepcopy(strRes)
+    index = sR.find(',', 0)
+    resultArray = []
+    while index >= 0:
+        resultArray.append(sR[:index])
+        sR = sR[index + 1:]
+        index = sR.find(',', 0)
+    resultArray.append(sR)
+    return resultArray
+
+
 def init(filepath):
     '''
     mage = cv2.imread(filepath,0)
@@ -206,7 +242,17 @@ def init(filepath):
     #二维码无法识别
     if str_info == None:
     '''
-    mubanDetect(filepath)
+    res = scanQRc(filepath)
+    if res[0] != '':
+        resArray = getArrayFromStr(res[0])
+        js = InterfaceType.JsonInterface.invoice()
+        js.setVATInvoiceFromArray(resArray)
+
+        jsoni = js.dic
+        print(jsoni)
+        return json.dumps(jsoni).encode().decode("unicode-escape")
+    else:
+        return mubanDetect(filepath)
     '''
     else:
         js = InterfaceType.JsonInterface.invoice()
@@ -221,4 +267,4 @@ def init(filepath):
 jpgs = fp.util.path.files_in_dir(dset_dir, '.png')
 print(jpgs[9])
 '''
-# init('Image_00178.jpg')
+init('/Users/fangzhiyang/pic/upload/Image_00175.jpg')

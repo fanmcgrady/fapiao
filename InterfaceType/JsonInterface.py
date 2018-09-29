@@ -264,5 +264,12 @@ class invoice():
         for c in dict:
            self.dic['invoice'][c] = dict[c]
 
+    def setVATInvoiceFromArray(self, array):
+        # ['01', '01', '1100181130', '11174775', '7766.99', '20180521', '', 'B900']
+        self.dic['invoice']['invoiceCode'] = array[2]
+        self.dic['invoice']['invoiceNo'] = array[3]
+        self.dic['invoice']['invoiceAmount'] = array[4]
+        self.dic['invoice']['invoiceDate'] = array[5][:4] + '年' + array[5][4:6] + '月' + array[5][6:] + '日'
+
 #jss = json.dumps(invoice.dic)
 #print(jss)
