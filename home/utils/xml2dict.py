@@ -15,12 +15,12 @@ class XML2Dict(object):
         pass
 
     def _parse_node(self, node):
-        node_tree = object_dict()
+        node_tree = object_dict.object_dict()
         # Save attrs and text, hope there will not be a child with same name
         if node.text:
             node_tree.value = node.text
         for (k,v) in node.attrib.items():
-            k,v = self._namespace_split(k, object_dict({'value':v}))
+            k, v = self._namespace_split(k, object_dict.object_dict({'value': v}))
             node_tree[k] = v
         #Save childrens
         for child in node.getchildren():
@@ -58,7 +58,7 @@ class XML2Dict(object):
         """parse a string"""
         t = ET.fromstring(s)
         root_tag, root_tree = self._namespace_split(t.tag, self._parse_node(t))
-        return object_dict({root_tag: root_tree})
+        return object_dict.object_dict({root_tag: root_tree})
 
 
 

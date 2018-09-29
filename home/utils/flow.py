@@ -721,8 +721,8 @@ def cropToOcr(filePath, recT, typeT):
         ocrResult[x] = midResult
     print(ocrResult)
     pC = SemanticCorrect.posteriorCrt.posteriorCrt()
+    pC.setTrainTicketParaFromDict(ocrResult)
     if typeT != 11:
-        pC.setTrainTicketParaFromDict(ocrResult)
         pC.startTrainTicketCrt()
 
     js = InterfaceType.JsonInterface.invoice()

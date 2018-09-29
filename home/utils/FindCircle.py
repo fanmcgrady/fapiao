@@ -30,12 +30,12 @@ def jwkj_get_filePath_fileName_fileExt(filename):  # 提取路径
 
 def findSymbol(filePath):
     if os.path.exists(
-            jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
+            jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
                 1]) == False:
         os.mkdir(
-            jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[1])
+            jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[1])
 
-    sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
+    sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
         1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
                1] + "_GRAY.jpg"
     im = cv2.imread(filePath)  # 读取图片
@@ -54,13 +54,13 @@ def findSymbol(filePath):
 
     imsrc = ac.imread(sFPN)
     # imsrcgray = ac.cvtColor(imsrc, cv2.COLOR_BGR2GRAY)
-    imobj = ac.imread('figureX.jpg')
+    imobj = ac.imread('home/utils/figureX.jpg')
     # imobjgray = ac.cvtColor(imobj, cv2.COLOR_BGR2GRAY)
 
     # find the match position
     pos = ac.find_template(imsrc, imobj, 0.3)
     if pos['result'] == None:
-        imobj = ac.imread('figure.jpg')
+        imobj = ac.imread('home/utils/figure.jpg')
         pos = ac.find_template(imsrc, imobj, 0.5)
     # print(type(pos))
     circle_center_pos = pos['result']

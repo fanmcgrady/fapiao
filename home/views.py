@@ -37,7 +37,7 @@ def ocrForVat(request):
             ret = {
                 'status': True,
                 'path': file_path,
-                'result': json.loads(json_result)
+                'result': json.loads(str(json_result).replace("'", "\""))
             }
         except Exception as e:
             print(e)
