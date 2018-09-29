@@ -28,7 +28,7 @@ def surface(filename, type='blue'):
         # 未分类
     else:
         if type == 'blue' or type == 'excess':
-            midProcessResult = PipeInvoice.getPipe('allstatic', filename, type, False)
+            midProcessResult = PipeInvoice.getPipe('/Users/fangzhiyang/pic', filename, type, False)
         else:
             ##type == 'red'
             midProcessResult = [None, None, None]
@@ -266,7 +266,7 @@ if __name__ == "__main__":
             if (d.startswith('.')):
                 continue
             print("{}:{}".format(index, os.path.join(root, d)))
-            surface("upload/{}".format(d), 'red')
+            surface("upload/{}".format(d), 'excess')
         except Exception as e:
             print("{}".format(e))
             shutil.copy(os.path.join(upload, d), samples)
