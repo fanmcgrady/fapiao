@@ -186,7 +186,7 @@ def simplyAdjust(mubandict, box, tplt, shape):
         mubandict[x][1] = shape[0] - mubandict[x][3]
     print(mubandict)
 
-    mubandict = muban.de_muban(mubandict, 1.1)
+    mubandict = muban.de_muban(mubandict, 0.9)
     return mubandict
 
 

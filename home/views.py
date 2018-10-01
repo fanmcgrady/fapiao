@@ -45,10 +45,10 @@ def ocrForVat(request):
 
         return HttpResponse(json.dumps(ret))
 
+
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
-
 
 # 识别demo
 def ocrWithoutSurface(request):

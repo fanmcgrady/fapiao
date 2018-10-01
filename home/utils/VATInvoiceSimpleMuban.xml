@@ -36,15 +36,15 @@
         </bndbox>
     </object>
     <object>
-        <name>invoiceNo</name>
+        <name>InvoiceNo</name>
         <pose>Unspecified</pose>
         <truncated>0</truncated>
         <difficult>0</difficult>
         <bndbox>
-            <xmin>1923</xmin>
-            <ymin>120</ymin>
-            <xmax>2323</xmax>
-            <ymax>216</ymax>
+            <xmin>2277</xmin>
+            <ymin>205</ymin>
+            <xmax>2556</xmax>
+            <ymax>264</ymax>
         </bndbox>
     </object>
     <object>
@@ -68,7 +68,7 @@
             <xmin>1710</xmin>
             <ymin>1083</ymin>
             <xmax>2072</xmax>
-            <ymax>1160</ymax>
+            <ymax>1145</ymax>
         </bndbox>
     </object>
     <object>
