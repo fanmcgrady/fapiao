@@ -35,6 +35,7 @@ def ocrWithoutSurface(out_file, line_result, flag=1):
 def surface(filename, type='blue'):
     filepath = os.path.join('allstatic', filename)
 
+    isPipeTemplet = False
     # 原方法
     if type == None:
         midProcessResult = detectType.detectType('allstatic', filename)  # tangpeng 预处理
@@ -138,8 +139,12 @@ def surface(filename, type='blue'):
         # print("rate : 0.5")
 
     if midProcessResult[1] == 1:
-        box = Detect.detect(cv2.imread(midProcessResult[0]), rate)
-        Templet = adjustToTextLine(TemType, box, midProcessResult[1], None)  # 蓝火车票
+        if isPipeTemplet:
+            Templet = midProcessResult[3]
+            print('inPipeTem')
+        else:
+            box = Detect.detect(cv2.imread(midProcessResult[0]), rate)
+            Templet = adjustToTextLine(TemType, box, midProcessResult[1], None)  # 蓝火车票
     if midProcessResult[1] == 2:
         rate = 2.0
         print("rate : 2.0")
@@ -147,11 +152,14 @@ def surface(filename, type='blue'):
         # print( box.tolist())
         Templet = adjustToTextLine(TemType, box, midProcessResult[1], None)  # 红火车票
     if midProcessResult[1] == 3:
-        rate = 1.0
-        print("rate : 1.0")
-        box = Detect.detect(cv2.imread(midProcessResult[0]), rate)
-        # print( box.tolist())
-        Templet = adjustToTextLine(TemType, box, midProcessResult[1], None)  # 红(补票)车票
+        if isPipeTemplet:
+            Templet = midProcessResult[3]
+        else:
+            rate = 1.0
+            print("rate : 1.0")
+            box = Detect.detect(cv2.imread(midProcessResult[0]), rate)
+            # print( box.tolist())
+            Templet = adjustToTextLine(TemType, box, midProcessResult[1], None)  # 红(补票)车票
     if midProcessResult[1] == 11:
         box = Detect.detect(cv2.imread(midProcessResult[0]), rate)
         figureP = FindCircle.findSymbol(filepath)
@@ -214,11 +222,22 @@ def textline(filepath):
 
 def adjustToTextLine(mubandict, box, typeT, templet):  # box顺序需要调整
 
+    # 检查二维码错误定位的长宽比
+    StandardRate = 0.7
+
     if typeT != 11:
         midbox = sortBox(box)
+
+        # 长宽检测二维码
+        rateHtoW = (midbox[3] - midbox[1]) / (midbox[2] - midbox[0])
+        if rateHtoW > 1.0 / StandardRate or rateHtoW < StandardRate:
+            print('QRCode seems wrong')
     else:
         midbox = box
-    # print(midbox)
+        rateHtoW = (midbox[3] - midbox[1]) / (midbox[2] - midbox[0])
+        if rateHtoW > 1.0 / StandardRate or rateHtoW < StandardRate:
+            print('QRCode seems wrong')
+    #print(midbox)
 
     mubanBox = []
     if typeT == 1:

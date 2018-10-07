@@ -12,7 +12,11 @@ import cv2
 import InterfaceType
 import fp
 import lineToAttribute.getAtbt
-from scanQRCode.scan_qrcode import recog_qrcode, recog_qrcode_ex
+
+local_start = True
+
+if not local_start:
+    from scanQRCode.scan_qrcode import recog_qrcode, recog_qrcode_ex
 
 def mubanDetect(filepath):
     # 预留
@@ -242,17 +246,21 @@ def init(filepath):
     #二维码无法识别
     if str_info == None:
     '''
-    res = scanQRc(filepath)
-    if res[0] != '':
-        resArray = getArrayFromStr(res[0])
-        js = InterfaceType.JsonInterface.invoice()
-        js.setVATInvoiceFromArray(resArray)
+    if not local_start:
+        res = scanQRc(filepath)
+        if res[0] != '':
+            resArray = getArrayFromStr(res[0])
+            js = InterfaceType.JsonInterface.invoice()
+            js.setVATInvoiceFromArray(resArray)
 
-        jsoni = js.dic
-        print(jsoni)
-        return json.dumps(jsoni).encode().decode("unicode-escape")
+            jsoni = js.dic
+            print(jsoni)
+            return json.dumps(jsoni).encode().decode("unicode-escape")
+        else:
+            return mubanDetect(filepath)
     else:
         return mubanDetect(filepath)
+
     '''
     else:
         js = InterfaceType.JsonInterface.invoice()

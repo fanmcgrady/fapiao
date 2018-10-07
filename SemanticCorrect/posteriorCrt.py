@@ -103,18 +103,22 @@ class posteriorCrt():
                 self.dic['seatNum'] = self.dic['seatNum'][0:6] + '号'
 
         idnum = ''
-        for c in self.dic['idNum']:
-            if c.isdigit() or c == '*' or c == 'X':
-                idnum += c
-        self.dic['idNum'] = idnum
-        print(idnum)
+        if len(self.dic['idNum']) != 0:
+            for c in self.dic['idNum']:
+                if c.isdigit() or c == '*' or c == 'X':
+                    idnum += c
+            self.dic['idNum'] = idnum
+            print(idnum)
 
-        if len(self.dic['idNum']) != 18:
-            if self.dic['idNum'][0:10].isdigit() and self.dic['idNum'][
-                                                     len(self.dic['idNum']) - 4:len(self.dic['idNum']) - 1].isdigit():
-                self.dic['idNum'] = self.dic['idNum'][0:10] + '****' + self.dic['idNum'][len(self.dic['idNum']) - 4:len(
-                    self.dic['idNum'])]
-            print("idNum error")
+            if len(self.dic['idNum']) != 18:
+                if self.dic['idNum'][0:10].isdigit() and self.dic['idNum'][len(self.dic['idNum']) - 4:len(
+                        self.dic['idNum']) - 1].isdigit():
+                    self.dic['idNum'] = self.dic['idNum'][0:10] + '****' + self.dic['idNum'][
+                                                                           len(self.dic['idNum']) - 4:len(
+                                                                               self.dic['idNum'])]
+                print("idNum error")
+        else:
+            print("idNum doesn't exist!")
 
         # price
         if len(self.dic['totalAmount']) > 2:
@@ -171,14 +175,24 @@ class posteriorCrt():
             return Para
 
         i = 0
-        for a in pt['detailList']:
-            if a['str'] == 1:
+        lowCount = 0
+        for index, a in enumerate(pt['detailList']):
+            if len(a['str']) == 1:
                 BeliefL[i] = 0.6
                 i += 1
+                lowCount += 1
             else:
                 BeliefL[i] = 0.6
                 BeliefL[i + len(a['str']) - 1] = 0.6
                 i += len(a['str'])
+                if index != len(pt['detailList']) - 1:
+                    lowCount += 2
+                else:
+                    lowCount += 1
+        print('lowCount: ' + str(lowCount))
+        # 速度控制-------- ------
+        if lowCount > 3:
+            return Para
 
         tp = {}
         wordA = []
@@ -200,12 +214,11 @@ def init():
     print(l)
 
 
-'''
-pC = posteriorCrt()
-l = pC.startPorter('咱尔滨')
-print(l)
-'''
-# sp = posteriorCrt()
-# sp.setTrainTicketPara('', '', '', '', '', '', '', '¥20.1')
-# sp.startTrainTicketCrt()
-# print(sp.dic)
+'''pC = posteriorCrt()
+l = pC.startPorter('一哈尔滨长春')
+print(l)'''
+
+'''sp = posteriorCrt()
+sp.setTrainTicketPara('', '', '', '', '', '', '','¥20.1')
+sp.startTrainTicketCrt()
+print(sp.dic)'''
