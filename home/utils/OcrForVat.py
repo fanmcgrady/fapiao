@@ -13,7 +13,7 @@ import InterfaceType
 import fp
 import lineToAttribute.getAtbt
 
-local_start = True
+local_start = False
 
 if not local_start:
     from scanQRCode.scan_qrcode import recog_qrcode, recog_qrcode_ex
