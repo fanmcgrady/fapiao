@@ -208,7 +208,7 @@ def sortBox(box):
 def scanQRc(filepath):
     image = cv2.imread(filepath, 0)
 
-    str_info, position = recog_qrcode(image, roi=None)
+    str_info, position ,state= recog_qrcode(image, roi=None)
     print("info:", str_info)
     print("pos:", position)
 
@@ -218,7 +218,7 @@ def scanQRc(filepath):
         height, width = image.shape[:2]
         roi = [0, 0, int(width / 4), int(height / 4)]
         # roi = None
-        str_info, position = recog_qrcode_ex(image, roi)
+        str_info, position ,state= recog_qrcode_ex(image, roi)
         print("info(ex):", str_info)
         print("pos(ex):", position)
     # ***** **************************************
