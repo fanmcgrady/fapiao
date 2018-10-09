@@ -63,6 +63,15 @@ def findSymbol(filePath):
         imobj = ac.imread('home/utils/figure.jpg')
         pos = ac.find_template(imsrc, imobj, 0.5)
     # print(type(pos))
+
+    # define an area [600-1000, 950-1450]添加定位符区域确认
+    if not (pos['result'][0] > 600 and pos['result'][0] < 1000 and pos['result'][1] > 950 and pos['result'][1] < 1450):
+        imobj = ac.imread('home/utils/figureX1.jpg')
+        pos = ac.find_template(imsrc, imobj, 0.5)
+
+    if pos['result'] == None:
+        print('定位符二次定位错误')
+
     circle_center_pos = pos['result']
     circle_radius = 50
     color = (0, 255, 0)
