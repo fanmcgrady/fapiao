@@ -13,7 +13,7 @@ import InterfaceType
 import fp
 import lineToAttribute.getAtbt
 
-local_start = False
+local_start = True
 
 if not local_start:
     from scanQRCode.scan_qrcode import recog_qrcode, recog_qrcode_ex
@@ -260,6 +260,16 @@ def init(filepath):
     if not local_start:
         res = scanQRc(filepath)
         if res[0] != '':
+            # 绘制二维码
+            plt_rects = []
+            plt_rects.append(res[1])
+            # 显示
+            vis_textline0 = fp.util.visualize.rects(cv2.imread(filepath, 0), plt_rects)
+            pl.imshow(vis_textline0)
+            # 保存到line目录
+            pltpath = filepath.replace("upload", "line")
+            pl.savefig(pltpath)
+
             resArray = getArrayFromStr(res[0])
             js = InterfaceType.JsonInterface.invoice()
             js.setVATInvoiceFromArray(resArray)
