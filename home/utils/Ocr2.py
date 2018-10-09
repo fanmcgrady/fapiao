@@ -274,15 +274,22 @@ if __name__ == "__main__":
     #     else:
     #         index += 1
 
-    file = "/Users/fangzhiyang/pic/INV/Image_00179.jpg"
+    filepath = "/"
 
-    position = [[138, 336], [139, 123], [349, 124], [349, 337]]
+    # 生成行提取的图片
     plt_rects = []
-    # for x in attributeLine:
-    #     plt_rects.append(attributeLine[x])
-    plt_rects.append([10, 10, 100, 100])
+    plt_rects.append(
+        [res[1][0][0] + 5, res[1][0][1] + 5, res[1][0][1] - res[1][1][1] + 10, res[1][0][1] - res[1][1][1] + 10])
     # 显示
-    vis_textline0 = fp.util.visualize.rects(cv2.imread(file, 0), plt_rects)
+    vis_textline0 = fp.util.visualize.rects(cv2.imread(filepath, 0), plt_rects)
+
+    # 运行代码需要如下部分
+    # pl.imshow(vis_textline0)
+    # # 保存到line目录
+    # pltpath = filepath.replace("out", "line")
+    # pl.savefig(pltpath)
+
+    # test部分
     pl.figure(figsize=(15, 10))
     pl.subplot(1, 2, 1)
     pl.imshow(vis_textline0)
