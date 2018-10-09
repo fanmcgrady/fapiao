@@ -25,6 +25,7 @@ def ocrForVat(request):
         filename = generate_random_name()
 
         file_path = os.path.join('upload', filename)
+        line_filename = os.path.join('line', filename)
 
         full_path = os.path.join('allstatic', file_path)
         f = open(full_path, 'wb')
@@ -37,6 +38,7 @@ def ocrForVat(request):
             ret = {
                 'status': True,
                 'path': file_path,
+                'line': line_filename,
                 'result': json.loads(str(json_result).replace("'", "\""))
             }
         except Exception as e:

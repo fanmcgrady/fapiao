@@ -169,7 +169,7 @@ def surface(filename, type='blue'):
 
     attributeLine = lineToAttribute.getAtbt.compute(midProcessResult[2], Templet)
 
-    # 绘制行提取结果
+    # 生成行提取的图片
     plt_rects = []
     for x in attributeLine:
         plt_rects.append(attributeLine[x])

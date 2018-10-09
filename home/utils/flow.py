@@ -708,6 +708,7 @@ def cropToOcr(filePath, recT, typeT):
             jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
                 1])
 
+    # Öð¸öÇÐÍ¼
     for x in recT:
         sp = img.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
 

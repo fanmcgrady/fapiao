@@ -86,6 +86,17 @@ def mubanDetect(filepath):
 
     attributeLine = lineToAttribute.getAtbt.compute(textline(midProcessResult[0]), Templet)
 
+    # 生成行提取的图片
+    plt_rects = []
+    for x in attributeLine:
+        plt_rects.append(attributeLine[x])
+    # 显示
+    vis_textline0 = fp.util.visualize.rects(cv2.imread(midProcessResult[0], 0), plt_rects)
+    pl.imshow(vis_textline0)
+    # 保存到line目录
+    pltpath = midProcessResult[0].replace("upload", "line")
+    pl.savefig(pltpath)
+
     # print(attributeLine)
     # print(type(attributeLine))
     # print(attributeLine['departCity'])

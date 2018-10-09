@@ -38,9 +38,6 @@ def getPipe(dset_root, file_name, type, idStandard=False):
         ok = pipe(im, no_background=idStandard)
         print('ok' if ok else 'fail')
 
-        out_filename = file_name.replace('upload', 'out')
-        out_filename = os.path.join(dset_root, out_filename)
-
         cv2.imwrite(out_filename, pipe.surface_image)
 
         cdic = getDic(pipe.template.items())  # pipe templet

@@ -281,21 +281,13 @@
         $("#button-tips").html("处理中...");
         $("#status").text("识别中...");
 
-        {#$("#out_text").text("识别中...");#}
-        {#$("#out_result").removeAttr("src");#}
-        {##}
-        {#$("#line_text").text("识别中...");#}
-        {#$("#line_result").removeAttr("src");#}
-        {##}
-        {#$("#correct_text").text("识别中...");#}
-        {#$("#correct_result").empty();#}
+        $("#line_text").text("识别中...");
+        $("#line_result").removeAttr("src");
 
-        {#$("#result_text").text("识别中...");#}
+        $("#result_text").text("识别中...");
         $("#simple_result").empty();
 
         $("#result").empty();
-
-        {#$("#out_div").find("p").remove();#}
     }
 
     function ocrForVat() {
@@ -330,6 +322,11 @@
             success: function (arg) {
                 if (arg.status) {
 
+                    // 行提取图片
+                    $("#line_text").text("");
+                    $("#line_result").attr("src", "static/" + arg.line);
+
+                    // 显示识别结果
                     var invoice = arg.result.invoice;
                     // 发票代码：invoiceCode
                     $("#simple_result")
@@ -347,32 +344,15 @@
                     $("#simple_result")
                         .append($("<p></p>").text("总金额：" + invoice.totalAmount));
 
+                    // 简单结果
+                    $("#result_text").text("");
+
                     // 详细结果
                     $("#result").text(JSON.stringify(arg.result));
                     $("#status").html("识别完成");
-
-                    // 原始图片
-                    {#$("#path_result").attr("src", "static/" + arg.path);#}
-                    // 矫正图片
-                    {#$("#out_text").text("");#}
-                    {#$("#out_result").attr("src", "static/" + arg.out);#}
-                    // 行提取图片
-                    {#$("#line_text").text("");#}
-                    {#$("#line_result").attr("src", "static/" + arg.line);#}
-
-                    // 继续下一步ocr
-                    {#ocr(arg);#}
                 } else {
                     $("#result").text("出错了，请联系我们完善程序，错误信息如下：" + arg.out);
                     $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试");
-                    // 原始图片
-                    {#$("#path_text").text("");#}
-                    {#$("#path_result").attr("src", "static/" + arg.path);#}
-                    // 矫正图片
-                    {#$("#out_text").text("");#}
-                    {#$("#out_div").append($("<p class='text-danger' style='height:180px;'>出错了，请联系我们完善程序，错误信息如下：" + arg.out + "</p>"));#}
-                    // 行提取
-                    {#$("#line_text").text("");#}
                 }
                 $("#button-tips").html("识别");
             },
@@ -389,7 +369,6 @@
             ocrForVat();
         });
     });
-
 
 </script>
 </body>
