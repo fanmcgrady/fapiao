@@ -255,21 +255,40 @@ def sortBox(box):
 
 
 if __name__ == "__main__":
-    root = "/Users/fangzhiyang/pic"
-    upload = os.path.join(root, "upload")
-    samples = os.path.join(root, "samples")
-    dirs = os.listdir(upload)
+    # root = "/Users/fangzhiyang/pic"
+    # upload = os.path.join(root, "upload")
+    # samples = os.path.join(root, "samples")
+    # dirs = os.listdir(upload)
+    #
+    # index = 1
+    # for d in dirs:
+    #     try:
+    #         if (d.startswith('.')):
+    #             continue
+    #         print("{}:{}".format(index, os.path.join(root, d)))
+    #         surface("upload/{}".format(d), 'excess')
+    #     except Exception as e:
+    #         print("{}".format(e))
+    #         shutil.copy(os.path.join(upload, d), samples)
+    #
+    #     else:
+    #         index += 1
 
-    index = 1
-    for d in dirs:
-        try:
-            if (d.startswith('.')):
-                continue
-            print("{}:{}".format(index, os.path.join(root, d)))
-            surface("upload/{}".format(d), 'excess')
-        except Exception as e:
-            print("{}".format(e))
-            shutil.copy(os.path.join(upload, d), samples)
+    file = "/Users/fangzhiyang/pic/INV/Image_00179.jpg"
 
-        else:
-            index += 1
+    position = [[138, 336], [139, 123], [349, 124], [349, 337]]
+    plt_rects = []
+    # for x in attributeLine:
+    #     plt_rects.append(attributeLine[x])
+    plt_rects.append([10, 10, 100, 100])
+    # 显示
+    vis_textline0 = fp.util.visualize.rects(cv2.imread(file, 0), plt_rects)
+    pl.figure(figsize=(15, 10))
+    pl.subplot(1, 2, 1)
+    pl.imshow(vis_textline0)
+    pl.show()
+
+    # pl.imshow(vis_textline0)
+    # 保存到line目录
+    # pltpath = midProcessResult[0].replace("upload", "line")
+    # pl.savefig(pltpath)
