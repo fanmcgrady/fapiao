@@ -274,8 +274,8 @@ if __name__ == "__main__":
     #     else:
     #         index += 1
 
-    filepath = "/"
-
+    filepath = "C:/Users/Administrator/Desktop/timg.jpg"
+    res = [0, [[131, 131], [100, 100]]]
     # 生成行提取的图片
     plt_rects = []
     plt_rects.append(

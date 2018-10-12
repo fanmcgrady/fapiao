@@ -260,15 +260,20 @@ def init(filepath):
     if not local_start:
         res = scanQRc(filepath)
         if res[0] != '':
-            # # 绘制二维码
-            # plt_rects = []
-            # plt_rects.append(res[1])
-            # # 显示
-            # vis_textline0 = fp.util.visualize.rects(cv2.imread(filepath, 0), plt_rects)
-            # pl.imshow(vis_textline0)
-            # # 保存到line目录
-            # pltpath = filepath.replace("upload", "line")
-            # pl.savefig(pltpath)
+            # # test test
+            # 生成行提取的图片
+            plt_rects = []
+            plt_rects.append(
+                [res[1][0][0] + 5, res[1][0][1] + 5, res[1][0][1] - res[1][1][1] + 10,
+                 res[1][0][1] - res[1][1][1] + 10])
+            # 显示
+            vis_textline0 = fp.util.visualize.rects(cv2.imread(filepath, 0), plt_rects)
+            # 运行代码需要如下部分
+            pl.imshow(vis_textline0)
+            # 保存到line目录
+            pltpath = filepath.replace("out", "line")
+            pl.savefig(pltpath)
+            # # test test
 
             resArray = getArrayFromStr(res[0])
             js = InterfaceType.JsonInterface.invoice()
