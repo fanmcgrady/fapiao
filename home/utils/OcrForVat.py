@@ -260,8 +260,7 @@ def init(filepath):
     if not local_start:
         res = scanQRc(filepath)
         if res[0] != '':
-            # # test test
-            # 生成行提取的图片
+            # 显示二维码
             plt_rects = []
             plt_rects.append(
                 [res[1][0][0] + 5, res[1][0][1] + 5, res[1][0][1] - res[1][1][1] + 10,
@@ -273,7 +272,6 @@ def init(filepath):
             # 保存到line目录
             pltpath = filepath.replace("out", "line")
             pl.savefig(pltpath)
-            # # test test
 
             resArray = getArrayFromStr(res[0])
             js = InterfaceType.JsonInterface.invoice()
