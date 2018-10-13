@@ -1,4 +1,5 @@
 import copy
+import json
 
 import cv2
 import matplotlib.pyplot as pl
@@ -307,7 +308,7 @@ if __name__ == "__main__":
     if os.path.splitext(file_name)[1] == '.zip':
         file_zip = zipfile.ZipFile(file_name, 'r')
         for file in file_zip.namelist():
-            print(file)
+            print(type(file))
             file_zip.extract(file, "/Users/fangzhiyang/pic")
         file_zip.close()
-        os.remove(file_name)
+        # os.remove(file_name)

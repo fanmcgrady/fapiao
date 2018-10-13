@@ -33,6 +33,9 @@ urlpatterns = [
     url(r"^ocrWithoutSurface$", home_views.ocrWithoutSurface),
     url(r"^ocrForVat$", home_views.ocrForVat),
 
+    # 批量上传
+    url(r"^getFileList$", home_views.getFileList),
+
     # 找工作同学提交简历
     url(r"^resume$", home_views.resume),
 ]

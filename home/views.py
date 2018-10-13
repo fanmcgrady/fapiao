@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+import zipfile
 
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -15,23 +16,63 @@ print("读取全局字典")
 global_dic = ComputeDistance.load_dict('SemanticCorrect/hei_20.json')
 
 
-def ocrForVat(request):
-    if request.method == 'GET':
-        return render(request, 'ocrForVat.html')
-    elif request.method == "POST":
+# 批量上传获取文件列表
+def getFileList(request):
+    if request.method == "POST":
         obj = request.FILES.get('fapiao')
 
         # 随机文件名
-        filename = generate_random_name()
+        filename = generate_random_name(obj.name)
 
         file_path = os.path.join('upload', filename)
-        line_filename = os.path.join('line', filename)
-
         full_path = os.path.join('allstatic', file_path)
         f = open(full_path, 'wb')
         for chunk in obj.chunks():
             f.write(chunk)
         f.close()
+
+        file_list = []
+
+        # 是否是zip文件，批量
+        if os.path.splitext(full_path)[1] == '.zip':
+            file_zip = zipfile.ZipFile(full_path, 'r')
+            for file in file_zip.namelist():
+                file_zip.extract(file, os.path.join('allstatic', 'upload'))
+                # 重命名
+                new_name = generate_random_name(file)
+                os.rename(os.path.join('allstatic/upload', file), os.path.join('allstatic/upload', new_name))
+                file_list.append(new_name)
+            file_zip.close()
+            os.remove(full_path)
+        else:
+            # 单个处理
+            file_list.append(filename)
+
+        try:
+            ret = {
+                'status': True,
+                'path': file_path,
+                'out': file_list
+            }
+        except Exception as e:
+            print(e)
+            ret = {'status': False, 'path': file_path, 'out': str(e)}
+
+        return HttpResponse(json.dumps(ret))
+
+
+# 专票
+def ocrForVat(request):
+    if request.method == 'GET':
+        return render(request, 'ocrForVat.html')
+    elif request.method == "POST":
+        # obj = request.FILES.get('fapiao')
+        filename = request.POST['fileInZip']
+
+        # 文件已通过getFileList方法上传到upload目录，此时不需要上传了
+        file_path = os.path.join('upload', filename)
+        line_filename = os.path.join('line', filename)
+        full_path = os.path.join('allstatic', file_path)
 
         try:
             json_result = OcrForVat.init(full_path)
@@ -46,7 +87,6 @@ def ocrForVat(request):
             ret = {'status': False, 'path': file_path, 'out': str(e)}
 
         return HttpResponse(json.dumps(ret))
-
 
 # Create your views here.
 def index(request):
@@ -84,7 +124,6 @@ def ocrWithoutSurface(request):
 
     return HttpResponse(json.dumps(ret, indent=2))
 
-
 # 识别demo
 def ocr(request):
     if request.method == 'GET':
@@ -97,7 +136,7 @@ def ocr(request):
         type = request.POST['type']
 
         # 随机文件名
-        filename = generate_random_name()
+        filename = generate_random_name(obj.name)
 
         file_path = os.path.join('upload', filename)
         out_filename = os.path.join('out', filename)
@@ -126,7 +165,6 @@ def ocr(request):
 
         return HttpResponse(json.dumps(ret))
 
-
 # 矫正demo，detect.html页面调用
 def surface(request):
     if request.method == 'GET':
@@ -139,7 +177,7 @@ def surface(request):
         type = request.POST['type']
 
         # 随机文件名
-        filename = generate_random_name()
+        filename = generate_random_name(obj.name)
 
         file_path = os.path.join('upload', filename)
         out_filename = os.path.join('out', filename)
@@ -173,10 +211,11 @@ def surface(request):
 
 
 # 按日期生成文件名
-def generate_random_name():
+def generate_random_name(file_name):
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-    return timestamp + ".jpg"
+    _, ext = os.path.splitext(file_name)
 
+    return timestamp + ext
 
 ##################
 # 其他系统外功能
