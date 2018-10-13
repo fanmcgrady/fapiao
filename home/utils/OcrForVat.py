@@ -270,7 +270,7 @@ def init(filepath):
             # 运行代码需要如下部分
             pl.imshow(vis_textline0)
             # 保存到line目录
-            pltpath = filepath.replace("out", "line")
+            pltpath = filepath.replace("upload", "line")
             pl.savefig(pltpath)
 
             resArray = getArrayFromStr(res[0])
