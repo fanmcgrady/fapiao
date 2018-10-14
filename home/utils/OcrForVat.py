@@ -263,7 +263,7 @@ def init(filepath):
             # 显示二维码
             plt_rects = []
             plt_rects.append(
-                [res[1][0][0] + 5, res[1][0][1] + 5, res[1][0][1] - res[1][1][1] + 10,
+                [res[1][1][0] - 5, res[1][1][1] - 5, res[1][0][1] - res[1][1][1] + 10,
                  res[1][0][1] - res[1][1][1] + 10])
             # 显示
             vis_textline0 = fp.util.visualize.rects(cv2.imread(filepath, 0), plt_rects)
