@@ -13,7 +13,7 @@ import InterfaceType
 import fp
 import lineToAttribute.getAtbt
 
-local_start = False
+local_start = True
 
 if not local_start:
     from scanQRCode.scan_qrcode import recog_qrcode, recog_qrcode_ex
@@ -44,7 +44,19 @@ def newMubanDetect(filepath):
         attributeLine[c][2] = 2 * attributeLine[c][2]
         attributeLine[c][3] = 2 * attributeLine[c][3]
     print(attributeLine)
-    jsonResult = flow.cropToOcr(filepath, attributeLine, 11, debug=False)  # ocr和分词
+
+    # 生成行提取的图片
+    plt_rects = []
+    for x in attributeLine:
+        plt_rects.append(attributeLine[x])
+    # 显示
+    vis_textline0 = fp.util.visualize.rects(cv2.imread(filepath, 0), plt_rects)
+    pl.imshow(vis_textline0)
+    # 保存到line目录
+    pltpath = filepath.replace("upload", "line")
+    pl.savefig(pltpath)
+
+    jsonResult, _ = flow.cropToOcr(filepath, attributeLine, 11)  # ocr和分词
     print(jsonResult)
 
     return jsonResult
@@ -95,6 +107,17 @@ def mubanDetectInvoiceDate(filepath, setKey='invoiceDate'):
         Templet = simplyAdjust(TemType, [figureP[0], figureP[1]], tplt, w1)  # 增值税专票
 
         attributeLine = lineToAttribute.getAtbt.compute(textline(midProcessResult[0]), Templet)
+
+        # 生成行提取的图片
+        plt_rects = []
+        for x in attributeLine:
+            plt_rects.append(attributeLine[x])
+        # 显示
+        vis_textline0 = fp.util.visualize.rects(cv2.imread(midProcessResult[0], 0), plt_rects)
+        pl.imshow(vis_textline0)
+        # 保存到line目录
+        pltpath = midProcessResult[0].replace("upload", "line")
+        pl.savefig(pltpath)
 
     return attributeLine
 
@@ -364,9 +387,9 @@ def init(filepath):
             print(jsoni)
             return json.dumps(jsoni).encode().decode("unicode-escape")
         else:
-            return mubanDetect(filepath)
+            return newMubanDetect(filepath)
     else:
-        return mubanDetect(filepath)
+        return newMubanDetect(filepath)
 
     '''
     else:
