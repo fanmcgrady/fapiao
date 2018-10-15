@@ -725,7 +725,7 @@ def cropToOcr(filePath, recT, typeT, debug=False):
     pC = SemanticCorrect.posteriorCrt.posteriorCrt()
 
     if typeT == 11:
-        import OcrForVat
+        from home.utils import OcrForVat
         if ocrResult['invoiceDate'][:4] == '¿ªÆ±ÈÕÆÚ' or len(ocrResult['invoiceDate']) < 4:
             recT['invoiceDate'] = OcrForVat.mubanDetectInvoiceDate(filePath)['invoiceDate']
             sp = img.crop((recT['invoiceDate'][0], recT['invoiceDate'][1],
