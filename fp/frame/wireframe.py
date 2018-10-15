@@ -116,9 +116,9 @@ class Detect(object):
         
         lines = self.detect_lines(image)
         points, lineids = self.detect_corners(lines)
-        
-        rects = find_rects(points)
-        return points, rects
+
+        # rects = find_rects(points)
+        return points  # , rects
     
 def visualize(image, points):
     imx = cv2.merge((image, image, image))

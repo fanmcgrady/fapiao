@@ -1,11 +1,10 @@
 # coding=utf-8
 
 
-import cv2
-import aircv as ac
 import os
-from matplotlib import pyplot as plt
-from PIL import Image
+
+import aircv as ac
+import cv2
 
 # image = cv2.imread('')
 
@@ -29,6 +28,8 @@ def jwkj_get_filePath_fileName_fileExt(filename):  # 提取路径
 
 
 def findSymbol(filePath):
+    # define an area [600-1000, 950-1450]
+
     if os.path.exists(
             jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
                 1]) == False:
@@ -69,9 +70,6 @@ def findSymbol(filePath):
         imobj = ac.imread('home/utils/figureX1.jpg')
         pos = ac.find_template(imsrc, imobj, 0.5)
 
-    if pos['result'] == None:
-        print('定位符二次定位错误')
-
     circle_center_pos = pos['result']
     circle_radius = 50
     color = (0, 255, 0)
@@ -84,4 +82,4 @@ def findSymbol(filePath):
     return circle_center_pos[0], circle_center_pos[1]
     # draw_circle(imsrc, circle_center_pos, circle_radius, color, line_width)
 
-# print(findSymbol('Image_00179.jpg')[0])
+# print(findSymbol('Image_00188.jpg'))

@@ -23,14 +23,34 @@ class Find(object):
         self.min_area = 60
         
     def __call__(self, mask):
-        quads, conts = quad.find_quads(mask, approx_ratio=self.approx_ratio, 
-                                       min_area=self.min_area)
-        if len(conts) == 0:
-            return None, None
-        boxes = [cv2.minAreaRect(cont) for cont in conts]
+        # quads, conts = quad.find_quads(mask, approx_ratio=self.approx_ratio,
+        #                               min_area=self.min_area)
+        _, contours, _ = cv2.findContours(mask.copy(), mode=cv2.RETR_EXTERNAL,
+                                          method=cv2.CHAIN_APPROX_SIMPLE)
+        quads = []
+        conts = []
+        for cont in contours:
+            # approximate the contour
+            peri = cv2.arcLength(cont, True)
+            approx = cv2.approxPolyDP(cont, self.approx_ratio * peri, True)
+
+            # if the approximated contour has four points, then assume that the
+            # contour is a book -- a book is a rectangle and thus has four vertices
+            if len(approx) == 4 and cv2.isContourConvex(approx) \
+                    and cv2.contourArea(approx) > self.min_area:
+                # approx.shape is (4,1,2), so, use squeeze
+                quads.append(np.squeeze(approx))
+                conts.append(cont)
+
+        quads = np.array(quads)
+
+        if len(conts) > 0:
+            boxes = [cv2.minAreaRect(cont) for cont in conts]
+        else:
+            boxes = [cv2.minAreaRect(cont) for cont in contours]
         areas = [box[1][0] * box[1][1] for box in boxes]
         idx = np.argmax(areas)
-        
+
         # rotate 90-degree if width-height are reversed
         box = list(boxes[idx])
         box[0], box[1] = list(box[0]), list(box[1])
@@ -39,7 +59,8 @@ class Find(object):
             box[2] += 90.0
             if box[2] >= 360.0:
                 box[2] -= 360.0
-        return quads[idx], box
+        return box  #quads[idx]
+
 
 class Crop(object):
     def __init__(self, method=None, pars=None):
@@ -134,10 +155,9 @@ class Detect(object):
         _, mask = cv2.threshold(im, max_pix-2, 255, cv2.THRESH_BINARY_INV)
         if self.debug is not None:
             self.debug['mask'] = mask
-            
-        quad, box = self.find_frame(mask)
+
+        box = self.find_frame(mask)  # quad,
         if self.debug is not None:
-            self.debug['quad'] = quad
             self.debug['box'] = box
             
         if box is None:

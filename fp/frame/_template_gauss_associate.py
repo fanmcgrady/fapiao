@@ -103,7 +103,7 @@ class TemplateAssociate_v2(object):
                 element_diff = torch.abs(new_anchor - warped_anchor) / anchor_std
                 # print('new_anchor {}'.format(new_anchor))
                 # print('warped_anchor {}'.format(warped_anchor))
-                # print('anchor_std {}'.format(anchor_std))
+                #print('anchor_std {}'.format(anchor_std))
                 #print('element_diff {}'.format(element_diff), end='')
                 overall_diff = torch.dot(element_diff, self.weights)
                 if self.debug is not None:

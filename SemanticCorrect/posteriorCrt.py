@@ -1,7 +1,6 @@
-import copy
-
 import SemanticCorrect.Porter
 import SemanticCorrect.SmtcCrt
+import copy
 
 
 class posteriorCrt():
@@ -203,10 +202,43 @@ class posteriorCrt():
         tp['belief'] = BeliefL
 
         print(tp)
-        ptC = SemanticCorrect.SmtcCrt.SmtcCrt(tp, 1, 1)  # type:1 地点
+        ptC = SemanticCorrect.SmtcCrt.SmtcCrt(tp, 1, 1)  # type=1 地点
 
         return ptC
 
+    def startFuzzyPorter(self, Para):
+        BeliefL = []
+        for c in Para:
+            BeliefL.append(1.0)
+        pt = SemanticCorrect.Porter.porterFront(Para, BeliefL)
+
+        if pt['sum'] == 1:
+            return Para
+
+        i = 0
+
+        for index, a in enumerate(pt['detailList']):
+            if len(a['str']) == 1:
+                BeliefL[i] = 0.6
+                i += 1
+
+            else:
+                BeliefL[i] = 0.6
+                BeliefL[i + len(a['str']) - 1] = 0.6
+                i += len(a['str'])
+
+        tp = {}
+        wordA = []
+
+        for b in Para:
+            wordA.append(b)
+        tp['word'] = wordA
+        tp['belief'] = BeliefL
+
+        print(tp)
+        ptC = SemanticCorrect.SmtcCrt.FuzzyCrt(tp, 1, 1)  # type=1 地点
+
+        return ptC
 
 def init():
     pC = posteriorCrt()

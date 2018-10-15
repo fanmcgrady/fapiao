@@ -1,21 +1,21 @@
-#coding=utf-8
+# coding=utf-8
 
 import os
 import SemanticCorrect.ComputeDistance as CD
 import SemanticCorrect.Porter
 import copy
 
-from home import views
-
-#import  from      #字模库 wordTemp
+# import  from      #字模库 wordTemp
 # type:dict   {'一':1.0,'二':0.6}
 
-#import  from      #词库   speechTemp
+# import  from      #词库   speechTemp
+from home import views
 
 standardCfdValue = 0.8
 
-def SmtcCrt(sentence , sentenceType , chooseMod):
-    #sentence 为list [字，置信度]   {word , confidentValue}
+
+def SmtcCrt(sentence, sentenceType, chooseMod):
+    # sentence 为list [字，置信度]   {word , confidentValue}
     '''tp = {
     'word': ['一','二'],
     'belief': [0.8,1]
@@ -33,7 +33,7 @@ def SmtcCrt(sentence , sentenceType , chooseMod):
     }
     '''
     global standardCfdValue
-    #originSent = sentence[:][0]
+    # originSent = sentence[:][0]
     '''for index, i in enumerate(sentence):
         #[]
         if i[1] < standardCfdValue:
@@ -48,20 +48,19 @@ def SmtcCrt(sentence , sentenceType , chooseMod):
     for c in Result:
         getWholeConfdt(c)
     '''
-    #检测多字
+    # 检测多字
     for index, mm in enumerate(sentence['word']):
-        words = ''.join(sentence['word'][:index]+sentence['word'][index+1:])
+        words = ''.join(sentence['word'][:index] + sentence['word'][index + 1:])
         sFPCM2 = SemanticCorrect.redict.init(words)
 
         if sFPCM2 > 0:
             return words
 
-
     for index, i in enumerate(sentence['word']):
         if sentence['belief'][index] < standardCfdValue:
             wtf = getFamiliar(i)
             wtfBelief = getBelief(wtf)
-            sentenceProduct(sentenceComb, wtf, wtfBelief )
+            sentenceProduct(sentenceComb, wtf, wtfBelief)
         else:
             sentenceAdd(sentenceComb, sentence['word'][index], sentence['belief'][index])
 
@@ -69,6 +68,7 @@ def SmtcCrt(sentence , sentenceType , chooseMod):
             {'str':'1','belief':0.8},
             {'str':'2','belief':1}
     ]'''
+    print('sentenceComb:  ')
     print(sentenceComb)
 
     maxBelief = -1
@@ -83,19 +83,17 @@ def SmtcCrt(sentence , sentenceType , chooseMod):
 
             if sFPCM1 > 0:
                 return m['str']
-                #火车票单个词识别
+                # 火车票单个词识别
 
-    longtimeCrtOn = False#关闭长时测试
+    longtimeCrtOn = False  # 关闭长时测试
 
     if not longtimeCrtOn:
         return ''.join(sentence['word'])
 
-
-
     for indexM, m in enumerate(sentenceComb['porterStr']):
 
         fp = None
-        fp = SemanticCorrect.Porter.porterFront(m['str'],m['belief'])
+        fp = SemanticCorrect.Porter.porterFront(m['str'], m['belief'])
         print(m['str'])
         print(m['belief'])
         print(fp)
@@ -104,7 +102,6 @@ def SmtcCrt(sentence , sentenceType , chooseMod):
             iDMAX = indexM
             tpPorter = fp
 
-
     print(type(tpPorter))
     print(tpPorter)
     print(sentenceComb['porterStr'][iDMAX]['str'])
@@ -112,26 +109,28 @@ def SmtcCrt(sentence , sentenceType , chooseMod):
     return sentenceComb['porterStr'][iDMAX]['str']
 
 
-#sentence 为list [字，置信度]   [word , confidentValue]
+# sentence 为list [字，置信度]   [word , confidentValue]
 
 def getFamiliar(word):
     # dc = CD.load_dict('SemanticCorrect/hei_20.json')  # 取20个形似字
     dc = views.global_dic
     wt = dc[word]
     wt[word] = 1
-    #wordTemp接口getFamiliar(word)
-    #wordTemp[word] type:dict
+    # wordTemp接口getFamiliar(word)
+    # wordTemp[word] type:dict
     '''wtf = []
     for i in wt:
         wtf.append(i)'''
     return wt
-    #list形式
-#差近似字形
+    # list形式
+
+
+# 差近似字形
 
 def getBelief(wtf):
-    belief=[]
+    belief = []
     for c in wtf:
-        #print(c)
+        # print(c)
         belief.append(wtf[c])
 
     return belief
@@ -180,18 +179,17 @@ def getWholeConfdt(sentence):
 
 '''
 
+
 def sentenceAdd(wordList, word, belief):
-    #['wordList': , 'belief': [ , , ]]
+    # ['wordList': , 'belief': [ , , ]]
 
     if len(wordList['porterStr']) == 0:
-
         wordList['porterStr'].append({'str': word, 'belief': [belief]})
         return wordList
 
-    #if len(wordList['porterStr']) == 1:
+    # if len(wordList['porterStr']) == 1:
 
     for g in wordList['porterStr']:
-
         g['str'] += word
         g['belief'].append(belief)
 
@@ -199,12 +197,11 @@ def sentenceAdd(wordList, word, belief):
 
 
 def sentenceProduct(wordList, word, belief):
-
     wLT = copy.deepcopy(wordList)
-    #print(wLT)
+    # print(wLT)
     if len(wordList['porterStr']) == 0:
         for indexInZ, b in enumerate(word):
-            wordList['porterStr'].append({'str': b , 'belief':[belief[indexInZ]]})
+            wordList['porterStr'].append({'str': b, 'belief': [belief[indexInZ]]})
         return wordList
 
     for index, c in enumerate(wLT['porterStr']):
@@ -215,10 +212,10 @@ def sentenceProduct(wordList, word, belief):
             else:
                 ctmp = copy.deepcopy(c['belief'])
                 ctmp.append(belief[indexIn])
-                wordList['porterStr'].append({'str':c['str'] + a, 'belief':ctmp})
-
+                wordList['porterStr'].append({'str': c['str'] + a, 'belief': ctmp})
 
     return wordList
+
 
 '''
 def copy_dict(d):
@@ -237,19 +234,133 @@ def copy_dict(d):
             res[key] = copy_dict(value)
     return res
 '''
-#print(getFamiliar('咱'))
-#print(getFamiliar('滨'))
-'''
-sentence = {
-#    'word': ['浙', '江', '省', '绍', '兴', '市'],
-        #'word': ['长', '卷', '长', '兴'],
-        #'belief': [0.9,0.7,0.9,1.0]
-    'word': ['哈', '尔', '滴'],
-    'belief': [0.9,0.9,0.4]
 
-#    'belief': [0.9, 0.7, 0.9, 1.0, 1.0, 1.0]
-}
-print(SmtcCrt(sentence,1))
 
-'''
+def getDistanceBetw(str1, str2):
+    dc = CD.load_dict('.json')  # 取全部形似字
+    wt = dc[str1][str2]
 
+    # wordTemp接口getFamiliar(word)
+    # wordTemp[word] type:dict
+    '''wtf = []
+    for i in wt:
+        wtf.append(i)'''
+    return wt
+    # 返回两字向量差
+
+
+def FuzzyCrt(sentence, sentenceType, chooseMod):
+    # sentence 为list [字，置信度]   {word , confidentValue}
+    '''tp = {
+    'word': ['一','二'],
+    'belief': [0.8,1]
+}   '''
+
+    sentenceComb = {
+        'porterStr': []
+    }
+
+    '''    {
+    'porterStr':
+            'str':'',
+            'belief':[]
+         }
+    'originSentence':'originStr'
+    }
+    '''
+    global standardCfdValue
+    # originSent = sentence[:][0]
+    '''for index, i in enumerate(sentence):
+        #[]
+        if i[1] < standardCfdValue:
+            wtf = getFamiliar(i[0],index)
+            sentenceComb.append(getFamiliar(i[0],index))
+        else:
+            sentenceComb.append([sentence[index],index])
+
+    Result = []
+    selectFamiliar(sentence, [], 0, Result)
+
+    for c in Result:
+        getWholeConfdt(c)
+    '''
+    # 检测多字
+    for index, mm in enumerate(sentence['word']):
+        words = ''.join(sentence['word'][:index] + sentence['word'][index + 1:])
+        sFPCM2 = SemanticCorrect.redict.init(words)
+
+        if sFPCM2 > 0:
+            return words
+
+    '''for index, i in enumerate(sentence['word']):
+        if sentence['belief'][index] < standardCfdValue:
+            wtf = getFamiliar(i)
+            wtfBelief = getBelief(wtf)
+            sentenceProduct(sentenceComb, wtf, wtfBelief)
+        else:
+            sentenceAdd(sentenceComb, sentence['word'][index], sentence['belief'][index])
+    '''
+    sentenceComb['originSentence'] = ''.join(sentence['word'])
+
+    sentenceComb['porterStr'].append({'str': sentence['word'], 'belief': sentence['belief']})
+
+    for index, c in enumerate(sentence['word']):
+        if sentence['belief'][index] < standardCfdValue:
+            words = ''.join(sentence['word'][:index] + '*' + sentence['word'][index + 1:])
+            belf = sentence['belief'][:index] + [1.0] + sentence['belief'][index + 1:]
+            sentenceComb['porterStr'].append({'str': words, 'belief': belf})
+
+    '''    'porterStr':[
+            {'str':'1','belief':0.8},
+            {'str':'2','belief':1}
+    ]'''
+    print(sentenceComb)
+
+    # 暂时只接受地点
+    if chooseMod == 1:
+
+        for indexM, m in enumerate(sentenceComb['porterStr']):
+
+            sFPCM1 = SemanticCorrect.redict.useFzdict(m['str'])
+            # 模糊查询 返回list 或int
+
+            # return类型  int 或list
+
+            if type(sFPCM1) == type([]):
+
+                if len(sFPCM1) == 1:
+                    return sFPCM1[0]
+
+                iStr = 0
+                while iStr < len(m['str']):
+                    if m['str'][iStr] == '*':
+                        break
+                    iStr += 1
+                if iStr == len(m['str']):
+                    print('找不到替换标识符‘*’')
+
+                maxSfp = -1
+                maxSfpIndex = sentenceComb['originSentence']
+                for c in sFPCM1:
+                    if getDistanceBetw[sentenceComb['originSentence'][iStr]][c[iStr]] > maxSfp:
+                        maxSfpIndex = c
+
+                return maxSfpIndex
+            else:
+
+                return sentenceComb['originSentence']
+                # 火车票单个词识别
+
+# print(getFamiliar('咱'))
+# print(getFamiliar('滨'))
+#
+# sentence = {
+# #    'word': ['浙', '江', '省', '绍', '兴', '市'],
+#         'word': ['长', '卷', '长', '兴'],
+#         'belief': [0.9,0.7,0.9,1.0]
+#     #'word': ['哈', '尔', '滴'],
+#     #'belief': [0.9,0.9,0.4]
+#
+# #    'belief': [0.9, 0.7, 0.9, 1.0, 1.0, 1.0]
+# }
+# print(SmtcCrt(sentence,1,1))

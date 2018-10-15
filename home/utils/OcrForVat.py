@@ -18,6 +18,87 @@ local_start = False
 if not local_start:
     from scanQRCode.scan_qrcode import recog_qrcode, recog_qrcode_ex
 
+
+def newMubanDetect(filepath):
+    # pars = dict(textline_method='textboxes')  # 使用 深度学习 方法，目前用的CPU，较慢 ?
+    pars = dict(textline_method='textboxes')  # 使用 深度学习 方法，目前用的CPU，较慢 ?
+    pipe = fp.vat_invoice.pipeline.VatInvoicePipeline('special', pars=pars, debug=False)  # 请用debug=False
+    # pipe = fp.vat_invoice.pipeline.VatInvoicePipeline('special', debug=False) # 请用False
+    im = cv2.imread(filepath, 1)
+    im = cv2.resize(im, None, fx=0.5, fy=0.5)
+
+    pipe(im)
+
+    # pl.figure(figsize=(12, 12))
+    # pl.imshow(pipe.debug['result'])
+    # pl.show()
+    attributeLine = {
+        'invoiceCode': list(pipe.predict('type')),
+        'invoiceNo': list(pipe.predict('serial')),
+        'invoiceDate': list(pipe.predict('time')),
+        'totalAmount': list(pipe.predict('tax_free_money'))
+    }
+    for c in attributeLine:
+        attributeLine[c][0] = 2 * attributeLine[c][0]
+        attributeLine[c][1] = 2 * attributeLine[c][1]
+        attributeLine[c][2] = 2 * attributeLine[c][2]
+        attributeLine[c][3] = 2 * attributeLine[c][3]
+    print(attributeLine)
+    jsonResult = flow.cropToOcr(filepath, attributeLine, 11, debug=False)  # ocr和分词
+    print(jsonResult)
+
+    return jsonResult
+
+
+def mubanDetectInvoiceDate(filepath, setKey='invoiceDate'):
+    midProcessResult = [None, None]
+    midProcessResult[0] = filepath
+    midProcessResult[1] = 11
+    # vat发票专票
+    VATInvoiceTemplet = {
+    }
+
+    dic = xmlToDict.XmlTodict('home/utils/VATInvoiceSimpleMuban.xml')
+
+    # tplt = [dic['QRCode'][0], dic['QRCode'][1], dic['figureX'][0] + dic['figureX'][2] / 2, dic['figureX'][1] + dic['figureX'][3] / 2]
+    tplt = [dic['figureX'][0] + dic['figureX'][2] / 2, dic['figureX'][1] + dic['figureX'][3] / 2]
+    # print(tplt)
+    '''
+    for c in tplt:
+        if c == None:
+            print('Templet VATInvoice error')
+    '''
+    TemType = {}
+    if midProcessResult[1] == 11:  # 增值税专用
+        VATInvoiceTemplet[setKey] = [int(dic.get(setKey)[0]), int(dic.get(setKey)[1]), int(dic.get(setKey)[2]),
+                                     int(dic.get(setKey)[3])]
+        TemType = VATInvoiceTemplet
+
+    fcv = cv2.imread(filepath, 1)
+    # print(fcv)
+    try:
+        w1 = fcv.shape
+    except:
+        print("picture is None")
+
+    if w1[0] + w1[1] > 1500:
+        rate = 0.5
+        print("rate : 0.5")
+
+    if midProcessResult[1] == 11:
+        # box = Detect.detect(cv2.imread(midProcessResult[0]), rate)
+        figureP = FindCircle.findSymbol(filepath)
+        # StBox = sortBox(box)
+        # print(box)
+        # print(figureP)
+        # print(StBox)
+        Templet = simplyAdjust(TemType, [figureP[0], figureP[1]], tplt, w1)  # 增值税专票
+
+        attributeLine = lineToAttribute.getAtbt.compute(textline(midProcessResult[0]), Templet)
+
+    return attributeLine
+
+
 def mubanDetect(filepath):
     # 预留
     midProcessResult = [None, None]
@@ -301,3 +382,4 @@ def init(filepath):
 jpgs = fp.util.path.files_in_dir(dset_dir, '.png')
 print(jpgs[9])
 '''
+# init('Image_00010.jpg')

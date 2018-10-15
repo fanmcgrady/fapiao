@@ -97,7 +97,7 @@ class Template(object):
 
         para_final, warped_anchors = self.match(self.data.anchors_mean,
                                                 self.data.center_mean,
-                                                aligns,
+                                                aligns, 
                                                 detected_candidates, 
                                                 para_init)
         

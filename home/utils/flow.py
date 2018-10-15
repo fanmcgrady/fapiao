@@ -697,7 +697,7 @@ def DetectRedTrainTicket(box, filePath):
     return json.dumps(jsoni).encode().decode("unicode-escape")
 
 
-def cropToOcr(filePath, recT, typeT):
+def cropToOcr(filePath, recT, typeT, debug=False):
     ocrResult = {}
     img = Image.open(filePath)
 
@@ -716,12 +716,33 @@ def cropToOcr(filePath, recT, typeT):
             1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
                    1] + "_" + x + ".jpeg"
         sp.save(sFPN)
-        midResult = OcrPic(sFPN)
+        if debug == False:
+            midResult = OcrPic(sFPN)
 
-        print(midResult)
-        ocrResult[x] = midResult
+            print(midResult)
+            ocrResult[x] = midResult
     print(ocrResult)
     pC = SemanticCorrect.posteriorCrt.posteriorCrt()
+
+    if typeT == 11:
+        import OcrForVat
+        if ocrResult['invoiceDate'][:4] == '¿ªÆ±ÈÕÆÚ' or len(ocrResult['invoiceDate']) < 4:
+            recT['invoiceDate'] = OcrForVat.mubanDetectInvoiceDate(filePath)['invoiceDate']
+            sp = img.crop((recT['invoiceDate'][0], recT['invoiceDate'][1],
+                           recT['invoiceDate'][0] + recT['invoiceDate'][2],
+                           recT['invoiceDate'][1] + recT['invoiceDate'][3]))
+
+            sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + \
+                   jwkj_get_filePath_fileName_fileExt(filePath)[
+                       1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
+                       1] + "_" + 'invoiceDateFix' + ".jpeg"
+            sp.save(sFPN)
+            if debug == False:
+                midResult = OcrPic(sFPN)
+
+                print('invoiceDateFix: ' + midResult)
+                ocrResult['invoiceDate'] = midResult
+
     pC.setTrainTicketParaFromDict(ocrResult)
     if typeT != 11:
         pC.startTrainTicketCrt()

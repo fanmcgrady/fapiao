@@ -5,32 +5,39 @@ import numpy as np
 import cv2
 
 from .. import config
+
 importlib.reload(config)
 from ..util import check
+
 importlib.reload(check)
 
 from ..frame import surface, textline, template
+
 importlib.reload(surface)
 importlib.reload(textline)
 importlib.reload(template)
 
 from . import train_ticket
+
 importlib.reload(train_ticket)
 
 from . import __train_ticket_pipeline as pipeline
+
 importlib.reload(pipeline)
+
 
 class BlueTrainTicketPipeline(pipeline._TrainTicketPipeline):
     '''
     textline extraction and template match for blue train ticket
     '''
+
     def __init__(self, debug=False):
         '''
         Args:
           debug : for debuging only
         '''
         # 创建 发票票面 检测器 （无需再使用 Adjust 类）
-        detect_surface = surface.Detect(debug=debug) 
+        detect_surface = surface.Detect(debug=debug)
         # 检查是否上下颠倒火车票
         check_upside_down = train_ticket.UpsideDownCheck_v2()
 

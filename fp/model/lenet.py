@@ -1,20 +1,20 @@
-
 import torch
 import torchvision
 import torch.nn as nn
 
+
 class LeNet(nn.Module):
     def __init__(self):
         super(LeNet, self).__init__()
-        self.conv1 = nn.Sequential(    
+        self.conv1 = nn.Sequential(
             nn.Conv2d(1, 6, 5, 1, 2),
-            nn.ReLU(),    
+            nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2),
         )
         self.conv2 = nn.Sequential(
             nn.Conv2d(6, 16, 5),
-            nn.ReLU(),     
-            nn.MaxPool2d(2, 2)  
+            nn.ReLU(),
+            nn.MaxPool2d(2, 2)
         )
         self.fc1 = nn.Sequential(
             nn.Linear(16 * 5 * 5, 120),

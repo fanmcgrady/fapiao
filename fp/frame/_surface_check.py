@@ -19,12 +19,12 @@ def is_crop_ready(image, pixval_tolerance=0.98, area_tolerance=0.1):
             x0, x1 = int(x0), int(x1)
             bg_count = cv2.countNonZero(bim[y0:y1, x0:x1])
             pix_count = (x1 - x0) * (y1 - y0)
-            #print('{:.2f}, '.format(bg_count/pix_count), end='')
+            print('{:.2f}, '.format(bg_count / pix_count), end='')
             if bg_count >= 0.98 * pix_count:
                 clear_count += 1
-        #print(' ')
-    #print('bg ratio: {:.4f}'.format(clear_count/100))
-    if clear_count >= 20:
+        print(' ')
+    print('bg ratio: {:.4f}'.format(clear_count / 100))
+    if clear_count >= 5:
         return False
     return True
     
