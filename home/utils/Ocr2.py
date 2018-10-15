@@ -273,42 +273,43 @@ if __name__ == "__main__":
     #     else:
     #         index += 1
 
-    # filepath = "C:/Users/Administrator/Desktop/timg.jpg"
-    # res = [0, [[131, 131], [100, 100]]]
-    # # 生成行提取的图片
-    # plt_rects = []
-    # plt_rects.append(
-    #     [res[1][0][0] + 5, res[1][0][1] + 5, res[1][0][1] - res[1][1][1] + 10, res[1][0][1] - res[1][1][1] + 10])
-    # # 显示
-    # vis_textline0 = fp.util.visualize.rects(cv2.imread(filepath, 0), plt_rects)
-    #
-    # # 运行代码需要如下部分
-    # # pl.imshow(vis_textline0)
-    # # # 保存到line目录
-    # # pltpath = filepath.replace("out", "line")
-    # # pl.savefig(pltpath)
-    #
-    # # test部分
-    # pl.figure(figsize=(15, 10))
-    # pl.subplot(1, 2, 1)
+    filepath = "/Users/fangzhiyang/pic/INV/Image_00179.jpg"
+    res = [[138, 336], [139, 123], [349, 124], [349, 337]]
+    # 生成行提取的图片
+    plt_rects = []
+    plt_rects.append(
+        [res[1][0], res[1][1], res[3][0] - res[0][0], res[0][1] - res[1][1]])
+    # 显示
+    vis_textline0 = fp.util.visualize.rects(cv2.imread(filepath, 0), plt_rects)
+
+    # 运行代码需要如下部分
     # pl.imshow(vis_textline0)
-    # pl.show()
-    #
-    # # pl.imshow(vis_textline0)
     # # 保存到line目录
-    # # pltpath = midProcessResult[0].replace("upload", "line")
-    # # pl.savefig(pltpath)
+    # pltpath = filepath.replace("out", "line")
+    # pl.savefig(pltpath)
+
+    # test部分
+    pl.figure(figsize=(15, 10))
+    pl.subplot(1, 2, 1)
+    pl.imshow(vis_textline0)
+    pl.title('qrcode')
+    pl.show()
+
+    # pl.imshow(vis_textline0)
+    # 保存到line目录
+    # pltpath = midProcessResult[0].replace("upload", "line")
+    # pl.savefig(pltpath)
 
     # 解压当前目录下的zip文件到当前目录，并删除原有的zip文件
-    import zipfile
-    import os
-
-    file_name = "/Users/fangzhiyang/pic/1.zip"
-
-    if os.path.splitext(file_name)[1] == '.zip':
-        file_zip = zipfile.ZipFile(file_name, 'r')
-        for file in file_zip.namelist():
-            print(type(file))
-            file_zip.extract(file, "/Users/fangzhiyang/pic")
-        file_zip.close()
-        # os.remove(file_name)
+    # import zipfile
+    # import os
+    #
+    # file_name = "/Users/fangzhiyang/pic/1.zip"
+    #
+    # if os.path.splitext(file_name)[1] == '.zip':
+    #     file_zip = zipfile.ZipFile(file_name, 'r')
+    #     for file in file_zip.namelist():
+    #         print(type(file))
+    #         file_zip.extract(file, "/Users/fangzhiyang/pic")
+    #     file_zip.close()
+    #     # os.remove(file_name)
