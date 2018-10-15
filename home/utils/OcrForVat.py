@@ -387,9 +387,9 @@ def init(filepath):
             print(jsoni)
             return json.dumps(jsoni).encode().decode("unicode-escape")
         else:
-            return newMubanDetect(filepath)
+            return mubanDetect(filepath)
     else:
-        return newMubanDetect(filepath)
+        return mubanDetect(filepath)
 
     '''
     else:
