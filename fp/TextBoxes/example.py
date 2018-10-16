@@ -6,7 +6,6 @@ import detect_textline as dt
 from util import timewatch
 
 import importlib
-
 importlib.reload(dt)
 
 import caffe
@@ -42,6 +41,7 @@ if __name__ == "__main__":
                                       model_weights='/home/tangpeng/fapiao/fp/fp/TextBoxes/models/fapiao.caffemodel',
                                       scales=((700, 700), (700, 1600), (1600, 1600)))
 
+
     for im_name in im_names:
         cvs_file = im_name.replace('.jpg', '_tb.csv')
         tim = timewatch.start_new()
@@ -50,5 +50,5 @@ if __name__ == "__main__":
         # detector(im)
         # output to the specified cvs file 
         detector.detect_to_cvs(im, cvs_file)
-
+        
         print("Done in : ", tim.get_elapsed_seconds(), " seconds")

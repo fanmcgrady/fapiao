@@ -5,15 +5,12 @@ from caffe import layers as L
 from caffe import params as P
 from caffe.proto import caffe_pb2
 
-
 def check_if_exist(path):
     return os.path.exists(path)
-
 
 def make_if_not_exist(path):
     if not os.path.exists(path):
         os.makedirs(path)
-
 
 def UnpackVariable(var, num):
     assert len > 0
@@ -29,7 +26,6 @@ def UnpackVariable(var, num):
             for i in xrange(0, num):
                 ret.append(var)
         return ret
-
 
 def ConvBNLayer(net, from_layer, out_layer, use_bn, use_relu, num_output,
                 kernel_size, pad, stride, dilation=1, use_scale=True, eps=0.001,
@@ -92,7 +88,6 @@ def ConvBNLayer(net, from_layer, out_layer, use_bn, use_relu, num_output,
     if use_relu:
         relu_name = '{}_relu'.format(conv_name)
         net[relu_name] = L.ReLU(net[conv_name], in_place=True)
-
 
 def ResBody(net, from_layer, block_name, out2a, out2b, out2c, stride, use_branch1, dilation=1):
     # ResBody(net, 'pool1', '2a', 64, 64, 256, 1, True)
@@ -166,7 +161,6 @@ def InceptionTower(net, from_layer, tower_name, layer_params):
                         use_scale=use_scale, **param)
         from_layer = tower_layer
     return net[from_layer]
-
 
 def CreateAnnotatedDataLayer(source, batch_size=32, backend=P.Data.LMDB,
                              output_label=True, train=True, label_map_file='',
@@ -660,7 +654,6 @@ def InceptionV3Body(net, from_layer, output_pred=False):
 
     return net
 
-
 def CreateMultiBoxHead(net, data_layer="data", num_classes=[], from_layers=[],
                        use_objectness=False, normalizations=[], use_batchnorm=True,
                        min_sizes=[], max_sizes=[], prior_variance=[0.1],
@@ -714,7 +707,7 @@ def CreateMultiBoxHead(net, data_layer="data", num_classes=[], from_layers=[],
             num_priors_per_location += len(aspect_ratio)
 
         num_priors_per_location = 2 * num_priors_per_location
-
+        
         # Create location prediction layer.
         name = "{}_mbox_loc{}".format(from_layer, loc_postfix)
         num_loc_output = num_priors_per_location * 4;

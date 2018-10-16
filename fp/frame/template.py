@@ -96,7 +96,7 @@ class Template(object):
         detected_candidates = anchors_candidates(detected_rects, image_size)
 
         para_final, warped_anchors = self.match(self.data.anchors_mean,
-                                                self.data.center_mean,
+                                                self.data.center_mean, 
                                                 aligns, 
                                                 detected_candidates, 
                                                 para_init)

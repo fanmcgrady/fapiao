@@ -63,13 +63,13 @@ class TextBoxesDetect(_Detect):
     def set_net_model(self, model_def, model_weights):
         self.model_def = model_def
         self.model_weights = model_weights
-        self.net = caffe.Net(model_def, model_weights, caffe.TEST)
+        self.net = caffe.Net(model_def, model_weights, caffe.TEST)    
 
     def detect(self, image):
         # image=caffe.io.load_image(image_file)
         image_height, image_width, channels = image.shape
         print(image.shape)
-        _rlts = []
+        _rlts=[]
         for scale in self.scales:
             image_resize_height = scale[0]
             image_resize_width = scale[1]
@@ -93,7 +93,7 @@ class TextBoxesDetect(_Detect):
             det_xmin = detections[0, 0, :, 3]
             det_ymin = detections[0, 0, :, 4]
             det_xmax = detections[0, 0, :, 5]
-            det_ymax = detections[0, 0, :, 6]
+            det_ymax = detections[0, 0,:,6]
             top_indices = [i for i, conf in enumerate(det_conf) if conf >= self.confidence_thres]
             top_conf = det_conf[top_indices]
             top_xmin = det_xmin[top_indices]
@@ -127,7 +127,6 @@ class TextBoxesDetect(_Detect):
                 det_results.append([xmin, ymin, xmax - xmin + 1, ymax - ymin + 1, conf])
         return det_results  # [[(x,y,width,height),confidence],......]
 
-
 if __name__ == "__main__":
     print('args: image_dir_path[option]')
     if len(sys.argv) == 2:
@@ -141,8 +140,8 @@ if __name__ == "__main__":
         cvs_file = im_name.replace('.jpg', '.csv')
         tim = timewatch.start_new()
         im = caffe.io.load_image(im_name)
-        # im =cv2.imread(im_name,1)
+        #im =cv2.imread(im_name,1)
         detector(im)
-        # detector.detect_to_cvs(im, cvs_file)
+        #detector.detect_to_cvs(im, cvs_file)
         print(im_name)
         print("Done in : ", tim.get_elapsed_seconds(), " seconds")

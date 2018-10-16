@@ -1,24 +1,25 @@
-import os
 import importlib
 import numpy as np
 import cv2
+
+from ..frame import _wireframe_template as wt
+import importlib
+
+import cv2
+import numpy as np
 
 from ..frame import _wireframe_template as wt
 
 importlib.reload(wt)
 
 from ..frame import wireframe
-
 importlib.reload(wireframe)
 
 from .. import config
-
 importlib.reload(config)
 
 from ..util import visualize
-
 importlib.reload(visualize)
-
 
 class ElecInvoicePipeline(object):
     def __init__(self, pars={}, debug=False):
@@ -39,7 +40,7 @@ class ElecInvoicePipeline(object):
 
         gray_surface_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         frame_points = self.detect_wireframe(gray_surface_image)  # , frame_rects
-
+        
         if self.match_wireframe is None:
             self.exit_msg = 'Null wireframe matcher'
             return False

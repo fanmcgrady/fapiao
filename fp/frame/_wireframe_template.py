@@ -6,10 +6,8 @@ import torchvision
 import yaml
 
 from .. import config
-
 importlib.reload(config)
 from . import template_data
-
 importlib.reload(template_data)
 
 def relative_points(y_ratios, x_ratiox):
@@ -37,7 +35,7 @@ class WireframeTemplateData(object):
 
         # self.points = None
         # self.points_std = None
-
+    
     def fit(self, xml_files, prior):
         '''
         Args:
@@ -71,30 +69,30 @@ class WireframeTemplateData(object):
                     # make x_ratiox
                     x_ratios.append((xji - xa) / wa)
                     if i < len(rects_key) - 1:
-                        x_ratios.append((xji + wji - xa) / wa)
+                        x_ratios.append((xji + wji - xa) / wa) 
                     else:
                         if abs(xji + wji - xa - wa) > 10:
                             x_ratios.append((xji + wji - xa) / wa)
 
-                    # print(j, i, rect_key, len(y_ratios))
+                    #print(j, i, rect_key, len(y_ratios))
                 x_ratiox.append(x_ratios)
 
             # print(len(y_ratios))
             # print(len(x_ratiox))
-            # for x_ratios in x_ratiox:
+            #for x_ratios in x_ratiox:
             #    print('  ', len(x_ratios))
             batch_y_ratios.append(y_ratios)
             batch_x_ratiox.append(x_ratiox)
 
         batch_rectr = torch.tensor(batch_rectr)
-        # print(batch_rectr.shape)
+        #print(batch_rectr.shape)
         rectr = torch.mean(batch_rectr, dim=0)
         rectr_std = torch.std(batch_rectr, dim=0)
         self.rectr = rectr
         self.rectr_std = rectr_std
 
         batch_y_ratios = torch.tensor(batch_y_ratios)
-        # print(batch_y_ratios.shape)
+        #print(batch_y_ratios.shape)
         y_ratios = torch.mean(batch_y_ratios, dim=0)
         y_ratios_std = torch.std(batch_y_ratios, dim=0)
         self.y_ratios = y_ratios
@@ -112,8 +110,8 @@ class WireframeTemplateData(object):
             x_ratios_std = torch.std(batch_x_ratios, dim=0)
             x_ratiox.append(x_ratios)
             x_ratiox_std.append(x_ratios_std)
-            # print(x_ratios.shape, x_ratios_std.shape)
-
+            #print(x_ratios.shape, x_ratios_std.shape)
+        
         self.x_ratiox = x_ratiox
         self.x_ratiox_std = x_ratiox_std
 
@@ -230,7 +228,7 @@ class WireframeTemplate(object):
                 # Manually zero the gradients after updating weights
                 rectr.grad.zero_()
 
-        self.rectr = rectr
+        self.rectr = rectr        
         # slice rects
         return rectr.detach().cpu()
 
@@ -251,8 +249,8 @@ class WireframeTemplate(object):
             else:
                 x0 = int(round((x + w * 0.67).item()))
                 x1 = W
-            return x0, y0, x1 - x0, y1 - y0
-
+            return x0, y0, x1 - x0, y1-y0
+        
         y_ratios = self.data.y_ratios
         if row == 0:
             yr0 = 0.0
@@ -280,4 +278,4 @@ class WireframeTemplate(object):
         y0 = int(round((y + h * yr0).item()))
         y1 = int(round((y + h * yr1).item()))
 
-        return x0, y0, x1 -x0, y1-y0
+        return x0, y0, x1 - x0, y1-y0

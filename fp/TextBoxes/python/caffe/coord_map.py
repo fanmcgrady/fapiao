@@ -118,7 +118,6 @@ def coord_map_from_to(top_from, top_to):
     Walk the graph to find a common ancestor while composing the coord maps for
     from and to until they meet. As a last step the from map is inverted.
     """
-
     # We need to find a common ancestor of top_from and top_to.
     # We'll assume that all ancestors are equivalent here (otherwise the graph
     # is an inconsistent state (which we could improve this to check for)).

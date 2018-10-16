@@ -2,24 +2,20 @@ import os
 import importlib
 import numpy as np
 
-from . import __vat_invoice_pipeline as base
 
+from . import __vat_invoice_pipeline as base
 importlib.reload(base)
 
 from ..frame import textline
-
 importlib.reload(textline)
 
 from ..frame import _wireframe_template as wt
-
 importlib.reload(wt)
 
 from ..frame import wireframe
-
 importlib.reload(wireframe)
 
 from .. import config
-
 
 class SpecialVatInvoicePipeline(base._VatInvoicePipeline):
     def __init__(self, pars={}, debug=False):
@@ -64,7 +60,7 @@ class SpecialVatInvoicePipeline(base._VatInvoicePipeline):
         match_wireframe = wt.WireframeTemplate(data=data, debug=debug)
 
         super(SpecialVatInvoicePipeline, self).__init__(detect_textlines,
-                                                        classify_textlines,
+                                                        classify_textlines, 
                                                         detect_wireframe,
                                                         match_wireframe,
                                                         debug)

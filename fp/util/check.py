@@ -52,7 +52,6 @@ def valid_size(size):
         return False
     return True
 
-
 def is_colored(image, pix_diff_max=10, color_ratio_min=0.001):
     assert isinstance(image, np.ndarray)
     if len(image.shape) == 2:

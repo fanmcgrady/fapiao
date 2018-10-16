@@ -1,7 +1,6 @@
 import numpy as np
 import cv2
 
-
 def make_caffe_data(image):
     '''image is from cv2.imread()'''
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
