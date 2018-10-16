@@ -1,4 +1,2 @@
-ps -ef|grep "runserver 0.0.0.0"|grep -v grep|cut -c 10-15|xargs kill -9
-source activate fapiao
-git pull
-nohup python manage.py runserver 0.0.0.0:8000 --insecure &
+# 启动django服务
+python manage.py runserver 0.0.0.0:8000 --insecure
