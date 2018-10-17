@@ -6,7 +6,6 @@ from ..core import rectangle
 from ..util import check
 from ..util import visualize
 
-
 def relative_to_rect(relative_ratio, general_rect):
     x, y, w, h = general_rect
     rx, ry, rw, rh = relative_ratio
@@ -15,7 +14,6 @@ def relative_to_rect(relative_ratio, general_rect):
     dw = rw * w
     dh = rh * h
     return dx, dy, dw, dh
-
 
 class _VatInvoicePipeline(object):
     def __init__(self, detect_textlines, classify_textlines,
@@ -58,7 +56,7 @@ class _VatInvoicePipeline(object):
         if self.classify_textlines is None:
             self.exit_msg = 'Null textlines classifier.'
             return False
-        detected_types = self.classify_textlines(gray_surface_image,
+        detected_types = self.classify_textlines(gray_surface_image, 
                                                  detected_rects)
         self.textlines_type = detected_types
 
@@ -67,7 +65,7 @@ class _VatInvoicePipeline(object):
             return False
 
         frame_points = self.detect_wireframe(gray_surface_image)  # , frame_rects
-
+        
         if self.match_wireframe is None:
             self.exit_msg = 'Null wireframe matcher'
             return False
@@ -163,12 +161,12 @@ class _VatInvoicePipeline(object):
             x, y, w, h = self.roi[key]
             x, y, w, h = int(x), int(y), int(w), int(h)
             cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 255), thickness=2)
-
+            
         image = visualize.rects(image, self.textlines, self.textlines_type)
 
         for key in ['type', 'title', 'serial', 'time', 'tax_free_money']:
             x, y, w, h = self.predict(key)
             x, y, w, h = int(x), int(y), int(w), int(h)
             cv2.rectangle(image, (x, y), (x + w, y + h), (255, 255, 0), thickness=4)
-
+        
         return image

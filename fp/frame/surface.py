@@ -25,7 +25,7 @@ class Find(object):
     def __call__(self, mask):
         # quads, conts = quad.find_quads(mask, approx_ratio=self.approx_ratio,
         #                               min_area=self.min_area)
-        _, contours, _ = cv2.findContours(mask.copy(), mode=cv2.RETR_EXTERNAL,
+        _, contours, _ = cv2.findContours(mask.copy(), mode=cv2.RETR_EXTERNAL, 
                                           method=cv2.CHAIN_APPROX_SIMPLE)
         quads = []
         conts = []

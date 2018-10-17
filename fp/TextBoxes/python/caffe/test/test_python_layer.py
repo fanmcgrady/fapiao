@@ -28,7 +28,6 @@ class ExceptionLayer(caffe.Layer):
     def setup(self, bottom, top):
         raise RuntimeError
 
-
 class ParameterLayer(caffe.Layer):
     """A layer that just multiplies by ten"""
 
@@ -45,7 +44,6 @@ class ParameterLayer(caffe.Layer):
     def backward(self, top, propagate_down, bottom):
         self.blobs[0].diff[0] = 1
 
-
 class PhaseLayer(caffe.Layer):
     """A layer for checking attribute `phase`"""
 
@@ -57,7 +55,6 @@ class PhaseLayer(caffe.Layer):
 
     def forward(self, bottom, top):
         top[0].data[()] = self.phase
-
 
 def python_net_file():
     with tempfile.NamedTemporaryFile(mode='w+', delete=False) as f:
@@ -90,7 +87,6 @@ def parameter_net_file():
           python_param { module: 'test_python_layer' layer: 'ParameterLayer' } }
           """)
         return f.name
-
 
 def phase_net_file():
     with tempfile.NamedTemporaryFile(mode='w+', delete=False) as f:

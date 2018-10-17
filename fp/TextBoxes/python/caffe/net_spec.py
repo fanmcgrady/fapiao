@@ -226,7 +226,6 @@ class Layers(object):
                 return fn.tops[0]
             else:
                 return fn.tops
-
         return layer_fn
 
 

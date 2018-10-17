@@ -122,8 +122,8 @@ class TestNet(unittest.TestCase):
                 self.assertEqual(abs(self.net.params[name][i].data
                                      - net2.params[name][i].data).sum(), 0)
 
-
 class TestLevels(unittest.TestCase):
+
     TEST_NET = """
 layer {
   name: "data"
@@ -340,3 +340,4 @@ layer {
     def test_deploy(self):
         net = caffe.Net(self.f.name, caffe.TEST, stages=['deploy'])
         self.check_net(net, ['pred'])
+

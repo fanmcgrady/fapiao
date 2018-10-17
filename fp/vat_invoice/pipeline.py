@@ -1,10 +1,8 @@
 import importlib
 
 from . import _special_vat_invoice
-
 importlib.reload(_special_vat_invoice)
 from ._special_vat_invoice import SpecialVatInvoicePipeline
-
 
 class VatInvoicePipeline(object):
     def __init__(self, invoice_type, pars={}, debug=False):

@@ -3,7 +3,6 @@ import unittest
 
 import caffe
 
-
 class TestBlobProtoToArray(unittest.TestCase):
 
     def test_old_format(self):
