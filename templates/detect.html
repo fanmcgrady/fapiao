@@ -46,11 +46,6 @@
             vertical-align: middle;
         }
 
-        .table td:last-child {
-            text-align: center;
-            vertical-align: middle;
-        }
-
         #result-table img {
             height: 200px;
         }
@@ -198,30 +193,6 @@
     <!-- End Right content here -->
     <!-- ============================================================== -->
 
-    <!-- MODAL -->
-    <div id="dialog" class="modal-block mfp-hide">
-        <section class="panel panel-info panel-color">
-            <header class="panel-heading">
-                <h2 class="panel-title">确定要删除吗?</h2>
-            </header>
-            <div class="panel-body">
-                <div class="modal-wrapper">
-                    <div class="modal-text">
-                        <p>你确定要删除该列数据吗?</p>
-                    </div>
-                </div>
-
-                <div class="row m-t-20">
-                    <div class="col-md-12 text-right">
-                        <button id="dialogConfirm" class="btn btn-primary">确认</button>
-                        <button id="dialogCancel" class="btn btn-default">取消</button>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-    </div>
-
 </div>
 <!-- END wrapper -->
 
@@ -266,6 +237,11 @@
         fileList = new Array();
         fileTotal = 0;
         current = 0;
+
+        // 清空表格底部计数
+        $("#total").text(0);
+        $("#current").text(0);
+
         $("#result-table").empty();
     }
 
@@ -281,7 +257,6 @@
         var dic = new FormData();
         var file = document.getElementById('example-input1-group2').files[0];
         dic.append('fapiao', file);
-        //dic.append('type', '{{ type }}');
         $.ajax({
             url: '/getFileList',
             type: 'POST',
@@ -296,7 +271,6 @@
                     $("#total").html(fileTotal);
 
                     ocrDetect();
-
                 } else {
                     $("#result").text("出错了，请联系我们完善程序，错误信息如下：" + arg.out);
                     $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试1");
@@ -322,6 +296,7 @@
         $("#status").html("<i class='fa fa-spin fa-spinner'></i>&nbsp;&nbsp;正在分析文件:  " + currentFile).addClass("text-danger");		//页面中的状态进度条
         var dic = new FormData();
         dic.append('fileInZip', currentFile);
+        dic.append('type', '{{ type }}');
 
         $.ajax({
             url: '/detect',

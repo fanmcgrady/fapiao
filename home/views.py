@@ -22,10 +22,7 @@ def getFileList(request):
         obj = request.FILES.get('fapiao')
 
         # 随机文件名
-        zip_dir = generate_random_filename()
-        filename = generate_random_name(obj.name)
-
-        extract_file = os.path.join('allstatic/upload', zip_dir)
+        filename, zip_dir = generate_random_name(obj.name)
 
         file_path = os.path.join('upload', filename)
         full_path = os.path.join('allstatic', file_path)
@@ -39,17 +36,43 @@ def getFileList(request):
         # 是否是zip文件，批量
         if os.path.splitext(full_path)[1] == '.zip':
             file_zip = zipfile.ZipFile(full_path, 'r')
+
+            upload_dir = os.path.join('allstatic/upload', zip_dir)
+            out_dir = os.path.join('allstatic/out', zip_dir)
+            line_dir = os.path.join('allstatic/line', zip_dir)
+
             for file in file_zip.namelist():
-                if not os.path.exists(extract_file):
-                    os.makedirs(extract_file)
-                file_zip.extract(file, extract_file)
-                file_list.append(file)
+                if file.endswith('.jpg') or \
+                        file.endswith('.jpeg') or \
+                        file.endswith('.png') or \
+                        file.endswith('.bmp'):
+
+                    # 创建三个目录
+                    upload_file = os.path.join(upload_dir, file)
+                    upload_file_root, _ = os.path.split(upload_file)
+                    out_file = os.path.join(out_dir, file)
+                    out_file_root, _ = os.path.split(out_file)
+                    line_file = os.path.join(line_dir, file)
+                    line_file_root, _ = os.path.split(line_file)
+
+                    if not os.path.exists(upload_file_root):
+                        os.makedirs(upload_file_root)
+                    if not os.path.exists(out_file_root):
+                        os.makedirs(out_file_root)
+                    if not os.path.exists(line_file_root):
+                        os.makedirs(line_file_root)
+
+                    file_zip.extract(file, upload_dir)
+                    file_with_zipfold = os.path.join(zip_dir, file)
+                    file_list.append(file_with_zipfold)
             file_zip.close()
             os.remove(full_path)
         else:
             # 单个处理
             file_list.append(filename)
+
         print(file_list)
+
         try:
             ret = {
                 'status': True,
@@ -62,7 +85,6 @@ def getFileList(request):
 
         return HttpResponse(json.dumps(ret))
 
-
 # 专票
 def ocrForVat(request):
     if request.method == 'GET':
@@ -74,6 +96,7 @@ def ocrForVat(request):
         # 文件已通过getFileList方法上传到upload目录，此时不需要上传了
         file_path = os.path.join('upload', filename)
         line_filename = os.path.join('line', filename)
+
         full_path = os.path.join('allstatic', file_path)
 
         try:
@@ -138,7 +161,7 @@ def ocr(request):
         type = request.POST['type']
 
         # 随机文件名
-        filename = generate_random_name(obj.name)
+        filename, _ = generate_random_name(obj.name)
 
         file_path = os.path.join('upload', filename)
         out_filename = os.path.join('out', filename)
@@ -170,22 +193,19 @@ def ocr(request):
 # 矫正demo，detect.html页面调用
 def surface(request):
     if request.method == 'GET':
-        return render(request, 'detect.html')
+        type = request.GET['type']
+        return render(request, 'detect.html', {'type': type})
     elif request.method == "POST":
         filename = request.POST['fileInZip']
         # 车票类型：blue，excess，red
-        # type = request.POST['type']
+        type = request.POST['type']
 
         file_path = os.path.join('upload', filename)
         out_filename = os.path.join('out', filename)
         line_filename = os.path.join('line', filename)
 
-        # file_path = os.path.join('upload', obj.name)
-
-        # full_path = os.path.join('allstatic', file_path)
-
         try:
-            _, flag, line_result = Ocr.surface(file_path)
+            _, flag, line_result = Ocr.surface(file_path, type)
             # color = "蓝底车票" if flag == 1 else "红底车票"
             ret = {
                 'status': True,
@@ -193,7 +213,6 @@ def surface(request):
                 'out': out_filename,
                 'line': line_filename
             }
-            Img.objects.create(path=file_path, out=out_filename, line=line_filename)
         except Exception as e:
             print(e)
             ret = {'status': False, 'path': file_path, 'out': str(e)}
@@ -206,13 +225,7 @@ def generate_random_name(file_name):
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     _, ext = os.path.splitext(file_name)
 
-    return timestamp + ext
-
-
-def generate_random_filename():
-    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-
-    return timestamp
+    return timestamp + ext, timestamp
 
 ##################
 # 其他系统外功能

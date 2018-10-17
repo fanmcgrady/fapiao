@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery 操作table</title>
+</head>
+<body>
+<button onclick="tableAppend()">添加</button>
+<button onclick="append2()">添加2</button>
+<table id="datatable" border="1">
+    <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+    </tr>
+</table>
+
+</body>
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script>
+    function tableAppend() {
+        var tr = $("<tr></tr>");
+        var td1 = $("<td></td>").text("1");
+        var td2 = $("<td></td>").text("2");
+        var td3 = $("<td></td>").text("3");
+
+        tr.append(td1);
+        tr.append(td2);
+        tr.append(td3);
+        $("#datatable").append(tr);
+
+    }
+
+    function append2() {
+        var lastTR = $("#datatable").find("tr:last");
+        var td1 = $("<td></td>").text("1");
+        var td2 = $("<td></td>").text("2");
+
+        lastTR.append(td1);
+        lastTR.append(td2);
+    }
+
+</script>
+</html>
