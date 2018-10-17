@@ -22,7 +22,10 @@ def getFileList(request):
         obj = request.FILES.get('fapiao')
 
         # 随机文件名
+        zip_dir = generate_random_filename()
         filename = generate_random_name(obj.name)
+
+        extract_file = os.path.join('allstatic/upload', zip_dir)
 
         file_path = os.path.join('upload', filename)
         full_path = os.path.join('allstatic', file_path)
@@ -37,17 +40,16 @@ def getFileList(request):
         if os.path.splitext(full_path)[1] == '.zip':
             file_zip = zipfile.ZipFile(full_path, 'r')
             for file in file_zip.namelist():
-                file_zip.extract(file, os.path.join('allstatic', 'upload'))
-                # 重命名
-                new_name = generate_random_name(file)
-                os.rename(os.path.join('allstatic/upload', file), os.path.join('allstatic/upload', new_name))
-                file_list.append(new_name)
+                if not os.path.exists(extract_file):
+                    os.makedirs(extract_file)
+                file_zip.extract(file, extract_file)
+                file_list.append(file)
             file_zip.close()
             os.remove(full_path)
         else:
             # 单个处理
             file_list.append(filename)
-
+        print(file_list)
         try:
             ret = {
                 'status': True,
@@ -168,16 +170,11 @@ def ocr(request):
 # 矫正demo，detect.html页面调用
 def surface(request):
     if request.method == 'GET':
-        img_list = Img.objects.all().order_by('-id')
-        type = request.GET['type']
-        return render(request, 'detect.html', {'img_list': img_list, 'type': type})
+        return render(request, 'detect.html')
     elif request.method == "POST":
-        obj = request.FILES.get('fapiao')
+        filename = request.POST['fileInZip']
         # 车票类型：blue，excess，red
-        type = request.POST['type']
-
-        # 随机文件名
-        filename = generate_random_name(obj.name)
+        # type = request.POST['type']
 
         file_path = os.path.join('upload', filename)
         out_filename = os.path.join('out', filename)
@@ -185,24 +182,18 @@ def surface(request):
 
         # file_path = os.path.join('upload', obj.name)
 
-        full_path = os.path.join('allstatic', file_path)
-        f = open(full_path, 'wb')
-        for chunk in obj.chunks():
-            f.write(chunk)
-        f.close()
+        # full_path = os.path.join('allstatic', file_path)
 
         try:
-            _, flag, line_result = Ocr.surface(file_path, type)
-            color = "蓝底车票" if flag == 1 else "红底车票"
+            _, flag, line_result = Ocr.surface(file_path)
+            # color = "蓝底车票" if flag == 1 else "红底车票"
             ret = {
                 'status': True,
                 'path': file_path,
                 'out': out_filename,
-                'line': line_filename,
-                'color': color,
-                'lineResult': str(line_result)
+                'line': line_filename
             }
-            Img.objects.create(path=file_path, out=out_filename, line=line_filename, color=color, type=type)
+            Img.objects.create(path=file_path, out=out_filename, line=line_filename)
         except Exception as e:
             print(e)
             ret = {'status': False, 'path': file_path, 'out': str(e)}
@@ -216,6 +207,12 @@ def generate_random_name(file_name):
     _, ext = os.path.splitext(file_name)
 
     return timestamp + ext
+
+
+def generate_random_filename():
+    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+
+    return timestamp
 
 ##################
 # 其他系统外功能
