@@ -77,13 +77,18 @@ def _local_threshold(gray_image, rcts):
     return bn_image
 
 
-def rects_adjust(gray_image, rcts):
+def rects_adjust(im, rcts):
+    if im.shape[2] != 1:
+        gray_image = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+    else:
+        gray_image = im
+
     bn_img = _local_threshold(gray_image, rcts)
     kernel = np.ones((5, 5), np.uint8)
     bn_img = cv2.dilate(bn_img, kernel, iterations=1)  
     _rcts = np.array(rcts).copy()
     for i in range(len(_rcts)):
-        r = _rcts[i]
+        r = _rcts[i].astype(int)
         rgn = bn_img[r[1]:r[1] + r[3], r[0]:r[0] + r[2]].copy()
         cx, cy = calc_center(rgn)
         _rcts[i][0] += (cx - int(r[2] / 2))
@@ -91,7 +96,7 @@ def rects_adjust(gray_image, rcts):
 
     dirc = np.array([[-1, 0], [0, -1], [1, 0], [0, 1]])
     for i in range(len(_rcts)):
-        r = _rcts[i]
+        r = _rcts[i].astype(int)
         left = np.array([[r[0], r[1]], [r[0], r[1] + r[3]]])
         right = np.array([[r[0] + r[2], r[1]], [r[0] + r[2], r[1] + r[3]]])
         # up = np.array([[r[0],r[1]],[r[0]+r[2],r[1]]])
@@ -126,7 +131,7 @@ if __name__ == "__main__":
         image_path = '/home/gaolin/TextBoxes/data/train_ticket'
 
     im_names = glob.glob(os.path.join(image_path, "*.jpg"))
-
+	
     for im_name in im_names: 	
         print(im_name)
         cvs_file_tbx = im_name.replace('.jpg', '_tb.csv')
@@ -134,8 +139,7 @@ if __name__ == "__main__":
         
         rcts_tbx = read_rects(cvs_file_tbx)
         # rcts_fus = rects_fusion_simple(rcts_tbx,rcts_ipd,im.shape[:2])
-        im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-        rcts_adj = rects_adjust(im_gray, rcts_tbx)
+        rcts_adj = rects_adjust(im, rcts_tbx)
        
         im_c = im.copy()
         drawboxes(im_c, rcts_tbx)

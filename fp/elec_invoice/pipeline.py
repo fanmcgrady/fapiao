@@ -1,15 +1,9 @@
+import os
 import importlib
 import numpy as np
 import cv2
 
 from ..frame import _wireframe_template as wt
-import importlib
-
-import cv2
-import numpy as np
-
-from ..frame import _wireframe_template as wt
-
 importlib.reload(wt)
 
 from ..frame import wireframe

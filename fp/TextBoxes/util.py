@@ -1,6 +1,7 @@
 import os
 import sys
 import datetime
+import cv2
 
 class timewatch(object):
 
@@ -28,3 +29,8 @@ class timewatch(object):
         res.start()
         return res
 
+
+def drawboxes(image, rects):
+    for i in range(len(rects)):
+        cv2.rectangle(image, (int(rects[i][0]), int(rects[i][1])), \
+                      (int(rects[i][0]) + int(rects[i][2]), int(rects[i][1]) + int(rects[i][3])), (255, 0, 0), 2)

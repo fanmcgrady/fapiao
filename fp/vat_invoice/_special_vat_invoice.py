@@ -59,7 +59,7 @@ class SpecialVatInvoicePipeline(base._VatInvoicePipeline):
         data.load(config.WIREFRAME_TEMPLATE_VAT)
         match_wireframe = wt.WireframeTemplate(data=data, debug=debug)
 
-        super(SpecialVatInvoicePipeline, self).__init__(detect_textlines,
+        super(SpecialVatInvoicePipeline, self).__init__(detect_textlines, 
                                                         classify_textlines, 
                                                         detect_wireframe,
                                                         match_wireframe,

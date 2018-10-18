@@ -194,6 +194,7 @@ layer {
 
 
 class TestStages(unittest.TestCase):
+
     TEST_NET = """
 layer {
   name: "data"

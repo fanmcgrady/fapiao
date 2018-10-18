@@ -1,6 +1,5 @@
 import numpy as np
 
-
 def intersect(rect0, rect1):
     xp, yp, wp, hp = rect0
     xq, yq, wq, hq = rect1

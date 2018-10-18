@@ -95,7 +95,7 @@ class Template(object):
         detected_rects = torch.tensor(detected_rects).float()
         detected_candidates = anchors_candidates(detected_rects, image_size)
 
-        para_final, warped_anchors = self.match(self.data.anchors_mean,
+        para_final, warped_anchors = self.match(self.data.anchors_mean, 
                                                 self.data.center_mean, 
                                                 aligns, 
                                                 detected_candidates, 

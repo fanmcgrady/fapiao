@@ -108,7 +108,7 @@ class FolderDisplay(object):
     IMAGEFILE_EXTS = ['.jpg', '.png', '.bmp']
 
     def __init__(self, folder, fig_size=(16, 16), cols=2, cmap=None):
-        self.image_paths = path.files_in_dir(folder,
+        self.image_paths = path.files_in_dir(folder, 
                                              exts=self.IMAGEFILE_EXTS, 
                                              include_dir=True)
         self.fig_size = fig_size

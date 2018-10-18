@@ -13,7 +13,7 @@ import InterfaceType
 import fp
 import lineToAttribute.getAtbt
 
-local_start = False
+local_start = True
 
 if not local_start:
     from scanQRCode.scan_qrcode import recog_qrcode, recog_qrcode_ex
@@ -36,7 +36,7 @@ def newMubanDetect(filepath):
         'invoiceCode': list(pipe.predict('type')),
         'invoiceNo': list(pipe.predict('serial')),
         'invoiceDate': list(pipe.predict('time')),
-        'totalAmount': list(pipe.predict('tax_free_money'))
+        'invoiceAmount': list(pipe.predict('tax_free_money'))
     }
     for c in attributeLine:
         attributeLine[c][0] = 2 * attributeLine[c][0]
@@ -305,7 +305,7 @@ def simplyAdjust(mubandict, box, tplt, shape):
         mubandict[x][1] = shape[0] - mubandict[x][3]
     print(mubandict)
 
-    mubandict = muban.de_muban(mubandict, 0.9)
+    mubandict = muban.de_muban(mubandict, 1.0)
     return mubandict
 
 
@@ -387,9 +387,9 @@ def init(filepath):
             print(jsoni)
             return json.dumps(jsoni).encode().decode("unicode-escape")
         else:
-            return mubanDetect(filepath)
+            return newMubanDetect(filepath)
     else:
-        return mubanDetect(filepath)
+        return newMubanDetect(filepath)
 
     '''
     else:

@@ -16,7 +16,7 @@ from home.utils import Detect
 from home.utils import xmlToDict
 
 
-##aip
+
 # import jsonpath
 
 
@@ -31,15 +31,14 @@ def Started_Ocr(filePath):
 
     # 调用通用文字识别, 图片参数为本地图片
     # client.basicGeneral(image);
-
     '''
-    APP_ID = '11428388'
-    API_KEY = '11csXD7HzXNhtZxebtmaBGMY'
-    SECRET_KEY = '2eITx621Gydci2YUfuOd43fesAYhyPul'
-    APP_ID = '11412279'
-    API_KEY = 'HlZHGoy57bGaVqFgIt8D0Onz'
-    SECRET_KEY = 'BjDp89wMg2InQprvRr20SZWjrTGFET6R'
-    '''
+        APP_ID = '11428388'
+        API_KEY = '11csXD7HzXNhtZxebtmaBGMY'
+        SECRET_KEY = '2eITx621Gydci2YUfuOd43fesAYhyPul'
+        APP_ID = '11412279'
+        API_KEY = 'HlZHGoy57bGaVqFgIt8D0Onz'
+        SECRET_KEY = 'BjDp89wMg2InQprvRr20SZWjrTGFET6R'
+        '''
 
     APP_ID = '11757125'
     API_KEY = 'mnr4S1KAr8t0C3Zjoc4rTbuv'
@@ -58,7 +57,6 @@ def Started_Ocr(filePath):
     result = client.receipt(image, options)
 
     data = json.loads(json.dumps(result).encode().decode("unicode-escape"))
-
     if 'words_result' in data.keys():
         if len(data['words_result']) > 0:
             ocrResult = ""
@@ -190,7 +188,7 @@ def MakeFile1(box, filePath):
 
     sFP1 = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
         1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
-               1] + "_01.jpeg"
+               1] + "_01.jpg"
     secFilePath.save(sFP1)
 
     return sFP1;
@@ -235,7 +233,7 @@ def MakeFile2(box, filePath):
 
     sFP2 = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
         1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
-               1] + "_02.jpeg"
+               1] + "_02.jpg"
     secFilePath.save(sFP2)
 
     return sFP2;
@@ -310,7 +308,7 @@ def MakeFileN(templetStOrig, box, filePath, extraName):
 
     sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
         1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
-               1] + "_" + extraName + ".jpeg"
+               1] + "_" + extraName + ".jpg"
     secFilePath.save(sFPN)
 
     return sFPN;
@@ -371,7 +369,7 @@ def MakeFileM(templetStOrig, box, filePath, extraName):
 
     sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
         1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
-               1] + "_" + extraName + ".jpeg"
+               1] + "_" + extraName + ".jpg"
     secFilePath.save(sFPN)
 
     return sFPN;
@@ -435,7 +433,7 @@ def MakeFileInV(templetStOrig, box, symbol, filePath, extraName, templet):
 
     sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
         1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
-               1] + "_" + extraName + ".jpeg"
+               1] + "_" + extraName + ".jpg"
     secFilePath.save(sFPN)
 
     return sFPN;
@@ -457,6 +455,61 @@ def OcrPic(secFilePath):
             #self.label_2.setText(json.dumps(OcrT.result).encode().decode("unicode-escape"))
             print("run succeed!")
             '''
+
+
+def OcrNoPic(filePath):
+    image = get_file_content(filePath)
+
+    # 调用通用文字识别, 图片参数为本地图片
+    # client.basicGeneral(image);
+    '''
+        APP_ID = '11428388'
+        API_KEY = '11csXD7HzXNhtZxebtmaBGMY'
+        SECRET_KEY = '2eITx621Gydci2YUfuOd43fesAYhyPul'
+        APP_ID = '11412279'
+        API_KEY = 'HlZHGoy57bGaVqFgIt8D0Onz'
+        SECRET_KEY = 'BjDp89wMg2InQprvRr20SZWjrTGFET6R'
+        '''
+
+    APP_ID = '11757125'
+    API_KEY = 'mnr4S1KAr8t0C3Zjoc4rTbuv'
+    SECRET_KEY = 'GDFyYtVioPFmDCi2bcw2UklNmCjoi1nr'
+
+    client = AipOcr(APP_ID, API_KEY, SECRET_KEY)
+
+    # 如果有可选参数
+    options = {}
+    options["language_type"] = "CHN_ENG"
+    options["detect_direction"] = "true"
+    options["detect_language"] = "true"
+    options["probability"] = "true"
+
+    # 带参数调用通用票据识别
+    result = client.basicGeneral(image, options)
+
+    data = json.loads(json.dumps(result).encode().decode("unicode-escape"))
+    if 'words_result' in data.keys():
+        if len(data['words_result']) > 0:
+            ocrResult = ""
+            for i in list(data['words_result']):
+                ocrResult += str(i['words'])
+            '''if len(sys.argv) > 3:
+                if sys.argv[3] == '-D':  # show detail
+                    print(data['words_result'][0]['words'])'''
+        else:
+            print("data out of range")
+            print(data)
+            return ""
+    else:
+        print("key 'words' doesn't exist!")
+        return ""
+    '''if len(sys.argv)>3:
+        if sys.argv[3]=='-D': #show detail
+            print(type(data))'''
+
+    # print(json.dumps(result, sort_keys=True, indent=4, separators=(',', ': ')).encode().decode("unicode-escape"))
+
+    return ocrResult
 
 
 def DetectBlueTrainTicket(box, filePath):
@@ -708,23 +761,28 @@ def cropToOcr(filePath, recT, typeT, debug=False):
             jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
                 1])
 
-    # 逐个切图
     for x in recT:
         sp = img.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
 
         sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
             1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
-                   1] + "_" + x + ".jpeg"
+                   1] + "_" + x + ".jpg"
         sp.save(sFPN)
+
         if debug == False:
+            # if (x != 'invoiceNo'):
+            # # 测试如此识别并不能修正字体不能识别的问题
             midResult = OcrPic(sFPN)
+            # else:
+            #     midResult = OcrNoPic(sFPN)
 
             print(midResult)
             ocrResult[x] = midResult
+
     print(ocrResult)
     pC = SemanticCorrect.posteriorCrt.posteriorCrt()
 
-    if typeT == 11:
+    if typeT == 11 and debug == False:
         from home.utils import OcrForVat
         if ocrResult['invoiceDate'][:4] == '开票日期' or len(ocrResult['invoiceDate']) < 4:
             recT['invoiceDate'] = OcrForVat.mubanDetectInvoiceDate(filePath)['invoiceDate']
@@ -735,21 +793,26 @@ def cropToOcr(filePath, recT, typeT, debug=False):
             sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + \
                    jwkj_get_filePath_fileName_fileExt(filePath)[
                        1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
-                       1] + "_" + 'invoiceDateFix' + ".jpeg"
+                       1] + "_" + 'invoiceDateFix' + ".jpg"
             sp.save(sFPN)
-            if debug == False:
-                midResult = OcrPic(sFPN)
 
-                print('invoiceDateFix: ' + midResult)
-                ocrResult['invoiceDate'] = midResult
+            midResult = OcrPic(sFPN)
 
-    pC.setTrainTicketParaFromDict(ocrResult)
-    if typeT != 11:
-        pC.startTrainTicketCrt()
+            print('invoiceDateFix: ' + midResult)
+            ocrResult['invoiceDate'] = midResult
 
     js = InterfaceType.JsonInterface.invoice()
-    js.setValueWithDict(pC.dic)
-    jsoni = js.dic
+    if typeT == 11:
+        pC.setVATParaFromVATDict(ocrResult)
+        pC.startVATCrt()
+        js.setValueWithDict(pC.VATdic)
+        jsoni = js.dic
+
+    else:
+        pC.setTrainTicketParaFromDict(ocrResult)
+        pC.startTrainTicketCrt()
+        js.setValueWithDict(pC.dic)
+        jsoni = js.dic
 
     return json.dumps(jsoni).encode().decode("unicode-escape"), json.dumps(ocrResult).encode().decode("unicode-escape")
 
@@ -822,3 +885,5 @@ def __init__():
         print("Can't open file " + filePath)
 
 # __init__()
+
+# print(OcrNoPic('./tmp/Image_00008/Image_00008_invoiceNo.jpeg'))

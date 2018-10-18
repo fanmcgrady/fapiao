@@ -10,6 +10,7 @@ import datetime
 
 from .nms import nms
 from .util import timewatch
+from .rects_adjust import rects_adjust
 
 from .. import config
 
@@ -125,7 +126,11 @@ class TextBoxesDetect(_Detect):
                 ymax = dt[5]
                 conf = dt[8]
                 det_results.append([xmin, ymin, xmax - xmin + 1, ymax - ymin + 1, conf])
+
+        # adjust the result rects
+        det_results = rects_adjust(image, det_results)
         return det_results  # [[(x,y,width,height),confidence],......]
+
 
 if __name__ == "__main__":
     print('args: image_dir_path[option]')

@@ -78,7 +78,7 @@ class WireframeTemplateData(object):
                 x_ratiox.append(x_ratios)
 
             # print(len(y_ratios))
-            # print(len(x_ratiox))
+            #print(len(x_ratiox))
             #for x_ratios in x_ratiox:
             #    print('  ', len(x_ratios))
             batch_y_ratios.append(y_ratios)
