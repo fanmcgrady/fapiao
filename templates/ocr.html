@@ -40,6 +40,20 @@
     <![endif]-->
 
     <script src="static/blue/js/modernizr.min.js"></script>
+    <style>
+        .table td, .table th {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .table td:last-child {
+            text-align: left;
+            vertical-align: middle;
+        }
+        #result-table img {
+            height: 200px;
+        }
+
+    </style>
 
 </head>
 
@@ -123,125 +137,33 @@
                                     </div>
                             </div>
 
-{#                            <div class="panel-body">#}
-{#                                <div class="row">#}
-{#                                    <div class="col-md-12 col-sm-12 col-xs-12">#}
-{#                                        <table class="table table-bordered">#}
-{#                                            <thead>#}
-{#                                            <tr>#}
-{#                                                <th>图片名称</th>#}
-{#                                                <th>结果</th>#}
-{#                                                <th>操作</th>#}
-{#                                            </tr>#}
-{#                                            </thead>#}
-{#                                            <tbody id="result-table">#}
-{#                                            </tbody>#}
-{#                                        </table>#}
-{#                                    </div>#}
-{#                                    <div class="col-md-12 col-sm-12 col-xs-12">#}
-{#                                        共 <span class="text-primary" id="total">0</span> 个文件，已分析 <span#}
-{#                                            class="text-primary" id="current">0</span> 个文件#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>原始图片</th>
+                                                <th>校正结果</th>
+                                                <th>行提取结果</th>
+                                                <th>语义矫正结果</th>
+                                                <th>识别结果</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="result-table">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        共 <span class="text-primary" id="total">0</span> 个文件，已分析 <span
+                                            class="text-primary" id="current">0</span> 个文件
+                                    </div>
+                                </div>
+                            </div>
 
                         </div> <!-- panel -->
                     </div> <!-- col -->
 
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">原始图片
-                                </h3>
-                            </div>
-                            <div class="panel-body">
-                                <div style="text-align: center;vertical-align: middle">
-                                    <img style="height: 200px;" id="path_result"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">校正结果
-                                    &nbsp;&nbsp;<span class="text-primary" id="out_text"></span>
-                                </h3>
-                            </div>
-                            <div class="panel-body">
-                                <div style="text-align: center;vertical-align: middle;min-height:200px;" id="out_div">
-                                    <img style="height: 200px;" id="out_result"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">行提取结果
-                                    &nbsp;&nbsp;<span class="text-primary" id="line_text"></span>
-                                </h3>
-                            </div>
-                            <div class="panel-body">
-                                <div style="text-align: center;vertical-align: middle;min-height:200px;">
-                                    <img style="height: 200px;" id="line_result"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">语义矫正结果
-                                    &nbsp;&nbsp;<span class="text-primary" id="correct_text"></span>
-                                </h3>
-                            </div>
-                            <div class="panel-body">
-                                <div style="height: 200px;" id="correct_result">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">识别结果
-                                    &nbsp;&nbsp;<span class="text-primary" id="result_text"></span>
-                                </h3>
-                            </div>
-                            <div class="panel-body">
-                                <div style="height: 200px;" id="simple_result">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">全部JSON结果
-                                </h3>
-                            </div>
-                            <div class="panel-body">
-                                <p style="word-wrap:break-word;word-break:break-all;" id="result">
-                                </p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="row">
@@ -252,7 +174,8 @@
                             </div>
                             <div class="panel-body">
                                 <ol>
-                                    <li>选择文件。</li>
+                                    <li>选择<span class="text-danger">单个图片</span>文件或者将多张图片打包成<span class="text-danger">zip压缩包批量上传</span>
+                                    </li>
                                     <li>点击“<span class="text-primary">识别</span>”按钮，开始火车票识别。</li>
                                     <li>分析完成后页面下方将显示结果。</li>
                                     <li>本页面展示火车票识别结果。</li>
@@ -276,29 +199,6 @@
     <!-- ============================================================== -->
 
     <!-- MODAL -->
-    <div id="dialog" class="modal-block mfp-hide">
-        <section class="panel panel-info panel-color">
-            <header class="panel-heading">
-                <h2 class="panel-title">确定要删除吗?</h2>
-            </header>
-            <div class="panel-body">
-                <div class="modal-wrapper">
-                    <div class="modal-text">
-                        <p>你确定要删除该列数据吗?</p>
-                    </div>
-                </div>
-
-                <div class="row m-t-20">
-                    <div class="col-md-12 text-right">
-                        <button id="dialogConfirm" class="btn btn-primary">确认</button>
-                        <button id="dialogCancel" class="btn btn-default">取消</button>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-    </div>
-
 </div>
 <!-- END wrapper -->
 
@@ -331,31 +231,27 @@
 
 <script>
     var resizefunc = [];
+    var fileList;
+    var fileTotal;
+    var current;
 
     // 加载中显示
     function loadingShow() {
         $("#button-tips").html("处理中...");
         $("#status").text("识别中...");
 
-        $("#out_text").text("识别中...");
-        $("#out_result").removeAttr("src");
+        fileList = new Array();
+        fileTotal = 0;
+        current = 0;
 
-        $("#line_text").text("识别中...");
-        $("#line_result").removeAttr("src");
+        // 清空表格底部计数
+        $("#total").text(0);
+        $("#current").text(0);
 
-        $("#correct_text").text("识别中...");
-        $("#correct_result").empty();
-
-        $("#result_text").text("识别中...");
-        $("#simple_result").empty();
-
-        $("#result").empty();
-
-        $("#out_div").find("p").remove();
+        $("#result-table").empty();
     }
 
     function surface() {
-
         // 验证
         if ($("#example-input1-group2").val() == "") {
             alert("请上传文件");
@@ -368,17 +264,9 @@
         var dic = new FormData();
         var file = document.getElementById('example-input1-group2').files[0];
         dic.append('fapiao', file);
-        dic.append('type', '{{ type }}');
 
-        var reader = new FileReader();
-        // 将文件以Data URL形式进行读入页面
-        reader.readAsBinaryString(file);
-        reader.onload = function(f){
-            var src = "data:" + file.type + ";base64," + window.btoa(this.result);
-            $("#path_result").attr("src", src);
-        };
         $.ajax({
-            url: '/ocr',
+            url: '/getFileList',
             type: 'POST',
             data: dic,
             processData: false,  // tell jQuery not to process the data
@@ -386,28 +274,14 @@
             dataType: 'JSON',
             success: function (arg) {
                 if (arg.status) {
-                    $("#status").html("预处理完成，该火车票为" + arg.color);
-                    // 原始图片
-                    $("#path_result").attr("src", "static/" + arg.path);
-                    // 矫正图片
-                    $("#out_text").text("");
-                    $("#out_result").attr("src", "static/" + arg.out);
-                    // 行提取图片
-                    $("#line_text").text("");
-                    $("#line_result").attr("src", "static/" + arg.line);
+                    fileList = arg.out;
+                    fileTotal = fileList.length;
+                    $("#total").html(fileTotal);
 
-                    // 继续下一步ocr
-                    ocr(arg);
+                    ocr();
                 } else {
+                    $("#result").text("出错了，请联系我们完善程序，错误信息如下：" + arg.out);
                     $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试");
-                    // 原始图片
-                    $("#path_text").text("");
-                    $("#path_result").attr("src", "static/" + arg.path);
-                    // 矫正图片
-                    $("#out_text").text("");
-                    $("#out_div").append($("<p class='text-danger' style='height:180px;'>出错了，请联系我们完善程序，错误信息如下：" + arg.out + "</p>"));
-                    // 行提取
-                    $("#line_text").text("");
 
                     $("#button-tips").html("识别");
                 }
@@ -420,58 +294,91 @@
         })
     }
 
-    function ocr(result) {
+    function ocr() {
+        current++;
+        if (current > fileTotal) {
+            $("#status").html("分析完成").removeClass("text-danger");
+            $("#button-tips").html("识别");
+            return;
+        }
+        var currentFile = fileList.shift();         //循环取队列头
+        $("#status").html("<i class='fa fa-spin fa-spinner'></i>&nbsp;&nbsp;正在分析文件:  " + currentFile).addClass("text-danger");		//页面中的状态进度条
         var dic = new FormData();
-        dic.append('outFilename', result.out);
-        dic.append('lineResult', result.lineResult);
+        dic.append('fileInZip', currentFile);
+        dic.append('type', '{{ type }}');
 
         $.ajax({
-            url: '/ocrWithoutSurface',
+            url: '/ocr',
             type: 'POST',
             data: dic,
             processData: false,  // tell jQuery not to process the data
             contentType: false,  // tell jQuery not to set contentType
             dataType: 'JSON',
             success: function (arg) {
+                var tr = $('<tr></tr>').attr('style', 'font-weight: bold;');
+                tr.append($('<td><img src="static/' + arg.path + '"/></td>'));
+
                 if (arg.status) {
-                    $("#status").html("识别完成");
-                    // 语义矫正
-                    $("#correct_text").text("");
+                    //矫正图片
+                    tr.append($('<td><img src="static/' + arg.out + '"/></td>'));
+                    //行提取图片
+                    tr.append($('<td><img src="static/' + arg.line + '"/></td>'));
+
+                    ocrWithoutSurface(arg);
+                } else {
+                    tr.append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
+                }
+
+                $('#result-table').append(tr);
+                $("#current").html(current);
+
+                ocr();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $("#status").html("图片处理过程中出错啦，请联系我们完善程序，换一张图片再试试");
+                alert("出错了，请联系我们完善程序，错误信息如下：\n" + jqXHR.responseText);
+                $("#button-tips").html("识别");
+            }
+        })
+    }
+
+    function ocrWithoutSurface(result) {
+        var dicNew = new FormData();
+        dicNew.append('outFilename', result.out);
+        dicNew.append('lineResult', result.lineResult);
+
+        $.ajax({
+            url: '/ocrWithoutSurface',
+            type: 'POST',
+            data: dicNew,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            dataType: 'JSON',
+            success: function (arg) {
+                var lastTr = $("#result-table").find("tr:last");
+                if (arg.status) {
                     var diff = arg.diff;
                     for(var key in diff){
-                        $("#correct_result")
-                            .append($("<p></p>").text(diff[key]));
+                        lastTr.append(
+                            $('<td></td>')
+                                .append($("<p></p>").text(diff[key])));
                     }
 
                     // 简单结果
-                    $("#result_text").text("");
                     var invoice = arg.result.invoice;
-                    $("#simple_result")
-                        .append($("<p></p>").text(invoice.departCity + "-" + invoice.arriveCity + " " + invoice.trainNumber));
-                    $("#simple_result")
-                        .append($("<p></p>").text(invoice.passenger + " " + invoice.idNum));
-                    $("#simple_result")
-                        .append($("<p></p>").text(invoice.invoiceDate));
-                    $("#simple_result")
-                        .append($("<p></p>").text(invoice.totalAmount));
-                    $("#simple_result")
-                        .append($("<p></p>").text(invoice.m));
-                    $("#simple_result")
-                        .append($("<p></p>").text("票号：" + invoice.ticketsNum));
-
-                    // 详细结果
-                    $("#result").text(JSON.stringify(arg.result));
-
-                    $("#button-tips").html("识别");
+                    lastTr.append(
+                        $('<td></td>')
+                            .append($("<p></p>").text(invoice.departCity + "-" + invoice.arriveCity + " " + invoice.trainNumber))
+                            .append($("<p></p>").text(invoice.passenger + " " + invoice.idNum))
+                            .append($("<p></p>").text(invoice.invoiceDate))
+                            .append($("<p></p>").text(invoice.totalAmount))
+                            .append($("<p></p>").text(invoice.m))
+                            .append($("<p></p>").text("票号：" + invoice.ticketsNum))
+                    );
                 } else {
-                    $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试");
-                    {#alert("出错了，请联系我们完善程序，错误信息如下：\n" + arg.out);#}
-                    $("#simple_result").append($("<p class='text-danger' style='height:180px;'>出错了，请联系我们完善程序，错误信息如下：" + arg.out + "</p>"));
-                    // 简单结果
-                    $("#result_text").text("");
-
-                    $("#button-tips").html("识别");
+                    lastTr.append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
                 }
+                $('#result-table').append(lastTr);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试");

@@ -136,7 +136,6 @@ def ocrWithoutSurface(request):
             for k in origin_dict:
                 if result_dict['invoice'][k] != origin_dict[k]:
                     diff_dict[k] = "{} -> {}".format(origin_dict[k], result_dict['invoice'][k])
-
             ret = {
                 'status': True,
                 'out': out_filename,
@@ -152,37 +151,25 @@ def ocrWithoutSurface(request):
 # 识别demo
 def ocr(request):
     if request.method == 'GET':
-        img_list = Img.objects.all()
         type = request.GET['type']
-        return render(request, 'ocr.html', {'img_list': img_list, 'type': type})
+        return render(request, 'ocr.html', {'type': type})
     elif request.method == "POST":
-        obj = request.FILES.get('fapiao')
+        filename = request.POST['fileInZip']
         # 车票类型：blue，excess，red
         type = request.POST['type']
-
-        # 随机文件名
-        filename, _ = generate_random_name(obj.name)
 
         file_path = os.path.join('upload', filename)
         out_filename = os.path.join('out', filename)
         line_filename = os.path.join('line', filename)
 
-        full_path = os.path.join('allstatic', file_path)
-        f = open(full_path, 'wb')
-        for chunk in obj.chunks():
-            f.write(chunk)
-        f.close()
-
         try:
             _, flag, line_result = Ocr.surface(file_path, type)
-            color = "蓝底车票" if flag == 1 else "红底车票"
+            # color = "蓝底车票" if flag == 1 else "红底车票"
             ret = {
                 'status': True,
                 'path': file_path,
                 'out': out_filename,
-                'line': line_filename,
-                'color': color,
-                'lineResult': str(line_result)
+                'line': line_filename
             }
         except Exception as e:
             print(e)
