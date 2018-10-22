@@ -45,6 +45,12 @@
             text-align: center;
             vertical-align: middle;
         }
+
+        .table td:nth-child(4) {
+            text-align: left;
+            vertical-align: middle;
+        }
+
         .table td:last-child {
             text-align: left;
             vertical-align: middle;
@@ -324,15 +330,15 @@
                     //行提取图片
                     tr.append($('<td><img src="static/' + arg.line + '"/></td>'));
 
+                    tr.append($("<td></td>").text("识别中..."));
+                    tr.append($("<td></td>").text("识别中..."));
+
                     ocrWithoutSurface(arg);
                 } else {
                     tr.append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
                 }
 
                 $('#result-table').append(tr);
-                $("#current").html(current);
-
-                ocr();
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 $("#status").html("图片处理过程中出错啦，请联系我们完善程序，换一张图片再试试");
@@ -356,17 +362,18 @@
             dataType: 'JSON',
             success: function (arg) {
                 var lastTr = $("#result-table").find("tr:last");
+
                 if (arg.status) {
                     var diff = arg.diff;
                     var diffTD = $('<td></td>');
                     for(var key in diff){
                         diffTD.append($("<p></p>").text(diff[key]));
                     }
-                    lastTr.append(diffTD);
+                    lastTr.find("td:nth-child(4)").text("").append(diffTD);
 
                     // 简单结果
                     var invoice = arg.result.invoice;
-                    lastTr.append(
+                    lastTr.find("td:nth-child(5)").text("").append(
                         $('<td></td>')
                             .append($("<p></p>").text(invoice.departCity + "-" + invoice.arriveCity + " " + invoice.trainNumber))
                             .append($("<p></p>").text(invoice.passenger + " " + invoice.idNum))
@@ -376,9 +383,13 @@
                             .append($("<p></p>").text("票号：" + invoice.ticketsNum))
                     );
                 } else {
-                    lastTr.append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
+                    lastTr.find("td:nth-child(4)").append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
+                    lastTr.find("td:nth-child(5)").remove();
                 }
                 $('#result-table').append(lastTr);
+                $("#current").html(current);
+
+                ocr();
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试");

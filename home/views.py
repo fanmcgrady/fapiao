@@ -59,6 +59,7 @@ def getFileList(request):
                         os.makedirs(upload_file_root)
                     if not os.path.exists(out_file_root):
                         os.makedirs(out_file_root)
+                        os.makedirs(os.path.join(out_file_root, 'tmp'))
                     if not os.path.exists(line_file_root):
                         os.makedirs(line_file_root)
 
