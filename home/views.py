@@ -169,7 +169,8 @@ def ocr(request):
                 'status': True,
                 'path': file_path,
                 'out': out_filename,
-                'line': line_filename
+                'line': line_filename,
+                'lineResult': str(line_result)
             }
         except Exception as e:
             print(e)

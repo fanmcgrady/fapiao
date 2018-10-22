@@ -259,7 +259,8 @@ def selectFromFzdict(str):
 
 def init(str):
     global global_dict
-    global_dict = readTXTintoPydictwithFreq("D:/Development/pycharm_workspace/Ocr2/SemanticCorrect/火车站.txt")
+    global_dict = readTXTintoPydictwithFreq("SemanticCorrect/火车站.txt")
+
 
     return selectFromPydict(str)
 
