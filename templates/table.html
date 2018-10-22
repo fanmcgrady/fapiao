@@ -6,7 +6,8 @@
 </head>
 <body>
 <button onclick="tableAppend()">添加</button>
-<button onclick="append2()">添加2</button>
+<button onclick="append2(true)">添加成功</button>
+<button onclick="append2(false)">添加失败</button>
 <table id="datatable" border="1">
     <tr>
         <td>1</td>
@@ -25,21 +26,29 @@
         var td1 = $("<td></td>").text("1");
         var td2 = $("<td></td>").text("2");
         var td3 = $("<td></td>").text("3");
+        var td4 = $("<td></td>").text("识别中");
+        var td5 = $("<td></td>").text("识别中");
 
         tr.append(td1);
         tr.append(td2);
         tr.append(td3);
+        tr.append(td4);
+        tr.append(td5);
         $("#datatable").append(tr);
 
     }
 
-    function append2() {
+    function append2(success) {
         var lastTR = $("#datatable").find("tr:last");
-        var td1 = $("<td></td>").text("1");
-        var td2 = $("<td></td>").text("2");
 
-        lastTR.append(td1);
-        lastTR.append(td2);
+        if (success) {
+            lastTR.find("td:nth-child(4)").text("1");
+            lastTR.find("td:nth-child(5)").text("2");
+        } else {
+            lastTR.find("td:nth-child(4)").text("失败了").attr("colspan", 2);
+            lastTR.find("td:nth-child(5)").remove();
+        }
+
     }
 
 </script>
