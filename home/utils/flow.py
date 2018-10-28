@@ -5,20 +5,20 @@ import json
 import os
 import sys
 
+from home.utils import Detect
+##aip
+import home.utils.OCR.OCR as ocr
 import aircv as ac
 import cv2
+from home.utils import xmlToDict
 from PIL import Image
 from aip import AipOcr
 
 import InterfaceType.JsonInterface
 import SemanticCorrect.posteriorCrt
-from home.utils import Detect
-from home.utils import xmlToDict
-
 
 
 # import jsonpath
-
 
 # 读取图片
 def get_file_content(filePath):
@@ -589,7 +589,7 @@ def DetectBlueTrainTicket(box, filePath):
         'passenger':[328, 276, 478-328,314-276],
         'price':[33, 177, 184-33, 216-177],
         'ticketsNum':[21, 10, 216-21, 76-10]
-        
+
         }
 
     print(line1)
@@ -706,7 +706,7 @@ def DetectRedTrainTicket(box, filePath):
     line3 = "乘客信息： " + result4 + "\t    座位:" + result6 + "\t    座次类型:" + result7
     line4 = "车号：    " + result8 + "\t    票价:" + result9
     line5 = "车次码:   " + result10
-    
+
     {
         'departCity':[29,74,247-29,128-74],
         'arriveCity':[425,68,649-425,132-68],
@@ -717,12 +717,12 @@ def DetectRedTrainTicket(box, filePath):
         'passenger':[-1,-1,0,0],
         'price':[3,206, 215-3, 258-206],
         'ticketsNum':[34,40, 236-34,87-40]
-        
+
         }
-    
-    
-    
-    
+
+
+
+
     print(line1)
     print(line2)
     print(line3)
@@ -750,7 +750,7 @@ def DetectRedTrainTicket(box, filePath):
     return json.dumps(jsoni).encode().decode("unicode-escape")
 
 
-def cropToOcr(filePath, recT, typeT, debug=False):
+def cropToOcr(filePath, recT, typeT, debug=False, isusebaidu=False):
     ocrResult = {}
     img = Image.open(filePath)
 
@@ -761,6 +761,7 @@ def cropToOcr(filePath, recT, typeT, debug=False):
             jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
                 1])
 
+    # 加载自识别ocr模型（增值税专票模型）可设置typeT为11加载
     for x in recT:
         sp = img.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
 
@@ -772,11 +773,14 @@ def cropToOcr(filePath, recT, typeT, debug=False):
         if debug == False:
             # if (x != 'invoiceNo'):
             # # 测试如此识别并不能修正字体不能识别的问题
-            midResult = OcrPic(sFPN)
+            if isusebaidu:
+                midResult = OcrPic(sFPN)
+            else:
+                midResult = ocr.OCR(sFPN)
             # else:
             #     midResult = OcrNoPic(sFPN)
 
-            print(midResult)
+            print(midResult + '   isUseBaidu: ' + isusebaidu)
             ocrResult[x] = midResult
 
     print(ocrResult)
@@ -844,6 +848,10 @@ def detect(filePath, recT, type):
 
     else:
         print("Can't open file " + filePath)
+
+
+def newOcr(filepath, model):
+    ocr.OCR(filepath, base_model=model)
 
 
 def __init__():
