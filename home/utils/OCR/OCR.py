@@ -1,18 +1,4 @@
-﻿from keras.layers.convolutional import Conv2D, MaxPooling2D, ZeroPadding2D
-from keras.layers.normalization import BatchNormalization
-from keras.layers.core import Reshape, Lambda, Permute
-from keras.layers import Input, Dense, Flatten
-from keras.preprocessing.sequence import pad_sequences
-from keras.layers.recurrent import GRU, LSTM
-from keras.layers.wrappers import Bidirectional
-from keras.models import Model
-from keras import backend as K
-from keras.preprocessing import image
-from keras import losses
-from keras.layers.wrappers import TimeDistributed
-from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard
-from keras.utils import plot_model
-from matplotlib import pyplot as plt
+﻿
 
 import numpy as np
 import os
@@ -22,7 +8,8 @@ import threading
 
 import tensorflow as tf
 import keras.backend.tensorflow_backend as K
-
+from keras import backend as K
+from home import views
 import cv2
 
 import time
@@ -54,44 +41,6 @@ class Timer(object):
             return self.average_time
         else:
             return self.diff
-
-
-def load_model():
-    n_classes = 17
-
-    modelPath = r'home/utils/OCR/model/crnn_model.hdf5'
-    input = Input(shape=(32, None, 1), name='the_input')
-    m = Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same', name='conv1')(input)
-    m = MaxPooling2D(pool_size=(2, 2), strides=(2, 2), name='pool1')(m)
-    m = Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same', name='conv2')(m)
-    m = MaxPooling2D(pool_size=(2, 2), strides=(2, 2), name='pool2')(m)
-    m = Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same', name='conv3')(m)
-    m = BatchNormalization(axis=3)(m)
-    m = Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same', name='conv4')(m)
-
-    m = ZeroPadding2D(padding=(0, 1))(m)
-    m = MaxPooling2D(pool_size=(2, 2), strides=(2, 1), padding='valid', name='pool3')(m)
-
-    m = Conv2D(512, kernel_size=(3, 3), activation='relu', padding='same', name='conv5')(m)
-    m = BatchNormalization(axis=3)(m)
-    m = Conv2D(512, kernel_size=(3, 3), activation='relu', padding='same', name='conv6')(m)
-
-    m = ZeroPadding2D(padding=(0, 1))(m)
-    m = MaxPooling2D(pool_size=(2, 2), strides=(2, 1), padding='valid', name='pool4')(m)
-    m = Conv2D(512, kernel_size=(2, 2), activation='relu', padding='valid', name='conv7')(m)
-    m = BatchNormalization(axis=3)(m)
-
-    m = Permute((2, 1, 3), name='permute')(m)
-    m = TimeDistributed(Flatten(), name='timedistrib')(m)
-
-    m = Bidirectional(GRU(256, return_sequences=True, implementation=2), name='blstm1')(m)
-    m = Dense(256, name='blstm1_out', activation='linear', )(m)
-    m = Bidirectional(GRU(256, return_sequences=True, implementation=2), name='blstm2')(m)
-    y_pred = Dense(n_classes, name='blstm2_out', activation='softmax')(m)
-    basemodel = Model(inputs=input, outputs=y_pred)
-    basemodel.load_weights(modelPath)
-
-    return basemodel
 
 
 def predict(img_path, base_model):
@@ -145,12 +94,13 @@ def predict(img_path, base_model):
     return out, im
 
 
-def OCR(image_path, color=1, base_model=load_model()):
+def OCR(image_path):
     """
         imgae_path 输入图片路径，识别图片为行提取结果
         color: 0 二值， 1 灰度， 2 彩色
         base_model 为加载模型，这个模型最好在服务器启动时加载，计算时作为参数输入即可，减少加载模型所需要的时间
     """
+    base_model = views.global_model
     out, _ = predict(image_path, base_model)
 
     return out
