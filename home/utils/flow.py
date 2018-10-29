@@ -854,10 +854,6 @@ def detect(filePath, recT, type):
         print("Can't open file " + filePath)
 
 
-def newOcr(filepath, model):
-    ocr.OCR(filepath, base_model=model)
-
-
 def __init__():
     chooseMod = 1
     if len(sys.argv) > 1:

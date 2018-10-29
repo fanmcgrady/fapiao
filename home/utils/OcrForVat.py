@@ -32,12 +32,6 @@ def jwkj_get_filePath_fileName_fileExt(filename):  # 提取路径
     (shotname, extension) = os.path.splitext(tempfilename);
     return filepath, shotname, extension
 
-
-def newOcr(filepath):
-    model = ocr.load_model()
-    return ocr.OCR(filepath, base_model=model)
-
-
 def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
     ocrResult = {}
     img = Image.open(filePath)
@@ -66,7 +60,7 @@ def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
             if isusebaidu:
                 midResult = flow.OcrPic(sFPN)
             else:
-                midResult = newOcr(sFPN)
+                midResult = ocr.OCR(sFPN)
             # else:
             #     midResult = OcrNoPic(sFPN)
 
