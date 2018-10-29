@@ -460,36 +460,37 @@ def init(filepath):
     #二维码无法识别
     if str_info == None:
     '''
-    if not views.local_start:
-        res = scanQRc(filepath)
-        if res[0] != '':
-            # 显示二维码
-            plt_rects = []
-            plt_rects.append(
-                [res[1][1][0],
-                 res[1][1][1],
-                 res[1][3][0] - res[1][0][0],
-                 res[1][0][1] - res[1][1][1]])
-            # 显示
-            vis_textline0 = fp.util.visualize.rects(cv2.imread(filepath, 0), plt_rects)
-            # 运行代码需要如下部分
-            pl.imshow(vis_textline0)
-            # 保存到line目录
-            pltpath = filepath.replace("upload", "line")
-            pl.savefig(pltpath)
-
-            resArray = getArrayFromStr(res[0])
-            js = InterfaceType.JsonInterface.invoice()
-            js.setVATInvoiceFromArray(resArray)
-
-            jsoni = js.dic
-            print(jsoni)
-            return json.dumps(jsoni).encode().decode("unicode-escape")
-        else:
-            return newMubanDetect(filepath)
-    else:
-        # print('newMubanD')
-        return newMubanDetect(filepath)
+    # if not views.local_start:
+    #     res = scanQRc(filepath)
+    #     if res[0] != '':
+    #         # 显示二维码
+    #         plt_rects = []
+    #         plt_rects.append(
+    #             [res[1][1][0],
+    #              res[1][1][1],
+    #              res[1][3][0] - res[1][0][0],
+    #              res[1][0][1] - res[1][1][1]])
+    #         # 显示
+    #         vis_textline0 = fp.util.visualize.rects(cv2.imread(filepath, 0), plt_rects)
+    #         # 运行代码需要如下部分
+    #         pl.imshow(vis_textline0)
+    #         # 保存到line目录
+    #         pltpath = filepath.replace("upload", "line")
+    #         pl.savefig(pltpath)
+    #
+    #         resArray = getArrayFromStr(res[0])
+    #         js = InterfaceType.JsonInterface.invoice()
+    #         js.setVATInvoiceFromArray(resArray)
+    #
+    #         jsoni = js.dic
+    #         print(jsoni)
+    #         return json.dumps(jsoni).encode().decode("unicode-escape")
+    #     else:
+    #         return newMubanDetect(filepath)
+    # else:
+    #     # print('newMubanD')
+    #     return newMubanDetect(filepath)
+    return newMubanDetect(filepath)
     '''
     else:
         js = InterfaceType.JsonInterface.invoice()
