@@ -383,7 +383,7 @@
                             .append($("<p></p>").text("票号：" + invoice.ticketsNum))
                     );
                 } else {
-                    lastTr.find("td:nth-child(4)").append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
+                    lastTr.find("td:nth-child(4)").text("").append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
                     lastTr.find("td:nth-child(5)").remove();
                 }
                 $('#result-table').append(lastTr);

@@ -7,14 +7,21 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from SemanticCorrect import ComputeDistance
-from .models import Img
-from .utils import Ocr
-from .utils import OcrForVat
 
 # 取20个形似字
 print("读取全局字典")
 global_dic = ComputeDistance.load_dict('SemanticCorrect/hei_20.json')
 
+# 设置本地运行
+local_start = False
+
+if local_start:
+    print("本地运行")
+else:
+    print("服务器运行")
+
+from .utils import Ocr
+from .utils import OcrForVat
 
 # 批量上传获取文件列表
 def getFileList(request):
@@ -86,6 +93,7 @@ def getFileList(request):
 
         return HttpResponse(json.dumps(ret))
 
+
 # 专票
 def ocrForVat(request):
     if request.method == 'GET':
@@ -114,9 +122,11 @@ def ocrForVat(request):
 
         return HttpResponse(json.dumps(ret))
 
+
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
+
 
 # 识别demo
 def ocrWithoutSurface(request):
@@ -149,6 +159,7 @@ def ocrWithoutSurface(request):
 
     return HttpResponse(json.dumps(ret, indent=2))
 
+
 # 识别demo
 def ocr(request):
     if request.method == 'GET':
@@ -178,6 +189,7 @@ def ocr(request):
             ret = {'status': False, 'path': file_path, 'out': str(e)}
 
         return HttpResponse(json.dumps(ret))
+
 
 # 矫正demo，detect.html页面调用
 def surface(request):
@@ -215,6 +227,7 @@ def generate_random_name(file_name):
     _, ext = os.path.splitext(file_name)
 
     return timestamp + ext, timestamp
+
 
 ##################
 # 其他系统外功能

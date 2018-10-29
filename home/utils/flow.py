@@ -6,8 +6,7 @@ import os
 import sys
 
 from home.utils import Detect
-##aip
-import home.utils.OCR.OCR as ocr
+
 import aircv as ac
 import cv2
 from home.utils import xmlToDict
@@ -16,6 +15,11 @@ from aip import AipOcr
 
 import InterfaceType.JsonInterface
 import SemanticCorrect.posteriorCrt
+
+from home import views
+
+if not views.local_start:
+    import home.utils.OCR.OCR as ocr
 
 
 # import jsonpath

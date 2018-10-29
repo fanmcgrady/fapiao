@@ -1,4 +1,8 @@
-﻿import home.utils.OCR.OCR as ocr
+﻿from home import views
+
+if not views.local_start:
+    import home.utils.OCR.OCR as ocr
+
 from PIL import Image
 import os
 import SemanticCorrect.posteriorCrt
@@ -17,10 +21,9 @@ import cv2
 import InterfaceType
 import fp
 import lineToAttribute.getAtbt
+from home import views
 
-local_start = True
-
-if not local_start:
+if not views.local_start:
     from scanQRCode.scan_qrcode import recog_qrcode, recog_qrcode_ex
 
 
@@ -31,6 +34,7 @@ def jwkj_get_filePath_fileName_fileExt(filename):  # 提取路径
 
 
 def newOcr(filepath, model):
+    model = ocr.load_model()
     return ocr.OCR(filepath, base_model=model)
 
 
@@ -46,7 +50,6 @@ def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
                 1])
 
     # 加载自识别ocr模型（增值税专票模型）可设置typeT为11加载
-    model = ocr.load_model()
 
     for x in recT:
         sp = img.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
@@ -63,7 +66,7 @@ def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
             if isusebaidu:
                 midResult = flow.OcrPic(sFPN)
             else:
-                midResult = newOcr(sFPN, model)
+                midResult = newOcr(sFPN)
             # else:
             #     midResult = OcrNoPic(sFPN)
 
@@ -146,8 +149,11 @@ def newMubanDetect(filepath):
     vis_textline0 = fp.util.visualize.rects(cv2.imread(filepath, 0), plt_rects)
     pl.imshow(vis_textline0)
     # 保存到line目录
-    pltpath = filepath.replace("upload", "line")
-    pl.savefig(pltpath)
+    try:
+        pltpath = filepath.replace("upload", "line")
+        pl.savefig(pltpath)
+    except:
+        pass
 
     jsonResult = CropPic(filepath, attributeLine, 11, debug=False, isusebaidu=False)  # ocr和分词
     print(jsonResult)
@@ -454,7 +460,7 @@ def init(filepath):
     #二维码无法识别
     if str_info == None:
     '''
-    if not local_start:
+    if not views.local_start:
         res = scanQRc(filepath)
         if res[0] != '':
             # 显示二维码
