@@ -2,7 +2,7 @@
 import time
 
 import cv2
-import keras.backend.tensorflow_backend as K
+from keras import backend as K
 import numpy as np
 from PIL import Image
 
