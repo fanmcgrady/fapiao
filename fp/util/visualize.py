@@ -23,23 +23,23 @@ def _make_canvas(image, image_shape):
             image_shape = (*image_shape, 3)
         return np.zeros(image_shape, np.uint8)
     raise NotImplemented
-     
+
 
 def rects(image, rects, types=None, image_shape=None):
     image = _make_canvas(image, image_shape)
     if types is None:
         for x, y, w, h in rects:
             p0 = int(round(x)), int(round(y))
-            p1 = int(round(x+w)), int(round(y+h))
-            cv2.rectangle(image, p0, p1, (255,0,0), thickness=2)
+            p1 = int(round(x + w)), int(round(y + h))
+            cv2.rectangle(image, p0, p1, (255, 0, 0), thickness=2)
     else:
         n_color = np.max(types) + 1
         np.random.seed(5)
         colors = np.random.randint(256, size=(n_color, 3))
         for (x, y, w, h), type_ in zip(rects, types):
-            color = tuple(colors[int(type_), :].tolist()) # Wired! must use .tolist()
+            color = tuple(colors[int(type_), :].tolist())  # Wired! must use .tolist()
             p0 = int(round(x)), int(round(y))
-            p1 = int(round(x+w)), int(round(y+h))
+            p1 = int(round(x + w)), int(round(y + h))
             cv2.rectangle(image, p0, p1, color, thickness=2)
     return image
 
@@ -55,9 +55,10 @@ def named_rects(image, named_rects, image_shape=None):
         g = np.random.randint(256)
         b = np.random.randint(256)
         cv2.rectangle(image, p0, p1, (r, g, b), thickness=3)
-        cv2.putText(image, name, (int(x), int(y)-6), \
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (155,155,155), 2, cv2.LINE_AA)
+        cv2.putText(image, name, (int(x), int(y) - 6), \
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (155, 155, 155), 2, cv2.LINE_AA)
     return image
+
 
 def points(image, points, image_shape=None, radius=1):
     image = _make_canvas(image, image_shape)
@@ -108,8 +109,8 @@ class FolderDisplay(object):
     IMAGEFILE_EXTS = ['.jpg', '.png', '.bmp']
 
     def __init__(self, folder, fig_size=(16, 16), cols=2, cmap=None):
-        self.image_paths = path.files_in_dir(folder, 
-                                             exts=self.IMAGEFILE_EXTS, 
+        self.image_paths = path.files_in_dir(folder,
+                                             exts=self.IMAGEFILE_EXTS,
                                              include_dir=True)
         self.fig_size = fig_size
         self.cols = cols

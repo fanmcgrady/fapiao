@@ -78,6 +78,8 @@ def _local_threshold(gray_image, rcts):
 
 
 def rects_adjust(im, rcts):
+    if im.dtype != np.uint8:
+        im = im.astype(np.uint8)
     if im.shape[2] != 1:
         gray_image = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
     else:

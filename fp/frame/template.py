@@ -42,7 +42,7 @@ importlib.reload(check)
 def named_rects_from_xml(xmlfile):
     '''use pascal voc as named rects'''
     objects = pascal_voc.parse_xml(xmlfile)['objects']
-    return {item['name'] : item['bndbox'] for item in objects}
+    return {item['name']: item['bndbox'] for item in objects}
 
 def anchors_candidates(rects, image_size):
     x, y = rects[:, 0], rects[:, 1]
@@ -57,7 +57,8 @@ def anchors_candidates(rects, image_size):
     anchors_c = torch.stack((xc, yc, w_, h_), dim=1)
     anchors_r = torch.stack((xr, yc, w_, h_), dim=1)
     return anchors_l, anchors_c, anchors_r
-    
+
+
 class Template(object):
     '''
     template is represented by anchors
@@ -70,7 +71,7 @@ class Template(object):
         self.data = TemplateData()
         if init_yaml is not None and isinstance(init_yaml, str):
             self.data.load(init_yaml)
-        
+
         self.warp = Warp(warp_method)
         self.cost = TemplateCost()
         self.match = TemplateMatch(cost=self.cost, warp=self.warp,
@@ -95,12 +96,12 @@ class Template(object):
         detected_rects = torch.tensor(detected_rects).float()
         detected_candidates = anchors_candidates(detected_rects, image_size)
 
-        para_final, warped_anchors = self.match(self.data.anchors_mean, 
-                                                self.data.center_mean, 
-                                                aligns, 
-                                                detected_candidates, 
+        para_final, warped_anchors = self.match(self.data.anchors_mean,
+                                                self.data.center_mean,
+                                                aligns,
+                                                detected_candidates,
                                                 para_init)
-        
+
         if self.debug is not None:
             warped_rects_history = []
             for warped_anchors_i in self.match.debug['warp_history']:

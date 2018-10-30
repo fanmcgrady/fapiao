@@ -16,7 +16,8 @@ def valid_image(im, colored=-1):
         if not (len(im.shape) == 3 if colored == 1 else 2):
             return False
     return True
-        
+
+
 def valid_rect(rect, strict=False):
     if rect is None:
         return False
@@ -26,7 +27,8 @@ def valid_rect(rect, strict=False):
         if rect[2] < 0 or rect[3] < 0:
             return False
     return True
-    
+
+
 def valid_rects(rects, strict=False):
     if rects is None:
         return False

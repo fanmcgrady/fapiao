@@ -23,6 +23,7 @@ else:
 from .utils import Ocr
 from .utils import OcrForVat
 
+
 # 批量上传获取文件列表
 def getFileList(request):
     if request.method == "POST":
@@ -263,22 +264,22 @@ def resume(request):
 if not local_start:
     from keras.layers.convolutional import Conv2D, MaxPooling2D, ZeroPadding2D
     from keras.layers.normalization import BatchNormalization
-    from keras.layers.core import Reshape, Lambda, Permute
+    from keras.layers.core import Permute
     from keras.layers import Input, Dense, Flatten
-    from keras.preprocessing.sequence import pad_sequences
-    from keras.layers.recurrent import GRU, LSTM
+    from keras.layers.recurrent import GRU
     from keras.layers.wrappers import Bidirectional
     from keras.models import Model
-    from keras.preprocessing import image
-    from keras import losses
     from keras.layers.wrappers import TimeDistributed
-    from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard
-    from keras.utils import plot_model
-    from matplotlib import pyplot as plt
+    import tensorflow as tf
+    from keras import backend as K
 
     n_classes = 17
-
-    modelPath = r'home/utils/OCR/model/crnn_model.hdf5'
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth = True
+    sess = tf.Session(config=config)
+    K.set_session(sess)
+    modelPath = r'home/utils/OCR/model/weights-25.hdf5'
     input = Input(shape=(32, None, 1), name='the_input')
     m = Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same', name='conv1')(input)
     m = MaxPooling2D(pool_size=(2, 2), strides=(2, 2), name='pool1')(m)
@@ -307,5 +308,6 @@ if not local_start:
     m = Dense(256, name='blstm1_out', activation='linear', )(m)
     m = Bidirectional(GRU(256, return_sequences=True, implementation=2), name='blstm2')(m)
     y_pred = Dense(n_classes, name='blstm2_out', activation='softmax')(m)
+
     global_model = Model(inputs=input, outputs=y_pred)
     global_model.load_weights(modelPath)

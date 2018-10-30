@@ -4,6 +4,7 @@ interface.
 """
 
 from collections import OrderedDict
+
 try:
     from itertools import izip_longest
 except:
@@ -15,6 +16,7 @@ from ._caffe import Net, SGDSolver, NesterovSolver, AdaGradSolver, \
 import caffe.io
 
 import six
+
 
 # We directly update methods from Net here (rather than using composition or
 # inheritance) so that nets created by caffe (e.g., by SGDSolver) will
@@ -292,6 +294,7 @@ def _Net_batch(self, blobs):
                                                  padding])
         yield padded_batch
 
+
 def _Net_get_id_name(func, field):
     """
     Generic property that maps func to the layer names into an OrderedDict.
@@ -307,6 +310,7 @@ def _Net_get_id_name(func, field):
     ------
     A one-parameter function that can be set as a property.
     """
+
     @property
     def get_id_name(self):
         if not hasattr(self, field):
@@ -316,7 +320,9 @@ def _Net_get_id_name(func, field):
                                for i in range(len(self.layers))])
             setattr(self, field, res)
         return getattr(self, field)
+
     return get_id_name
+
 
 # Attach methods to Net.
 Net.blobs = _Net_blobs

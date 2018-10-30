@@ -4,6 +4,7 @@ import shapely
 from shapely.geometry import Polygon
 from shapely.geometry import MultiPoint
 
+
 def polygon_from_list(line):
     """
     Create a shapely polygon object from gt or dt line.
@@ -12,6 +13,7 @@ def polygon_from_list(line):
     polygon_points = np.array(line).reshape(4, 2)
     polygon = Polygon(polygon_points).convex_hull
     return polygon
+
 
 def polygon_iou(list1, list2):
     """

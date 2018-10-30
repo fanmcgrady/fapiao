@@ -40,7 +40,7 @@ class TextBoxesDetect(_Detect):
     def __init__(self, \
                  model_def='models/fapiao.prototxt', \
                  model_weights='models/fapiao.caffemodel', \
-                 scales=((700, 700),),  # (700,1600),(1600,1600)),  \
+                 scales=((800, 800),),  # (700,1600),(1600,1600)),  \
                  confidence_thres=0.6):  #
         self.model_def = model_def
         self.model_weights = model_weights

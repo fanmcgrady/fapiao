@@ -11,10 +11,11 @@ def line_angle(line):
         return ang - 180.
     elif 270. <= ang:
         return ang - 360.
-    
+
+
 def line_length(line):
     x0, y0, x1, y1 = line
-    return np.sqrt((x1 - x0)**2 + (y1 - y0)**2)
+    return np.sqrt((x1 - x0) ** 2 + (y1 - y0) ** 2)
 
 def cos_intersect_angle(line0, line1):
     '''Get the cosine of the intersection angle 
@@ -44,7 +45,7 @@ def intersect_point_dist(line, cross_point):
     x0, y0, x1, y1 = line
     xp, yp = cross_point
     if min(x0, x1) <= xp <= max(x0, x1) and \
-       min(y0, y1) <= yp <= max(y0, y1):
+            min(y0, y1) <= yp <= max(y0, y1):
         return 0
     else:
         d0 = np.linalg.norm([xp - x0, yp - y0])

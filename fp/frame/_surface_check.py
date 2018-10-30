@@ -8,7 +8,7 @@ def is_crop_ready(image, pixval_tolerance=0.98, area_tolerance=0.1):
     assert len(image.shape) == 2
     h, w = image.shape[0], image.shape[1]
     pix_th = int(np.max(image) * pixval_tolerance)
-    #print('pix_th', pix_th, np.max(image))
+    # print('pix_th', pix_th, np.max(image))
     _, bim = cv2.threshold(image, pix_th, 255, cv2.THRESH_BINARY)
     ys = np.linspace(0, h, 10)
     xs = np.linspace(0, w, 10)
@@ -27,5 +27,3 @@ def is_crop_ready(image, pixval_tolerance=0.98, area_tolerance=0.1):
     if clear_count >= 5:
         return False
     return True
-    
-    

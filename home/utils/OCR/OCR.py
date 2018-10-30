@@ -1,24 +1,23 @@
-﻿
+﻿import time
 
-import numpy as np
-import os
-from PIL import Image
-import json
-import threading
-
-import tensorflow as tf
-import keras.backend.tensorflow_backend as K
-from keras import backend as K
-from home import views
 import cv2
+import keras.backend.tensorflow_backend as K
+import numpy as np
+from PIL import Image
 
-import time
+from home import views
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
-sess = tf.Session(config=config)
-K.set_session(sess)
+char = ''
+with open(r'home/utils/OCR/rcnn_dic.txt', encoding='utf-8') as f:
+    for ch in f.readlines():
+        ch = ch.strip('\r\n')
+        char = char + ch
+char = char + '卍'
+print('nclass:', len(char))
+n_classes = len(char)
+
+char_to_id = {j: i for i, j in enumerate(char)}
+id_to_char = {i: j for i, j in enumerate(char)}
 
 
 class Timer(object):
@@ -43,18 +42,17 @@ class Timer(object):
             return self.diff
 
 
-def predict(img_path, base_model):
-    char = ''
-    with open(r'home/utils/OCR/rcnn_dic.txt', encoding='utf-8') as f:
-        for ch in f.readlines():
-            ch = ch.strip('\r\n')
-            char = char + ch
-    char = char + '卍'
-    print('nclass:', len(char))
-    n_classes = len(char)
-
-    char_to_id = {j: i for i, j in enumerate(char)}
-    id_to_char = {i: j for i, j in enumerate(char)}
+def predict(img_path, base_model, thresholding=160):
+    """
+        thresholding 输入范围 0 - 255
+        默认为160
+        0 : 采用自动阈值
+        > 0 : 采用人工设置的阈值
+    """
+    if thresholding > 255:
+        thresholding = 255
+    if thresholding < 0:
+        thresholding = 0
 
     t = Timer()
     img = Image.open(img_path)
@@ -62,30 +60,32 @@ def predict(img_path, base_model):
     scale = im.size[1] * 1.0 / 64
     w = im.size[0] / scale
     w = int(w)
-    print('w:', w)
-    print(base_model, img_path)
+    # print('w:',w)
+
     im = im.resize((160, 32), Image.ANTIALIAS)
-    print("1111")
     img = np.array(im)
     h, w = img.shape
-    print("h:  " + str(h) + "  w:   " + str(w))
-    for i in range(h):
-        for j in range(w):
-            if img[i, j] > 220:
-                img[i, j] = 255
-            else:
-                img[i, j] = 0
+
+    if thresholding == 0:
+        img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 5)
+    else:
+        for i in range(h):
+            for j in range(w):
+                if img[i, j] > thresholding:
+                    img[i, j] = 255
+                else:
+                    img[i, j] = 0
+
+    img = np.array(img)
 
     img = img.astype(np.float32) / 255.0 - 0.5
-    print("2222")
     X = img.reshape((32, 160, 1))
     X = np.array([X])
-    print("2222")
+
     t.tic()
     y_pred = base_model.predict(X)
     t.toc()
-    print("times,", t.diff)
-    print("pre")
+    # print("times,",t.diff)
     argmax = np.argmax(y_pred, axis=2)[0]
     y_pred = y_pred[:, :, :]
     out = K.get_value(K.ctc_decode(y_pred, input_length=np.ones(y_pred.shape[0]) * y_pred.shape[1], )[0][0])[:, :]
@@ -105,11 +105,10 @@ def OCR(image_path):
 
     return out
 
-# if  __name__ == "__main__":
-#     for i in range(10):
-#     files = os.listdir("/home/huangzheng/ocr/tmp/Image_00002")
-# i = np.random.randint(0,len(files))
-# for i in range(len(files)):
-#     test_image = r'/home/huangzheng/ocr/tmp/Image_00002/' + files[i]
-#     out = OCR(test_image)
-#     print('预测图片为: /home/huangzheng/ocr/OCR/valid/' + files[i] + ' ， 预测结果为：', out)
+    # if  __name__ == "__main__":
+    #     files = os.listdir("/home/huangzheng/ocr/tmp/Image_00002")
+    i = np.random.randint(0, len(files))
+    # for i in range(len(files)):
+    #     test_image = r'/home/huangzheng/ocr/tmp/Image_00002/' + files[i]
+    #     out = OCR(test_image)
+    #     print('预测图片为: /home/huangzheng/ocr/tmp/Image_00002/' + files[i] + ' ， 预测结果为：', out)

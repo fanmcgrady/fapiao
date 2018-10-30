@@ -5,7 +5,9 @@ Preprocess Pipeline
 import importlib
 
 from ..util import check
+
 importlib.reload(check)
+
 
 class PreprocPipeline(object):
     def __init__(self):

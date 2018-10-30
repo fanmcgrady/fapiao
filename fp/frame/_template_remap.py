@@ -27,7 +27,7 @@ class ReMap(object):
         assert isinstance(align_code, int)
         self.code = align_code
         self.std_size = std_size
-        
+
     def to_anchor(self, rect, inline=True):
         '''
         used in match and update
@@ -45,14 +45,14 @@ class ReMap(object):
         if self.code == RIGHT:
             anchor[0] += anchor[2]
         elif self.code == CENTER or self.code == FIXED:
-            anchor[0] += anchor[2]/2
-        anchor[1] += anchor[3]/2
+            anchor[0] += anchor[2] / 2
+        anchor[1] += anchor[3] / 2
         # to relative coord
         for i in range(4):
             anchor[i] /= self.std_size[i % 2]
 
         return anchor
-    
+
     def to_rect(self, anchor, inline=False):
         '''
         used in associate
@@ -69,8 +69,8 @@ class ReMap(object):
         if self.code == RIGHT:
             rect[0] -= rect[2]
         elif self.code == CENTER or self.code == FIXED:
-            rect[0] -= rect[2]/2
-        rect[1] -= rect[3]/2
+            rect[0] -= rect[2] / 2
+        rect[1] -= rect[3] / 2
         return rect
 
 

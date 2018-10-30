@@ -4,6 +4,7 @@ import caffe
 from caffe import layers as L
 from caffe import params as P
 
+
 def lenet(batch_size):
     n = caffe.NetSpec()
     n.data, n.label = L.DummyData(shape=[dict(dim=[batch_size, 1, 28, 28]),
@@ -23,6 +24,7 @@ def lenet(batch_size):
     n.loss = L.SoftmaxWithLoss(n.ip2, n.label)
     return n.to_proto()
 
+
 def anon_lenet(batch_size):
     data, label = L.DummyData(shape=[dict(dim=[batch_size, 1, 28, 28]),
                                      dict(dim=[batch_size, 1, 1, 1])],
@@ -41,12 +43,14 @@ def anon_lenet(batch_size):
     loss = L.SoftmaxWithLoss(ip2, label)
     return loss.to_proto()
 
+
 def silent_net():
     n = caffe.NetSpec()
     n.data, n.data2 = L.DummyData(shape=dict(dim=3), ntop=2)
     n.silence_data = L.Silence(n.data, ntop=0)
     n.silence_data2 = L.Silence(n.data2, ntop=0)
     return n.to_proto()
+
 
 class TestNetSpec(unittest.TestCase):
     def load_net(self, net_proto):

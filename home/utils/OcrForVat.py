@@ -104,10 +104,14 @@ def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
     return json.dumps(jsoni).encode().decode("unicode-escape")
 
 
-def newMubanDetect(filepath):
+def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')):
+    # 'elec'：增值税电子发票
+    # 'special'：增值税专用发票
+    # 'normal'：增值税普通发票
     # pars = dict(textline_method='textboxes')  # 使用 深度学习 方法，目前用的CPU，较慢 ?
-    pars = dict(textline_method='simple')  # 使用 深度学习 方法，目前用的CPU，较慢 ?
-    pipe = fp.vat_invoice.pipeline.VatInvoicePipeline('special', pars=pars, debug=False)  # 请用debug=False
+    # pars = dict(textline_method='simple')  # 使用 深度学习 方法，目前用的CPU，较慢 ?
+
+    pipe = fp.vat_invoice.pipeline.VatInvoicePipeline(type, pars=pars, debug=False)  # 请用debug=False
     # pipe = fp.vat_invoice.pipeline.VatInvoicePipeline('special', debug=False) # 请用False
     im = cv2.imread(filepath, 1)
     im = cv2.resize(im, None, fx=0.5, fy=0.5)
@@ -117,21 +121,36 @@ def newMubanDetect(filepath):
     # pl.figure(figsize=(12, 12))
     # pl.imshow(pipe.debug['result'])
     # pl.show()
-    attributeLine = {
-        'invoiceCode': list(pipe.predict('type')),
-        'invoiceNo': list(pipe.predict('serial')),
-        'invoiceDate': list(pipe.predict('time')),
-        'invoiceAmount': list(pipe.predict('tax_free_money'))
-    }
+    attributeLine = {}
+
+    if type == 'special' or type == 'normal':
+        attributeLine = {
+            'invoiceCode': list(pipe.predict('type')),
+            'invoiceNo': list(pipe.predict('serial')),
+            'invoiceDate': list(pipe.predict('time')),
+            'invoiceAmount': list(pipe.predict('tax_free_money'))
+        }
+    elif type == 'elec':
+        attributeLine = {
+            'invoiceCode': list(pipe.predict('type')),
+            'invoiceNo': list(pipe.predict('serial')),
+            'invoiceDate': list(pipe.predict('time')),
+            'invoiceAmount': list(pipe.predict('tax_free_money')),
+            'verifyCode': list(pipe.predict('verify'))
+        }
+    else:
+        print('type input error !')
+
+
     for c in attributeLine:
         attributeLine[c][0] = 2 * attributeLine[c][0] - 0.1 * 2 * attributeLine[c][2]
         attributeLine[c][1] = 2 * attributeLine[c][1] - 0.02 * 2 * attributeLine[c][3]
         attributeLine[c][2] = 2 * attributeLine[c][2] * 1.2
         attributeLine[c][3] = 2 * attributeLine[c][3] * 1.04
-    if attributeLine[c][0] < 0:
-        attributeLine[c][0] = 0
-    if attributeLine[c][1] < 0:
-        attributeLine[c][1] = 0
+        if attributeLine[c][0] < 0:
+            attributeLine[c][0] = 0
+        if attributeLine[c][1] < 0:
+            attributeLine[c][1] = 0
         
     print(attributeLine)
 

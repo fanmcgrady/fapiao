@@ -101,9 +101,9 @@ class TemplateAssociate_v2(object):
                 new_rect = bounding_rect(torch.stack(assoc_rects))
                 new_anchor = ReMap(align, image_size).to_anchor(new_rect)
                 element_diff = torch.abs(new_anchor - warped_anchor) / anchor_std
-                #print('new_anchor {}'.format(new_anchor))
-                #print('warped_anchor {}'.format(warped_anchor))
-                #print('anchor_std {}'.format(anchor_std))
+                # print('new_anchor {}'.format(new_anchor))
+                # print('warped_anchor {}'.format(warped_anchor))
+                # print('anchor_std {}'.format(anchor_std))
                 #print('element_diff {}'.format(element_diff), end='')
                 overall_diff = torch.dot(element_diff, self.weights)
                 if self.debug is not None:

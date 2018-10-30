@@ -14,13 +14,13 @@ import fp.config
 
 def sampling(image, rect):
     rx, ry, w, h = rect
-    im = image[ry:ry+h, rx:rx+w]
+    im = image[ry:ry + h, rx:rx + w]
     if h < w:
         x = np.random.randint(w - h)
-        sub_im = im[0:h, x:x+h]
+        sub_im = im[0:h, x:x + h]
     elif h > w:
         y = np.random.randint(h - w)
-        sub_im = im[y:y+w, 0:w]
+        sub_im = im[y:y + w, 0:w]
     else:
         sub_im = im
     sub_im = cv2.resize(sub_im, (28, 28))
@@ -41,7 +41,7 @@ class TextlineLenetClassify(object):
             _state_dict = torch.load(weight_file, map_location='cpu')
         self.net = lenet.LeNet().to(self.device)
         self.net.load_state_dict(_state_dict)
-    
+
     def __call__(self, image, rects):
         '''d'''
         types = np.zeros((len(rects),), np.uint8)

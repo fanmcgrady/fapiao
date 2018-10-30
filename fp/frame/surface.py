@@ -21,11 +21,11 @@ class Find(object):
     def __init__(self):
         self.approx_ratio = 0.02
         self.min_area = 60
-        
+
     def __call__(self, mask):
         # quads, conts = quad.find_quads(mask, approx_ratio=self.approx_ratio,
         #                               min_area=self.min_area)
-        _, contours, _ = cv2.findContours(mask.copy(), mode=cv2.RETR_EXTERNAL, 
+        _, contours, _ = cv2.findContours(mask.copy(), mode=cv2.RETR_EXTERNAL,
                                           method=cv2.CHAIN_APPROX_SIMPLE)
         quads = []
         conts = []
@@ -65,7 +65,7 @@ class Find(object):
 class Crop(object):
     def __init__(self, method=None, pars=None):
         pass
-    
+
     def __call__(self, image, box):
         center, dsize, angle = box
         dsize = int(dsize[0]), int(dsize[1])
@@ -84,7 +84,7 @@ class Adjust(object):
         self.th_ratio = 0.8
         # assumed: max(detected_line_length) > min(w, h) * line_length_ratio
         self.line_length_ratio = line_length_ratio
-        
+
     def __call__(self, std_im):
         assert std_im is not None, 'Empty image'
         assert isinstance(std_im, np.ndarray), 'Must numpy'
@@ -93,21 +93,21 @@ class Adjust(object):
         lines0 = self._detect_region(im[:40, :])
         lines1 = self._detect_region(im[-40:, :])
         lines = np.concatenate((lines0, lines1))
-        
+
         max_line_len = np.max(list(map(line.line_length, lines)))
         ref_size = np.min(std_im.shape[:2])
         if max_line_len < self.line_length_ratio * ref_size:
             return std_im
         line_lens_th = max_line_len * self.th_ratio
-        strong_lines = list(filter(lambda x : line.line_length(x) > line_lens_th, lines))
+        strong_lines = list(filter(lambda x: line.line_length(x) > line_lens_th, lines))
         line_angs = np.array(list(map(line.line_angle, strong_lines)))
         line_lens = np.array(list(map(line.line_length, strong_lines)))
         ang = np.sum(line_angs * line_lens) / np.sum(line_lens)
         h, w = std_im.shape[:2]
-        im_ft = trans.rotate_crop(std_im, center=(w/2, h/2), angle=ang, dsize=(w,h), 
-                                  border_color=(255,255,255))
+        im_ft = trans.rotate_crop(std_im, center=(w / 2, h / 2), angle=ang, dsize=(w, h),
+                                  border_color=(255, 255, 255))
         return im_ft
-        
+
     def _detect_region(self, sub_im):
         _lines, width, prec, nfa = self.lsd.detect(sub_im)
         _lines = np.squeeze(_lines)
@@ -125,11 +125,11 @@ class Detect(object):
         self.adjust = Adjust(**adjust_pars)
         self.aspect_ratio_th = aspect_ratio_th
         self.debug = dict() if debug else None
-        
+
     def __call__(self, image):
         # check input
         check.valid_image(image, colored=1)
-        
+
         # if image is cropped, just return
         if not is_crop_ready(image):
             std_image = self._detect(image)
@@ -137,42 +137,38 @@ class Detect(object):
                 return None
         else:
             std_image = image
-        
+
         std_image = self.adjust(std_image)
         if self._is_misorient(std_image):
             std_image = np.rot90(std_image, k=1, axes=(0, 1))
         return std_image
-    
+
     def _detect(self, image):
         fx = 1. * self.std_size / np.min(image.shape[:2])
         im = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         im = cv2.resize(im, None, fx=fx, fy=fx)
-        im = cv2.GaussianBlur(im, (3,3), 1.2)
+        im = cv2.GaussianBlur(im, (3, 3), 1.2)
         if self.debug is not None:
             self.debug['image'] = im
-            
+
         max_pix = np.max(im)
-        _, mask = cv2.threshold(im, max_pix-2, 255, cv2.THRESH_BINARY_INV)
+        _, mask = cv2.threshold(im, max_pix - 2, 255, cv2.THRESH_BINARY_INV)
         if self.debug is not None:
             self.debug['mask'] = mask
 
         box = self.find_frame(mask)  # quad,
         if self.debug is not None:
             self.debug['box'] = box
-            
+
         if box is None:
             return None
         box = _restore_box(box, fx)
         box_im = self.crop_frame(image, box)
-        
+
         return box_im
-        
+
     def _is_misorient(self, std_image):
         h, w = std_image.shape[:2]
         aspect_ratio = min(h, w) / max(h, w)
         # Fat and h>w, or Thin and h<w
         return (aspect_ratio > self.aspect_ratio_th) == (h > w)
-    
-
-            
-    

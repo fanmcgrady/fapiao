@@ -10,6 +10,7 @@ from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf import descriptor_pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -47,7 +48,6 @@ _sym_db.RegisterEnumDescriptor(_PHASE)
 Phase = enum_type_wrapper.EnumTypeWrapper(_PHASE)
 TRAIN = 0
 TEST = 1
-
 
 _EMITCONSTRAINT_EMITTYPE = _descriptor.EnumDescriptor(
     name='EmitType',
@@ -1049,7 +1049,6 @@ _V0LAYERPARAMETER_POOLMETHOD = _descriptor.EnumDescriptor(
 )
 _sym_db.RegisterEnumDescriptor(_V0LAYERPARAMETER_POOLMETHOD)
 
-
 _BLOBSHAPE = _descriptor.Descriptor(
     name='BlobShape',
     full_name='caffe.BlobShape',
@@ -1079,7 +1078,6 @@ _BLOBSHAPE = _descriptor.Descriptor(
     serialized_start=22,
     serialized_end=50,
 )
-
 
 _BLOBPROTO = _descriptor.Descriptor(
     name='BlobProto',
@@ -1167,7 +1165,6 @@ _BLOBPROTO = _descriptor.Descriptor(
     serialized_end=257,
 )
 
-
 _BLOBPROTOVECTOR = _descriptor.Descriptor(
     name='BlobProtoVector',
     full_name='caffe.BlobProtoVector',
@@ -1197,7 +1194,6 @@ _BLOBPROTOVECTOR = _descriptor.Descriptor(
     serialized_start=259,
     serialized_end=309,
 )
-
 
 _DATUM = _descriptor.Descriptor(
     name='Datum',
@@ -1271,7 +1267,6 @@ _DATUM = _descriptor.Descriptor(
     serialized_end=441,
 )
 
-
 _LABELMAPITEM = _descriptor.Descriptor(
     name='LabelMapItem',
     full_name='caffe.LabelMapItem',
@@ -1316,7 +1311,6 @@ _LABELMAPITEM = _descriptor.Descriptor(
     serialized_end=508,
 )
 
-
 _LABELMAP = _descriptor.Descriptor(
     name='LabelMap',
     full_name='caffe.LabelMap',
@@ -1346,7 +1340,6 @@ _LABELMAP = _descriptor.Descriptor(
     serialized_start=510,
     serialized_end=555,
 )
-
 
 _SAMPLER = _descriptor.Descriptor(
     name='Sampler',
@@ -1398,7 +1391,6 @@ _SAMPLER = _descriptor.Descriptor(
     serialized_start=557,
     serialized_end=668,
 )
-
 
 _SAMPLECONSTRAINT = _descriptor.Descriptor(
     name='SampleConstraint',
@@ -1465,7 +1457,6 @@ _SAMPLECONSTRAINT = _descriptor.Descriptor(
     serialized_end=863,
 )
 
-
 _BATCHSAMPLER = _descriptor.Descriptor(
     name='BatchSampler',
     full_name='caffe.BatchSampler',
@@ -1524,7 +1515,6 @@ _BATCHSAMPLER = _descriptor.Descriptor(
     serialized_end=1044,
 )
 
-
 _EMITCONSTRAINT = _descriptor.Descriptor(
     name='EmitConstraint',
     full_name='caffe.EmitConstraint',
@@ -1562,7 +1552,6 @@ _EMITCONSTRAINT = _descriptor.Descriptor(
     serialized_start=1047,
     serialized_end=1185,
 )
-
 
 _NORMALIZEDBBOX = _descriptor.Descriptor(
     name='NormalizedBBox',
@@ -1643,7 +1632,6 @@ _NORMALIZEDBBOX = _descriptor.Descriptor(
     serialized_end=1323,
 )
 
-
 _ANNOTATION = _descriptor.Descriptor(
     name='Annotation',
     full_name='caffe.Annotation',
@@ -1681,7 +1669,6 @@ _ANNOTATION = _descriptor.Descriptor(
     serialized_end=1398,
 )
 
-
 _ANNOTATIONGROUP = _descriptor.Descriptor(
     name='AnnotationGroup',
     full_name='caffe.AnnotationGroup',
@@ -1718,7 +1705,6 @@ _ANNOTATIONGROUP = _descriptor.Descriptor(
     serialized_start=1400,
     serialized_end=1477,
 )
-
 
 _ANNOTATEDDATUM = _descriptor.Descriptor(
     name='AnnotatedDatum',
@@ -1764,7 +1750,6 @@ _ANNOTATEDDATUM = _descriptor.Descriptor(
     serialized_start=1480,
     serialized_end=1655,
 )
-
 
 _FILLERPARAMETER = _descriptor.Descriptor(
     name='FillerParameter',
@@ -1845,7 +1830,6 @@ _FILLERPARAMETER = _descriptor.Descriptor(
     serialized_start=1658,
     serialized_end=1924,
 )
-
 
 _NETPARAMETER = _descriptor.Descriptor(
     name='NetParameter',
@@ -1932,7 +1916,6 @@ _NETPARAMETER = _descriptor.Descriptor(
     serialized_start=1927,
     serialized_end=2197,
 )
-
 
 _SOLVERPARAMETER = _descriptor.Descriptor(
     name='SolverParameter',
@@ -2254,7 +2237,6 @@ _SOLVERPARAMETER = _descriptor.Descriptor(
     serialized_end=3579,
 )
 
-
 _SOLVERSTATE = _descriptor.Descriptor(
     name='SolverState',
     full_name='caffe.SolverState',
@@ -2306,7 +2288,6 @@ _SOLVERSTATE = _descriptor.Descriptor(
     serialized_end=3689,
 )
 
-
 _NETSTATE = _descriptor.Descriptor(
     name='NetState',
     full_name='caffe.NetState',
@@ -2350,7 +2331,6 @@ _NETSTATE = _descriptor.Descriptor(
     serialized_start=3691,
     serialized_end=3769,
 )
-
 
 _NETSTATERULE = _descriptor.Descriptor(
     name='NetStateRule',
@@ -2410,7 +2390,6 @@ _NETSTATERULE = _descriptor.Descriptor(
     serialized_end=3886,
 )
 
-
 _PARAMSPEC = _descriptor.Descriptor(
     name='ParamSpec',
     full_name='caffe.ParamSpec',
@@ -2462,7 +2441,6 @@ _PARAMSPEC = _descriptor.Descriptor(
     serialized_start=3889,
     serialized_end=4052,
 )
-
 
 _LAYERPARAMETER = _descriptor.Descriptor(
     name='LayerParameter',
@@ -2949,7 +2927,6 @@ _LAYERPARAMETER = _descriptor.Descriptor(
     serialized_end=7078,
 )
 
-
 _TRANSFORMATIONPARAMETER = _descriptor.Descriptor(
     name='TransformationParameter',
     full_name='caffe.TransformationParameter',
@@ -3057,7 +3034,6 @@ _TRANSFORMATIONPARAMETER = _descriptor.Descriptor(
     serialized_end=7439,
 )
 
-
 _RESIZEPARAMETER = _descriptor.Descriptor(
     name='ResizeParameter',
     full_name='caffe.ResizeParameter',
@@ -3133,7 +3109,6 @@ _RESIZEPARAMETER = _descriptor.Descriptor(
     serialized_end=7921,
 )
 
-
 _SALTPEPPERPARAMETER = _descriptor.Descriptor(
     name='SaltPepperParameter',
     full_name='caffe.SaltPepperParameter',
@@ -3170,7 +3145,6 @@ _SALTPEPPERPARAMETER = _descriptor.Descriptor(
     serialized_start=7923,
     serialized_end=7980,
 )
-
 
 _NOISEPARAMETER = _descriptor.Descriptor(
     name='NoiseParameter',
@@ -3286,7 +3260,6 @@ _NOISEPARAMETER = _descriptor.Descriptor(
     serialized_end=8349,
 )
 
-
 _LOSSPARAMETER = _descriptor.Descriptor(
     name='LossParameter',
     full_name='caffe.LossParameter',
@@ -3332,7 +3305,6 @@ _LOSSPARAMETER = _descriptor.Descriptor(
     serialized_end=8546,
 )
 
-
 _ACCURACYPARAMETER = _descriptor.Descriptor(
     name='AccuracyParameter',
     full_name='caffe.AccuracyParameter',
@@ -3377,7 +3349,6 @@ _ACCURACYPARAMETER = _descriptor.Descriptor(
     serialized_end=8624,
 )
 
-
 _ANNOTATEDDATAPARAMETER = _descriptor.Descriptor(
     name='AnnotatedDataParameter',
     full_name='caffe.AnnotatedDataParameter',
@@ -3414,7 +3385,6 @@ _ANNOTATEDDATAPARAMETER = _descriptor.Descriptor(
     serialized_start=8626,
     serialized_end=8718,
 )
-
 
 _ARGMAXPARAMETER = _descriptor.Descriptor(
     name='ArgMaxParameter',
@@ -3460,7 +3430,6 @@ _ARGMAXPARAMETER = _descriptor.Descriptor(
     serialized_end=8797,
 )
 
-
 _CONCATPARAMETER = _descriptor.Descriptor(
     name='ConcatParameter',
     full_name='caffe.ConcatParameter',
@@ -3497,7 +3466,6 @@ _CONCATPARAMETER = _descriptor.Descriptor(
     serialized_start=8799,
     serialized_end=8856,
 )
-
 
 _BATCHNORMPARAMETER = _descriptor.Descriptor(
     name='BatchNormParameter',
@@ -3543,7 +3511,6 @@ _BATCHNORMPARAMETER = _descriptor.Descriptor(
     serialized_end=8964,
 )
 
-
 _BIASPARAMETER = _descriptor.Descriptor(
     name='BiasParameter',
     full_name='caffe.BiasParameter',
@@ -3588,7 +3555,6 @@ _BIASPARAMETER = _descriptor.Descriptor(
     serialized_end=9059,
 )
 
-
 _CONTRASTIVELOSSPARAMETER = _descriptor.Descriptor(
     name='ContrastiveLossParameter',
     full_name='caffe.ContrastiveLossParameter',
@@ -3625,7 +3591,6 @@ _CONTRASTIVELOSSPARAMETER = _descriptor.Descriptor(
     serialized_start=9061,
     serialized_end=9137,
 )
-
 
 _CONVOLUTIONPARAMETER = _descriptor.Descriptor(
     name='ConvolutionParameter',
@@ -3777,7 +3742,6 @@ _CONVOLUTIONPARAMETER = _descriptor.Descriptor(
     serialized_end=9648,
 )
 
-
 _CROPPARAMETER = _descriptor.Descriptor(
     name='CropParameter',
     full_name='caffe.CropParameter',
@@ -3814,7 +3778,6 @@ _CROPPARAMETER = _descriptor.Descriptor(
     serialized_start=9650,
     serialized_end=9698,
 )
-
 
 _DATAPARAMETER = _descriptor.Descriptor(
     name='DataParameter',
@@ -3910,7 +3873,6 @@ _DATAPARAMETER = _descriptor.Descriptor(
     serialized_end=9993,
 )
 
-
 _DETECTIONEVALUATEPARAMETER = _descriptor.Descriptor(
     name='DetectionEvaluateParameter',
     full_name='caffe.DetectionEvaluateParameter',
@@ -3969,7 +3931,6 @@ _DETECTIONEVALUATEPARAMETER = _descriptor.Descriptor(
     serialized_end=10170,
 )
 
-
 _NONMAXIMUMSUPPRESSIONPARAMETER = _descriptor.Descriptor(
     name='NonMaximumSuppressionParameter',
     full_name='caffe.NonMaximumSuppressionParameter',
@@ -4006,7 +3967,6 @@ _NONMAXIMUMSUPPRESSIONPARAMETER = _descriptor.Descriptor(
     serialized_start=10172,
     serialized_end=10247,
 )
-
 
 _SAVEOUTPUTPARAMETER = _descriptor.Descriptor(
     name='SaveOutputParameter',
@@ -4072,7 +4032,6 @@ _SAVEOUTPUTPARAMETER = _descriptor.Descriptor(
     serialized_start=10250,
     serialized_end=10420,
 )
-
 
 _DETECTIONOUTPUTPARAMETER = _descriptor.Descriptor(
     name='DetectionOutputParameter',
@@ -4175,7 +4134,6 @@ _DETECTIONOUTPUTPARAMETER = _descriptor.Descriptor(
     serialized_end=10859,
 )
 
-
 _DROPOUTPARAMETER = _descriptor.Descriptor(
     name='DropoutParameter',
     full_name='caffe.DropoutParameter',
@@ -4205,7 +4163,6 @@ _DROPOUTPARAMETER = _descriptor.Descriptor(
     serialized_start=10861,
     serialized_end=10907,
 )
-
 
 _DUMMYDATAPARAMETER = _descriptor.Descriptor(
     name='DummyDataParameter',
@@ -4272,7 +4229,6 @@ _DUMMYDATAPARAMETER = _descriptor.Descriptor(
     serialized_end=11070,
 )
 
-
 _ELTWISEPARAMETER = _descriptor.Descriptor(
     name='EltwiseParameter',
     full_name='caffe.EltwiseParameter',
@@ -4318,7 +4274,6 @@ _ELTWISEPARAMETER = _descriptor.Descriptor(
     serialized_end=11238,
 )
 
-
 _ELUPARAMETER = _descriptor.Descriptor(
     name='ELUParameter',
     full_name='caffe.ELUParameter',
@@ -4348,7 +4303,6 @@ _ELUPARAMETER = _descriptor.Descriptor(
     serialized_start=11240,
     serialized_end=11272,
 )
-
 
 _EMBEDPARAMETER = _descriptor.Descriptor(
     name='EmbedParameter',
@@ -4408,7 +4362,6 @@ _EMBEDPARAMETER = _descriptor.Descriptor(
     serialized_end=11447,
 )
 
-
 _EXPPARAMETER = _descriptor.Descriptor(
     name='ExpParameter',
     full_name='caffe.ExpParameter',
@@ -4453,7 +4406,6 @@ _EXPPARAMETER = _descriptor.Descriptor(
     serialized_end=11517,
 )
 
-
 _FLATTENPARAMETER = _descriptor.Descriptor(
     name='FlattenParameter',
     full_name='caffe.FlattenParameter',
@@ -4490,7 +4442,6 @@ _FLATTENPARAMETER = _descriptor.Descriptor(
     serialized_start=11519,
     serialized_end=11576,
 )
-
 
 _HDF5DATAPARAMETER = _descriptor.Descriptor(
     name='HDF5DataParameter',
@@ -4536,7 +4487,6 @@ _HDF5DATAPARAMETER = _descriptor.Descriptor(
     serialized_end=11657,
 )
 
-
 _HDF5OUTPUTPARAMETER = _descriptor.Descriptor(
     name='HDF5OutputParameter',
     full_name='caffe.HDF5OutputParameter',
@@ -4566,7 +4516,6 @@ _HDF5OUTPUTPARAMETER = _descriptor.Descriptor(
     serialized_start=11659,
     serialized_end=11699,
 )
-
 
 _HINGELOSSPARAMETER = _descriptor.Descriptor(
     name='HingeLossParameter',
@@ -4598,7 +4547,6 @@ _HINGELOSSPARAMETER = _descriptor.Descriptor(
     serialized_start=11701,
     serialized_end=11795,
 )
-
 
 _IMAGEDATAPARAMETER = _descriptor.Descriptor(
     name='ImageDataParameter',
@@ -4707,7 +4655,6 @@ _IMAGEDATAPARAMETER = _descriptor.Descriptor(
     serialized_end=12077,
 )
 
-
 _INFOGAINLOSSPARAMETER = _descriptor.Descriptor(
     name='InfogainLossParameter',
     full_name='caffe.InfogainLossParameter',
@@ -4737,7 +4684,6 @@ _INFOGAINLOSSPARAMETER = _descriptor.Descriptor(
     serialized_start=12079,
     serialized_end=12118,
 )
-
 
 _INNERPRODUCTPARAMETER = _descriptor.Descriptor(
     name='InnerProductParameter',
@@ -4804,7 +4750,6 @@ _INNERPRODUCTPARAMETER = _descriptor.Descriptor(
     serialized_end=12324,
 )
 
-
 _INPUTPARAMETER = _descriptor.Descriptor(
     name='InputParameter',
     full_name='caffe.InputParameter',
@@ -4834,7 +4779,6 @@ _INPUTPARAMETER = _descriptor.Descriptor(
     serialized_start=12326,
     serialized_end=12375,
 )
-
 
 _LOGPARAMETER = _descriptor.Descriptor(
     name='LogParameter',
@@ -4879,7 +4823,6 @@ _LOGPARAMETER = _descriptor.Descriptor(
     serialized_start=12377,
     serialized_end=12445,
 )
-
 
 _LRNPARAMETER = _descriptor.Descriptor(
     name='LRNParameter',
@@ -4948,7 +4891,6 @@ _LRNPARAMETER = _descriptor.Descriptor(
     serialized_end=12760,
 )
 
-
 _MEMORYDATAPARAMETER = _descriptor.Descriptor(
     name='MemoryDataParameter',
     full_name='caffe.MemoryDataParameter',
@@ -4999,7 +4941,6 @@ _MEMORYDATAPARAMETER = _descriptor.Descriptor(
     serialized_start=12762,
     serialized_end=12852,
 )
-
 
 _MULTIBOXLOSSPARAMETER = _descriptor.Descriptor(
     name='MultiBoxLossParameter',
@@ -5140,7 +5081,6 @@ _MULTIBOXLOSSPARAMETER = _descriptor.Descriptor(
     serialized_end=13667,
 )
 
-
 _MVNPARAMETER = _descriptor.Descriptor(
     name='MVNParameter',
     full_name='caffe.MVNParameter',
@@ -5184,7 +5124,6 @@ _MVNPARAMETER = _descriptor.Descriptor(
     serialized_start=13669,
     serialized_end=13769,
 )
-
 
 _NORMALIZEPARAMETER = _descriptor.Descriptor(
     name='NormalizeParameter',
@@ -5237,7 +5176,6 @@ _NORMALIZEPARAMETER = _descriptor.Descriptor(
     serialized_end=13918,
 )
 
-
 _PARAMETERPARAMETER = _descriptor.Descriptor(
     name='ParameterParameter',
     full_name='caffe.ParameterParameter',
@@ -5268,7 +5206,6 @@ _PARAMETERPARAMETER = _descriptor.Descriptor(
     serialized_end=13973,
 )
 
-
 _PERMUTEPARAMETER = _descriptor.Descriptor(
     name='PermuteParameter',
     full_name='caffe.PermuteParameter',
@@ -5298,7 +5235,6 @@ _PERMUTEPARAMETER = _descriptor.Descriptor(
     serialized_start=13975,
     serialized_end=14008,
 )
-
 
 _POOLINGPARAMETER = _descriptor.Descriptor(
     name='PoolingParameter',
@@ -5409,7 +5345,6 @@ _POOLINGPARAMETER = _descriptor.Descriptor(
     serialized_end=14429,
 )
 
-
 _POWERPARAMETER = _descriptor.Descriptor(
     name='PowerParameter',
     full_name='caffe.PowerParameter',
@@ -5453,7 +5388,6 @@ _POWERPARAMETER = _descriptor.Descriptor(
     serialized_start=14431,
     serialized_end=14501,
 )
-
 
 _PRIORBOXPARAMETER = _descriptor.Descriptor(
     name='PriorBoxParameter',
@@ -5521,7 +5455,6 @@ _PRIORBOXPARAMETER = _descriptor.Descriptor(
     serialized_end=14680,
 )
 
-
 _PYTHONPARAMETER = _descriptor.Descriptor(
     name='PythonParameter',
     full_name='caffe.PythonParameter',
@@ -5572,7 +5505,6 @@ _PYTHONPARAMETER = _descriptor.Descriptor(
     serialized_start=14682,
     serialized_end=14785,
 )
-
 
 _RECURRENTPARAMETER = _descriptor.Descriptor(
     name='RecurrentParameter',
@@ -5632,7 +5564,6 @@ _RECURRENTPARAMETER = _descriptor.Descriptor(
     serialized_end=14980,
 )
 
-
 _REDUCTIONPARAMETER = _descriptor.Descriptor(
     name='ReductionParameter',
     full_name='caffe.ReductionParameter',
@@ -5678,7 +5609,6 @@ _REDUCTIONPARAMETER = _descriptor.Descriptor(
     serialized_end=15156,
 )
 
-
 _RELUPARAMETER = _descriptor.Descriptor(
     name='ReLUParameter',
     full_name='caffe.ReLUParameter',
@@ -5716,7 +5646,6 @@ _RELUPARAMETER = _descriptor.Descriptor(
     serialized_start=15159,
     serialized_end=15300,
 )
-
 
 _RESHAPEPARAMETER = _descriptor.Descriptor(
     name='ReshapeParameter',
@@ -5761,7 +5690,6 @@ _RESHAPEPARAMETER = _descriptor.Descriptor(
     serialized_start=15302,
     serialized_end=15392,
 )
-
 
 _SCALEPARAMETER = _descriptor.Descriptor(
     name='ScaleParameter',
@@ -5821,7 +5749,6 @@ _SCALEPARAMETER = _descriptor.Descriptor(
     serialized_end=15560,
 )
 
-
 _SIGMOIDPARAMETER = _descriptor.Descriptor(
     name='SigmoidParameter',
     full_name='caffe.SigmoidParameter',
@@ -5852,7 +5779,6 @@ _SIGMOIDPARAMETER = _descriptor.Descriptor(
     serialized_start=15562,
     serialized_end=15682,
 )
-
 
 _SLICEPARAMETER = _descriptor.Descriptor(
     name='SliceParameter',
@@ -5898,7 +5824,6 @@ _SLICEPARAMETER = _descriptor.Descriptor(
     serialized_end=15760,
 )
 
-
 _SOFTMAXPARAMETER = _descriptor.Descriptor(
     name='SoftmaxParameter',
     full_name='caffe.SoftmaxParameter',
@@ -5937,7 +5862,6 @@ _SOFTMAXPARAMETER = _descriptor.Descriptor(
     serialized_end=15900,
 )
 
-
 _TANHPARAMETER = _descriptor.Descriptor(
     name='TanHParameter',
     full_name='caffe.TanHParameter',
@@ -5968,7 +5892,6 @@ _TANHPARAMETER = _descriptor.Descriptor(
     serialized_start=15902,
     serialized_end=16016,
 )
-
 
 _TILEPARAMETER = _descriptor.Descriptor(
     name='TileParameter',
@@ -6007,7 +5930,6 @@ _TILEPARAMETER = _descriptor.Descriptor(
     serialized_end=16065,
 )
 
-
 _THRESHOLDPARAMETER = _descriptor.Descriptor(
     name='ThresholdParameter',
     full_name='caffe.ThresholdParameter',
@@ -6037,7 +5959,6 @@ _THRESHOLDPARAMETER = _descriptor.Descriptor(
     serialized_start=16067,
     serialized_end=16109,
 )
-
 
 _VIDEODATAPARAMETER = _descriptor.Descriptor(
     name='VideoDataParameter',
@@ -6083,7 +6004,6 @@ _VIDEODATAPARAMETER = _descriptor.Descriptor(
     serialized_start=16112,
     serialized_end=16275,
 )
-
 
 _WINDOWDATAPARAMETER = _descriptor.Descriptor(
     name='WindowDataParameter',
@@ -6199,7 +6119,6 @@ _WINDOWDATAPARAMETER = _descriptor.Descriptor(
     serialized_end=16599,
 )
 
-
 _SPPPARAMETER = _descriptor.Descriptor(
     name='SPPParameter',
     full_name='caffe.SPPParameter',
@@ -6245,7 +6164,6 @@ _SPPPARAMETER = _descriptor.Descriptor(
     serialized_start=16602,
     serialized_end=16837,
 )
-
 
 _V1LAYERPARAMETER = _descriptor.Descriptor(
     name='V1LayerParameter',
@@ -6573,7 +6491,6 @@ _V1LAYERPARAMETER = _descriptor.Descriptor(
     serialized_end=19368,
 )
 
-
 _V0LAYERPARAMETER = _descriptor.Descriptor(
     name='V0LayerParameter',
     full_name='caffe.V0LayerParameter',
@@ -6863,7 +6780,6 @@ _V0LAYERPARAMETER = _descriptor.Descriptor(
     serialized_start=19371,
     serialized_end=20392,
 )
-
 
 _PRELUPARAMETER = _descriptor.Descriptor(
     name='PReLUParameter',
@@ -7793,7 +7709,6 @@ PReLUParameter = _reflection.GeneratedProtocolMessageType('PReLUParameter', (_me
     # @@protoc_insertion_point(class_scope:caffe.PReLUParameter)
 ))
 _sym_db.RegisterMessage(PReLUParameter)
-
 
 _BLOBSHAPE.fields_by_name['dim'].has_options = True
 _BLOBSHAPE.fields_by_name['dim']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))

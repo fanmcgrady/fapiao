@@ -2,6 +2,7 @@ import unittest
 
 import caffe
 
+
 class TestLayerTypeList(unittest.TestCase):
 
     def test_standard_types(self):

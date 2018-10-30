@@ -18,13 +18,16 @@ from ..util import check
 importlib.reload(check)
 
 from ..util import machine
+
 importlib.reload(machine)
 
 from ..util import data
+
 importlib.reload(data)
 
 if machine.is_('s11'):
     from ..TextBoxes import detect_textline
+
     importlib.reload(detect_textline)
 
     TextlineTextBoxesDetect = detect_textline.TextBoxesDetect
@@ -43,7 +46,7 @@ class Detect(object):
             # self.detect = TextlineTextBoxesDetect(**pars, debug=debug)
         else:
             raise NotImplemented
-    
+
     def __call__(self, image):
         '''
         return list of rects'''
@@ -74,13 +77,13 @@ class Detect(object):
 class Classify(object):
     '''Textline Detect'''
     default_pars_lenet = dict(weight_file=fp.config.TEXTLINE_CLASSIFY_LENET_WEIGHT)
-    
+
     def __init__(self, method='lenet', pars=default_pars_lenet):
         if method == 'lenet':
             self.classify = TextlineLenetClassify(**pars)
         else:
             raise NotImplemented
-    
+
     def __call__(self, image, rects):
         check.valid_image(image, colored=0)
         check.valid_rects(rects)

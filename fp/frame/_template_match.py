@@ -25,7 +25,7 @@ class TemplateMatch(object):
         '''input should be tensors'''
         if self.debug is not None:
             self.debug['warp_history'] = []
-        
+
         # use given init para or choose from random guess
         if para_init is not None:
             para = self.warp.init(para_init)
@@ -47,11 +47,11 @@ class TemplateMatch(object):
 
     def _one_try(self, anchors_mean, center_mean, align, detected_candidates, para):
         '''input should be tensors'''
-        #t = torch.tensor(t_init, requires_grad=True)
+        # t = torch.tensor(t_init, requires_grad=True)
         
         if self.debug is not None:
             print('{:>4s}|{:>10s}|{:^24s}|{:^24s}'.format('i', 'loss', 't', 't_grad'))
-            
+
         for i in range(self.iteration):
             warped_anchors = self.warp(anchors_mean, center_mean, para)
             if self.debug is not None:
@@ -63,12 +63,12 @@ class TemplateMatch(object):
                 prior_sy = torch.norm(para[3] - 1.)
                 loss += 0.002 * prior_sx + 0.001 * prior_sy
             loss.backward()
-            
-            if self.debug is not None and i % (self.iteration//10) == 0:
+
+            if self.debug is not None and i % (self.iteration // 10) == 0:
                 t_str = ' '.join(['{:10.4f}'.format(ti) for ti in para])
                 tg_str = ' '.join(['{:10.4f}'.format(ti) for ti in para.grad])
                 print('{:4d}|{:10.4f}|{:24s}|{:24s}'.format(i, loss.item(), t_str, tg_str))
-                
+
             if torch.norm(para.grad) < fp.config.EPSILON:
                 break
                 if self.debug is not None:
@@ -80,7 +80,7 @@ class TemplateMatch(object):
                 para.grad.zero_()
 
         return para.detach().cpu(), warped_anchors.detach().cpu(), loss.detach().item()
-    
+
     #def _anchor_candiates(self, warped_rects):
     #    x, y = warped_rects[:, 0], warped_rects[:, 1]
     #    w, h = warped_rects[:, 2], warped_rects[:, 3]
@@ -103,22 +103,21 @@ def evaluate(anchors_mean, detection, im_shape):
             y = int(round(y.item()))
             w = int(round(w.item()))
             h = int(round(h.item()))
-            im_tpl[y:y+h, x:x+w] = 255
+            im_tpl[y:y + h, x:x + w] = 255
     else:
         for x, y, w, h in anchors_mean.values():
             x = int(round(x))
             y = int(round(y))
             w = int(round(w))
             h = int(round(h))
-            im_tpl[y:y+h, x:x+w] = 255
+            im_tpl[y:y + h, x:x + w] = 255
     for x, y, w, h in detection:
         x = int(round(x))
         y = int(round(y))
         w = int(round(w))
         h = int(round(h))
-        im_dtc[y:y+h, x:x+w] = 255
+        im_dtc[y:y + h, x:x + w] = 255
     im_dif = cv2.absdiff(im_tpl, im_dtc)
     pix_inter = cv2.countNonZero(cv2.bitwise_and(im_tpl, im_dtc))
     pix_union = cv2.countNonZero(cv2.bitwise_or(im_tpl, im_dtc))
     return pix_inter / pix_union, im_dif
-        

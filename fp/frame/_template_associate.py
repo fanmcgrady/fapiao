@@ -4,13 +4,14 @@ import numpy as np
 import torch
 import torchvision
 
-#from . import _template_remap
-#importlib.reload(_template_remap)
-#from ._template_remap import ReMap
+
+# from . import _template_remap
+# importlib.reload(_template_remap)
+# from ._template_remap import ReMap
 
 def rect_to_limit(rect):
     x, y, w, h = rect
-    return x, x+w, y, y+h
+    return x, x + w, y, y + h
 
 def rect_overlap_area(rect, rect_ref):
     x0, x1, y0, y1 = rect_to_limit(rect)
@@ -21,7 +22,8 @@ def rect_overlap_area(rect, rect_ref):
         return dxu * dyv
     else:
         return 0
-    
+
+
 def bounding_rect(rects):
     if rects == []:
         return None
@@ -30,7 +32,7 @@ def bounding_rect(rects):
     x1 = np.max([x1 for x0, x1, y0, y1 in limits])
     y0 = np.min([y0 for x0, x1, y0, y1 in limits])
     y1 = np.min([y1 for x0, x1, y0, y1 in limits])
-    return np.array([x0, y0, x1-x0, y1-y0], np.float32)
+    return np.array([x0, y0, x1 - x0, y1 - y0], np.float32)
 
 def approx(x0, x1):
     '''0 is best'''
@@ -44,13 +46,14 @@ def anchor_to_rect(anchor, align_code):
     elif align_code == 0 or align_code == 3:
         rect[0] -= rect[2]/2
     return rect
-    
+
+
 class TemplateAssociate(object):
     def __init__(self, iou_th=0.5, height_th=0.2, tiny_th=0.85):
         self.iou_th = iou_th
         self.height_th = height_th
         self.tiny_th = tiny_th
-        
+
     def __call__(self, warped_rects, aligns, detected_rects):
         return self._simple_associate(warped_rects, aligns, detected_rects)
 
