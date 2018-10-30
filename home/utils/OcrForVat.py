@@ -77,7 +77,7 @@ def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
                            recT['invoiceDate'][0] + recT['invoiceDate'][2],
                            recT['invoiceDate'][1] + recT['invoiceDate'][3]))
 
-            sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "tmp/" + \
+            sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + \
                    jwkj_get_filePath_fileName_fileExt(filePath)[
                        1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
                        1] + "_" + 'invoiceDateFix' + ".jpg"
