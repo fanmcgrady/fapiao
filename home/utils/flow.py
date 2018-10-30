@@ -755,6 +755,7 @@ def DetectRedTrainTicket(box, filePath):
 
 
 def cropToOcr(filePath, recT, typeT, debug=False, isusebaidu=False):
+    print("{},{}".format(debug, isusebaidu))
     ocrResult = {}
     img = Image.open(filePath)
 
