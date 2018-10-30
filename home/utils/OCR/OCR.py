@@ -145,6 +145,8 @@ def load_model():
     global_model = Model(inputs=input, outputs=y_pred)
     global_model.load_weights(modelPath)
 
+    return global_model
+
 
 def OCR(image_path):
     """
