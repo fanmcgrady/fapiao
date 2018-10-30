@@ -273,6 +273,7 @@ if not local_start:
     import tensorflow as tf
     from keras import backend as K
 
+    K.clear_session()
     n_classes = 17
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     config = tf.ConfigProto()
