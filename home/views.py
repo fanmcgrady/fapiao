@@ -259,3 +259,57 @@ def resume(request):
             ret = {'status': False, 'path': file_path, 'out': str(e)}
 
         return HttpResponse(json.dumps(ret))
+
+
+if not local_start:
+    from keras.layers.convolutional import Conv2D, MaxPooling2D, ZeroPadding2D
+
+    from keras.layers.normalization import BatchNormalization
+    from keras.layers.core import Permute
+    from keras.layers import Input, Dense, Flatten
+    from keras.layers.recurrent import GRU
+    from keras.layers.wrappers import Bidirectional
+    from keras.models import Model
+    from keras.layers.wrappers import TimeDistributed
+    import tensorflow as tf
+    from keras import backend as K
+
+    K.clear_session()
+    n_classes = 17
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth = True
+    sess = tf.Session(config=config)
+    K.set_session(sess)
+    modelPath = r'home/utils/OCR/model/weights-25.hdf5'
+    input = Input(shape=(32, None, 1), name='the_input')
+    m = Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same', name='conv1')(input)
+    m = MaxPooling2D(pool_size=(2, 2), strides=(2, 2), name='pool1')(m)
+    m = Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same', name='conv2')(m)
+    m = MaxPooling2D(pool_size=(2, 2), strides=(2, 2), name='pool2')(m)
+    m = Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same', name='conv3')(m)
+    m = BatchNormalization(axis=3)(m)
+    m = Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same', name='conv4')(m)
+
+    m = ZeroPadding2D(padding=(0, 1))(m)
+    m = MaxPooling2D(pool_size=(2, 2), strides=(2, 1), padding='valid', name='pool3')(m)
+
+    m = Conv2D(512, kernel_size=(3, 3), activation='relu', padding='same', name='conv5')(m)
+    m = BatchNormalization(axis=3)(m)
+    m = Conv2D(512, kernel_size=(3, 3), activation='relu', padding='same', name='conv6')(m)
+
+    m = ZeroPadding2D(padding=(0, 1))(m)
+    m = MaxPooling2D(pool_size=(2, 2), strides=(2, 1), padding='valid', name='pool4')(m)
+    m = Conv2D(512, kernel_size=(2, 2), activation='relu', padding='valid', name='conv7')(m)
+    m = BatchNormalization(axis=3)(m)
+
+    m = Permute((2, 1, 3), name='permute')(m)
+    m = TimeDistributed(Flatten(), name='timedistrib')(m)
+
+    m = Bidirectional(GRU(256, return_sequences=True, implementation=2), name='blstm1')(m)
+    m = Dense(256, name='blstm1_out', activation='linear', )(m)
+    m = Bidirectional(GRU(256, return_sequences=True, implementation=2), name='blstm2')(m)
+    y_pred = Dense(n_classes, name='blstm2_out', activation='softmax')(m)
+
+    global_model = Model(inputs=input, outputs=y_pred)
+    global_model.load_weights(modelPath)
