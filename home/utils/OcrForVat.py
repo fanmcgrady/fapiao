@@ -83,7 +83,7 @@ def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
                        1] + "_" + 'invoiceDateFix' + ".jpg"
             sp.save(sFPN)
 
-                        if isusebaidu:
+            if isusebaidu:
                 midResult = flow.OcrPic(sFPN)
             else:
                 midResult = ocr.OCR(sFPN)
