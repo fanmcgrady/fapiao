@@ -785,7 +785,7 @@ def cropToOcr(filePath, recT, typeT, debug=False, isusebaidu=False):
             # else:
             #     midResult = OcrNoPic(sFPN)
 
-            print(midResult + '   isUseBaidu: ' + isusebaidu)
+            print(midResult + '   isUseBaidu: ' + str(isusebaidu))
             ocrResult[x] = midResult
 
     print(ocrResult)
