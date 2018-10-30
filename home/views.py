@@ -13,7 +13,7 @@ print("读取全局字典")
 global_dic = ComputeDistance.load_dict('SemanticCorrect/hei_20.json')
 
 # 设置本地运行
-local_start = True
+local_start = False
 
 if local_start:
     print("本地运行")
