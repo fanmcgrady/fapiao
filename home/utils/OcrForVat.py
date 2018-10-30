@@ -83,7 +83,10 @@ def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
                        1] + "_" + 'invoiceDateFix' + ".jpg"
             sp.save(sFPN)
 
-            midResult = flow.OcrPic(sFPN)
+                        if isusebaidu:
+                midResult = flow.OcrPic(sFPN)
+            else:
+                midResult = ocr.OCR(sFPN)
 
             print('invoiceDateFix: ' + midResult)
             ocrResult['invoiceDate'] = midResult
@@ -143,10 +146,10 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
 
 
     for c in attributeLine:
-        attributeLine[c][0] = 2 * attributeLine[c][0] - 0.1 * 2 * attributeLine[c][2]
-        attributeLine[c][1] = 2 * attributeLine[c][1] - 0.02 * 2 * attributeLine[c][3]
-        attributeLine[c][2] = 2 * attributeLine[c][2] * 1.2
-        attributeLine[c][3] = 2 * attributeLine[c][3] * 1.04
+        attributeLine[c][0] = 2 * attributeLine[c][0] - 0.02 * 2 * attributeLine[c][2]
+        attributeLine[c][1] = 2 * attributeLine[c][1] - 0.2 * 2 * attributeLine[c][3]
+        attributeLine[c][2] = 2 * attributeLine[c][2] * 1.04
+        attributeLine[c][3] = 2 * attributeLine[c][3] * 1.4
         if attributeLine[c][0] < 0:
             attributeLine[c][0] = 0
         if attributeLine[c][1] < 0:
