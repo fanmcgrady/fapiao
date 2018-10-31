@@ -6,9 +6,6 @@ if local_start:
     print("本地运行")
 else:
     print("服务器运行")
-    from home.utils.OCR.OCR import load_model
-
-    global_model = load_model()
 
 import datetime
 import json
