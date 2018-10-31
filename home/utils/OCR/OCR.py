@@ -106,13 +106,13 @@ def predict(img_path, base_model, thresholding=160):
 def load_model():
     K.clear_session()
     n_classes = 17
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+    os.environ["CUDA_VISIBLE_DEVICES"] = "4"
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
     sess = tf.Session(config=config)
     K.set_session(sess)
     modelPath = r'home/utils/OCR/model/weights-25.hdf5'
-    print("load model: {}".format(modelPath))
+    print("加载模型: {}".format(modelPath))
     input = Input(shape=(32, None, 1), name='the_input')
     m = Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same', name='conv1')(input)
     m = MaxPooling2D(pool_size=(2, 2), strides=(2, 2), name='pool1')(m)
