@@ -52,8 +52,19 @@ class Timer(object):
 
 
 class OCR(object):
-    def __init__(self):
+    def __init__(self, image_path):
         self.global_model = self.load_model()
+        self.image_path = image_path
+
+    def __call__(self, image_path):
+        """
+            imgae_path 输入图片路径，识别图片为行提取结果
+            color: 0 二值， 1 灰度， 2 彩色
+            base_model 为加载模型，这个模型最好在服务器启动时加载，计算时作为参数输入即可，减少加载模型所需要的时间
+        """
+        out, _ = self.predict(image_path, self.global_model)
+
+        return out
 
     def predict(self, img_path, base_model, thresholding=160):
         """
@@ -148,13 +159,3 @@ class OCR(object):
         global_model.load_weights(modelPath)
 
         return global_model
-
-    def __call__(self, image_path):
-        """
-            imgae_path 输入图片路径，识别图片为行提取结果
-            color: 0 二值， 1 灰度， 2 彩色
-            base_model 为加载模型，这个模型最好在服务器启动时加载，计算时作为参数输入即可，减少加载模型所需要的时间
-        """
-        out, _ = self.predict(image_path, self.global_model)
-
-        return out
