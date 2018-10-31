@@ -218,7 +218,7 @@ def surface(request):
     if request.method == 'GET':
         # GET车票类型
         type = request.GET['type']
-        # 返回detect.html界面 传参type
+        # 返回detect.html界面并传参type
         return render(request, 'detect.html', {'type': type})
     elif request.method == "POST":
         # POST压缩包中的文件
