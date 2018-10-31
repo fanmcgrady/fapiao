@@ -105,7 +105,7 @@ def predict(img_path, base_model, thresholding=160):
 
 def load_model():
     n_classes = 17
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+    # os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
     sess = tf.Session(config=config)
@@ -145,7 +145,6 @@ def load_model():
     global_model.load_weights(modelPath)
 
     return global_model
-
 
 def OCR(image_path, base_model=None):
     """
