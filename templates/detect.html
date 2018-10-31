@@ -301,13 +301,13 @@
 
     function ocrDetect() {
         current++;
-        // 分析完压缩包中全部文件后返回
+        // 分析完压缩包中的全部文件后返回
         if (current > fileTotal) {
             $("#status").html("分析完成").removeClass("text-danger");
             $("#button-tips").html("矫正");
             return;
         }
-        //循环取队列头
+        // 循环取队列头
         var currentFile = fileList.shift();
         // 提示正在分析的文件
         $("#status").html("<i class='fa fa-spin fa-spinner'></i>&nbsp;&nbsp;正在分析文件:  " + currentFile).addClass("text-danger");		//页面中的状态进度条
