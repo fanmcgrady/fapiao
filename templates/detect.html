@@ -229,7 +229,6 @@
 <script type="text/javascript" src="static/blue/assets/spinner/spinner.min.js"></script>
 
 <script>
-    var resizefunc = [];
     var fileList;
     var fileTotal;
     var current;
@@ -239,6 +238,7 @@
         $("#button-tips").html("处理中...");
         $("#status").text("识别中...");
 
+        // 初始化
         fileList = new Array();
         fileTotal = 0;
         current = 0;
@@ -257,9 +257,12 @@
             return;
         }
 
+        // 初始函数
         loadingShow();
 
+        // 初始化
         var dic = new FormData();
+        // 取上传文件
         var file = document.getElementById('example-input1-group2').files[0];
         dic.append('fapiao', file);
         $.ajax({
@@ -271,15 +274,21 @@
             dataType: 'JSON',
             success: function (arg) {
                 if (arg.status) {
+                    // 矫正结果作为fileList
                     fileList = arg.out;
+                    // 矫正结果文件数作为总文件数
                     fileTotal = fileList.length;
+                    // 显示总文件数
                     $("#total").html(fileTotal);
 
+                    // 识别
                     ocrDetect();
                 } else {
+                    // 错误提示
                     $("#result").text("出错了，请联系我们完善程序，错误信息如下：" + arg.out);
                     $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试1");
                 }
+                // 按钮恢复
                 $("#button-tips").html("矫正");
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -292,15 +301,20 @@
 
     function ocrDetect() {
         current++;
+        // 分析完压缩包中全部文件后返回
         if (current > fileTotal) {
             $("#status").html("分析完成").removeClass("text-danger");
             $("#button-tips").html("矫正");
             return;
         }
-        var currentFile = fileList.shift();         //循环取队列头
+        //循环取队列头
+        var currentFile = fileList.shift();
+        // 提示正在分析的文件
         $("#status").html("<i class='fa fa-spin fa-spinner'></i>&nbsp;&nbsp;正在分析文件:  " + currentFile).addClass("text-danger");		//页面中的状态进度条
         var dic = new FormData();
+        // 所有文件
         dic.append('fileInZip', currentFile);
+        // 接受传递的参数type
         dic.append('type', '{{ type }}');
 
         $.ajax({
@@ -311,21 +325,27 @@
             contentType: false,  // tell jQuery not to set contentType
             dataType: 'JSON',
             success: function (arg) {
+                // 构造表格
                 var tr = $('<tr></tr>').attr('style', 'font-weight: bold;');
+                // 原始图片
                 tr.append($('<td><img src="static/' + arg.path + '"/></td>'));
 
                 if (arg.status) {
-                    //矫正图片
+                    // 矫正图片
                     tr.append($('<td><img src="static/' + arg.out + '"/></td>'));
-                    //行提取图片
+                    // 行提取图片
                     tr.append($('<td><img src="static/' + arg.line + '"/></td>'));
                 } else {
+                    // 出错合并单元格并提示出错信息
                     tr.append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
                 }
 
+                // 显示结果图片
                 $('#result-table').append(tr);
+                // 显示当前处理完成文件数
                 $("#current").html(current);
 
+                // 下一个文件
                 ocrDetect();
             },
             error: function (jqXHR, textStatus, errorThrown) {
