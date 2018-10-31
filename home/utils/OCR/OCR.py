@@ -106,7 +106,7 @@ def predict(img_path, base_model, thresholding=160):
 def load_model():
     K.clear_session()
     n_classes = 17
-    os.environ["CUDA_VISIBLE_DEVICES"] = "4"
+    os.environ["CUDA_VISIBLE_DEVICES"] = "3"
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
     sess = tf.Session(config=config)
