@@ -1,3 +1,15 @@
+# 设置本地运行
+local_start = False
+
+# 判断运行方式
+if local_start:
+    print("本地运行")
+else:
+    print("服务器运行")
+    from home.utils.OCR.OCR import load_model
+
+    global_model = load_model()
+
 import datetime
 import json
 import os
@@ -11,18 +23,6 @@ from SemanticCorrect import ComputeDistance
 # 取20个形似字
 print("读取全局字典")
 global_dic = ComputeDistance.load_dict('SemanticCorrect/hei_20.json')
-
-# 设置本地运行
-local_start = False
-
-# 判断运行方式
-if local_start:
-    print("本地运行")
-else:
-    print("服务器运行")
-    from home.utils.OCR.OCR import load_model
-
-    global_model = load_model()
 
 from .utils import Ocr
 from .utils import OcrForVat
