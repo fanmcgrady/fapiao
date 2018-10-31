@@ -112,7 +112,6 @@ def ocrForVat(request):
         # POST压缩包中的文件
         filename = request.POST['fileInZip']
 
-        # 文件已通过getFileList方法上传到upload目录，此时不需要上传了
         # 拼接目录
         file_path = os.path.join('upload', filename)
         line_filename = os.path.join('line', filename)
