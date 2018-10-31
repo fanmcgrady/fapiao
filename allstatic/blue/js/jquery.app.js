@@ -218,8 +218,6 @@ function($) {
      //on doc load
     MoltranApp.prototype.onDocReady = function(e) {
       FastClick.attach(document.body);
-      resizefunc.push("initscrolls");
-      resizefunc.push("changeptype");
 
       $('.animate-number').each(function(){
         $(this).animateNumbers($(this).attr("data-value"), true, parseInt($(this).attr("data-duration"))); 
@@ -329,11 +327,11 @@ var debounce = function(func, wait, immediate) {
 }
 
 function resizeitems(){
-  if($.isArray(resizefunc)){  
-    for (i = 0; i < resizefunc.length; i++) {
-        window[resizefunc[i]]();
-    }
-  }
+    // if($.isArray(resizefunc)){
+    //   for (i = 0; i < resizefunc.length; i++) {
+    //       window[resizefunc[i]]();
+    //   }
+    // }
 }
 
 function initscrolls(){
