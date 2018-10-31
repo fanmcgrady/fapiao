@@ -51,111 +51,110 @@ class Timer(object):
             return self.diff
 
 
-def predict(img_path, base_model, thresholding=160):
-    """
-        thresholding 输入范围 0 - 255
-        默认为160
-        0 : 采用自动阈值
-        > 0 : 采用人工设置的阈值
-    """
-    if thresholding > 255:
-        thresholding = 255
-    if thresholding < 0:
-        thresholding = 0
+class OCR(object):
+    def __init__(self):
+        self.global_model = self.load_model()
 
-    t = Timer()
-    img = Image.open(img_path)
-    im = img.convert('L')
-    scale = im.size[1] * 1.0 / 64
-    w = im.size[0] / scale
-    w = int(w)
-    # print('w:',w)
+    def predict(self, img_path, base_model, thresholding=160):
+        """
+            thresholding 输入范围 0 - 255
+            默认为160
+            0 : 采用自动阈值
+            > 0 : 采用人工设置的阈值
+        """
+        if thresholding > 255:
+            thresholding = 255
+        if thresholding < 0:
+            thresholding = 0
 
-    im = im.resize((160, 32), Image.ANTIALIAS)
-    img = np.array(im)
-    h, w = img.shape
+        t = Timer()
+        img = Image.open(img_path)
+        im = img.convert('L')
+        scale = im.size[1] * 1.0 / 64
+        w = im.size[0] / scale
+        w = int(w)
+        # print('w:',w)
 
-    if thresholding == 0:
-        img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 5)
-    else:
-        for i in range(h):
-            for j in range(w):
-                if img[i, j] > thresholding:
-                    img[i, j] = 255
-                else:
-                    img[i, j] = 0
+        im = im.resize((160, 32), Image.ANTIALIAS)
+        img = np.array(im)
+        h, w = img.shape
 
-    img = np.array(img)
+        if thresholding == 0:
+            img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 5)
+        else:
+            for i in range(h):
+                for j in range(w):
+                    if img[i, j] > thresholding:
+                        img[i, j] = 255
+                    else:
+                        img[i, j] = 0
 
-    img = img.astype(np.float32) / 255.0 - 0.5
-    X = img.reshape((32, 160, 1))
-    X = np.array([X])
+        img = np.array(img)
 
-    t.tic()
-    y_pred = base_model.predict(X)
-    t.toc()
-    # print("times,",t.diff)
-    argmax = np.argmax(y_pred, axis=2)[0]
-    y_pred = y_pred[:, :, :]
-    out = K.get_value(K.ctc_decode(y_pred, input_length=np.ones(y_pred.shape[0]) * y_pred.shape[1], )[0][0])[:, :]
-    out = u''.join([id_to_char[x] for x in out[0]])
+        img = img.astype(np.float32) / 255.0 - 0.5
+        X = img.reshape((32, 160, 1))
+        X = np.array([X])
 
-    return out, im
+        t.tic()
+        y_pred = base_model.predict(X)
+        t.toc()
+        # print("times,",t.diff)
+        argmax = np.argmax(y_pred, axis=2)[0]
+        y_pred = y_pred[:, :, :]
+        out = K.get_value(K.ctc_decode(y_pred, input_length=np.ones(y_pred.shape[0]) * y_pred.shape[1], )[0][0])[:, :]
+        out = u''.join([id_to_char[x] for x in out[0]])
 
+        return out, im
 
-def load_model():
-    n_classes = 17
-    os.environ["CUDA_VISIBLE_DEVICES"] = "3"
-    config = tf.ConfigProto()
-    config.gpu_options.allow_growth = True
-    sess = tf.Session(config=config)
-    K.set_session(sess)
-    modelPath = r'home/utils/OCR/model/weights-25.hdf5'
-    print("加载OCR模型: {}".format(modelPath))
-    input = Input(shape=(32, None, 1), name='the_input')
-    m = Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same', name='conv1')(input)
-    m = MaxPooling2D(pool_size=(2, 2), strides=(2, 2), name='pool1')(m)
-    m = Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same', name='conv2')(m)
-    m = MaxPooling2D(pool_size=(2, 2), strides=(2, 2), name='pool2')(m)
-    m = Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same', name='conv3')(m)
-    m = BatchNormalization(axis=3)(m)
-    m = Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same', name='conv4')(m)
+    def load_model(self):
+        n_classes = 17
+        os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True
+        sess = tf.Session(config=config)
+        K.set_session(sess)
+        modelPath = r'home/utils/OCR/model/weights-25.hdf5'
+        print("加载OCR模型: {}".format(modelPath))
+        input = Input(shape=(32, None, 1), name='the_input')
+        m = Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same', name='conv1')(input)
+        m = MaxPooling2D(pool_size=(2, 2), strides=(2, 2), name='pool1')(m)
+        m = Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same', name='conv2')(m)
+        m = MaxPooling2D(pool_size=(2, 2), strides=(2, 2), name='pool2')(m)
+        m = Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same', name='conv3')(m)
+        m = BatchNormalization(axis=3)(m)
+        m = Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same', name='conv4')(m)
 
-    m = ZeroPadding2D(padding=(0, 1))(m)
-    m = MaxPooling2D(pool_size=(2, 2), strides=(2, 1), padding='valid', name='pool3')(m)
+        m = ZeroPadding2D(padding=(0, 1))(m)
+        m = MaxPooling2D(pool_size=(2, 2), strides=(2, 1), padding='valid', name='pool3')(m)
 
-    m = Conv2D(512, kernel_size=(3, 3), activation='relu', padding='same', name='conv5')(m)
-    m = BatchNormalization(axis=3)(m)
-    m = Conv2D(512, kernel_size=(3, 3), activation='relu', padding='same', name='conv6')(m)
+        m = Conv2D(512, kernel_size=(3, 3), activation='relu', padding='same', name='conv5')(m)
+        m = BatchNormalization(axis=3)(m)
+        m = Conv2D(512, kernel_size=(3, 3), activation='relu', padding='same', name='conv6')(m)
 
-    m = ZeroPadding2D(padding=(0, 1))(m)
-    m = MaxPooling2D(pool_size=(2, 2), strides=(2, 1), padding='valid', name='pool4')(m)
-    m = Conv2D(512, kernel_size=(2, 2), activation='relu', padding='valid', name='conv7')(m)
-    m = BatchNormalization(axis=3)(m)
+        m = ZeroPadding2D(padding=(0, 1))(m)
+        m = MaxPooling2D(pool_size=(2, 2), strides=(2, 1), padding='valid', name='pool4')(m)
+        m = Conv2D(512, kernel_size=(2, 2), activation='relu', padding='valid', name='conv7')(m)
+        m = BatchNormalization(axis=3)(m)
 
-    m = Permute((2, 1, 3), name='permute')(m)
-    m = TimeDistributed(Flatten(), name='timedistrib')(m)
+        m = Permute((2, 1, 3), name='permute')(m)
+        m = TimeDistributed(Flatten(), name='timedistrib')(m)
 
-    m = Bidirectional(GRU(256, return_sequences=True, implementation=2), name='blstm1')(m)
-    m = Dense(256, name='blstm1_out', activation='linear', )(m)
-    m = Bidirectional(GRU(256, return_sequences=True, implementation=2), name='blstm2')(m)
-    y_pred = Dense(n_classes, name='blstm2_out', activation='softmax')(m)
+        m = Bidirectional(GRU(256, return_sequences=True, implementation=2), name='blstm1')(m)
+        m = Dense(256, name='blstm1_out', activation='linear', )(m)
+        m = Bidirectional(GRU(256, return_sequences=True, implementation=2), name='blstm2')(m)
+        y_pred = Dense(n_classes, name='blstm2_out', activation='softmax')(m)
 
-    global_model = Model(inputs=input, outputs=y_pred)
-    global_model.load_weights(modelPath)
+        global_model = Model(inputs=input, outputs=y_pred)
+        global_model.load_weights(modelPath)
 
-    return global_model
+        return global_model
 
+    def __call__(self, image_path):
+        """
+            imgae_path 输入图片路径，识别图片为行提取结果
+            color: 0 二值， 1 灰度， 2 彩色
+            base_model 为加载模型，这个模型最好在服务器启动时加载，计算时作为参数输入即可，减少加载模型所需要的时间
+        """
+        out, _ = self.predict(image_path, self.global_model)
 
-def OCR(image_path, base_model=None):
-    """
-        imgae_path 输入图片路径，识别图片为行提取结果
-        color: 0 二值， 1 灰度， 2 彩色
-        base_model 为加载模型，这个模型最好在服务器启动时加载，计算时作为参数输入即可，减少加载模型所需要的时间
-    """
-    global_model = load_model()
-    if base_model is None:
-        base_model = global_model
-    out, _ = predict(image_path, base_model)
-
-    return out
+        return out
