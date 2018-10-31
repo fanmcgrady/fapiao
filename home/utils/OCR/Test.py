@@ -1,5 +1,5 @@
 import os
-from home.utils.OCR.OCR import OCR
+import OCR
 
 if __name__ == "__main__":
     files = os.listdir("/home/huangzheng/ocr/tmp/Image_00002")
