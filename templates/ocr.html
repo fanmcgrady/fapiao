@@ -310,7 +310,7 @@
 
     function ocr() {
         current++;
-        // 分析完压缩包中的全部文件后返回
+        // 分析完压缩包中全部文件后返回
         if (current > fileTotal) {
             $("#status").html("分析完成").removeClass("text-danger");
             $("#button-tips").html("识别");
