@@ -23,7 +23,6 @@ with open(r'home/utils/OCR/rcnn_dic.txt', encoding='utf-8') as f:
         ch = ch.strip('\r\n')
         char = char + ch
 char = char + '卍'
-print('nclass:', len(char))
 n_classes = len(char)
 
 char_to_id = {j: i for i, j in enumerate(char)}
@@ -113,6 +112,7 @@ def load_model():
     sess = tf.Session(config=config)
     K.set_session(sess)
     modelPath = r'home/utils/OCR/model/weights-25.hdf5'
+    print("load model: {}".format(modelPath))
     input = Input(shape=(32, None, 1), name='the_input')
     m = Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same', name='conv1')(input)
     m = MaxPooling2D(pool_size=(2, 2), strides=(2, 2), name='pool1')(m)
@@ -148,13 +148,14 @@ def load_model():
     return global_model
 
 
-def OCR(image_path):
+def OCR(image_path, base_model):
     """
         imgae_path 输入图片路径，识别图片为行提取结果
         color: 0 二值， 1 灰度， 2 彩色
         base_model 为加载模型，这个模型最好在服务器启动时加载，计算时作为参数输入即可，减少加载模型所需要的时间
     """
-    base_model = load_model()
+    if base_model is None:
+        base_model = load_model()
     out, _ = predict(image_path, base_model)
 
     return out
