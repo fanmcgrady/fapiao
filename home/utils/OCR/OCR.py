@@ -1,7 +1,7 @@
 ﻿import time
 
 import cv2
-import keras.backend.tensorflow_backend as K
+# import keras.backend.tensorflow_backend as K
 import numpy as np
 import tensorflow as tf
 from PIL import Image
@@ -33,7 +33,6 @@ id_to_char = {i: j for i, j in enumerate(char)}
 # os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
-sess = tf.Session(config=config)
 
 class Timer(object):
     def __init__(self):
@@ -110,6 +109,7 @@ def predict(img_path, base_model, thresholding=160):
 
 
 def load_model():
+    sess = tf.Session(config=config)
     K.set_session(sess)
     modelPath = r'home/utils/OCR/model/weights-25.hdf5'
     print("加载OCR模型: {}".format(modelPath))
