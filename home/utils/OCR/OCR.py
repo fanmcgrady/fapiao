@@ -92,7 +92,7 @@ def predict(img_path, base_model, thresholding=160):
     img = img.astype(np.float32) / 255.0 - 0.5
     X = img.reshape((32, 160, 1))
     X = np.array([X])
-    print("X{}".format(X))
+    print("X{}".format(X.shape))
 
     t.tic()
     y_pred = base_model.predict(X)
