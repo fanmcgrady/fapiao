@@ -1,20 +1,20 @@
-﻿import os
-import time
+﻿import time
 
 import cv2
 import keras.backend.tensorflow_backend as K
 import numpy as np
+import tensorflow as tf
 from PIL import Image
-from keras.layers.convolutional import Conv2D, MaxPooling2D, ZeroPadding2D
-
-from keras.layers.normalization import BatchNormalization
-from keras.layers.core import Permute
 from keras.layers import Input, Dense, Flatten
+from keras.layers.convolutional import Conv2D, MaxPooling2D, ZeroPadding2D
+from keras.layers.core import Permute
+from keras.layers.normalization import BatchNormalization
 from keras.layers.recurrent import GRU
 from keras.layers.wrappers import Bidirectional
-from keras.models import Model
 from keras.layers.wrappers import TimeDistributed
-import tensorflow as tf
+from keras.models import Model
+
+from home import views
 
 # from keras import backend as K
 
@@ -28,6 +28,13 @@ n_classes = len(char)
 
 char_to_id = {j: i for i, j in enumerate(char)}
 id_to_char = {i: j for i, j in enumerate(char)}
+
+n_classes = 17
+# os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+sess = tf.Session(config=config)
+K.set_session(sess)
 
 
 class Timer(object):
@@ -105,13 +112,6 @@ def predict(img_path, base_model, thresholding=160):
 
 
 def load_model():
-    K.clear_session()
-    n_classes = 17
-    # os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-    config = tf.ConfigProto()
-    # config.gpu_options.allow_growth = True
-    sess = tf.Session(config=config)
-    K.set_session(sess)
     modelPath = r'home/utils/OCR/model/weights-25.hdf5'
     print("加载OCR模型: {}".format(modelPath))
     input = Input(shape=(32, None, 1), name='the_input')
@@ -153,6 +153,7 @@ def load_model():
 
     return global_model
 
+
 def OCR(image_path, base_model=None):
     """
         imgae_path 输入图片路径，识别图片为行提取结果
@@ -160,7 +161,6 @@ def OCR(image_path, base_model=None):
         base_model 为加载模型，这个模型最好在服务器启动时加载，计算时作为参数输入即可，减少加载模型所需要的时间
     """
     if base_model is None:
-        from home import views
         base_model = views.global_model
         # base_model = load_model()
     out, _ = predict(image_path, base_model)
