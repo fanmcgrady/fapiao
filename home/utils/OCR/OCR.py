@@ -2,7 +2,7 @@
 import time
 
 import cv2
-# import keras.backend.tensorflow_backend as K
+import keras.backend.tensorflow_backend as K
 import numpy as np
 from PIL import Image
 from keras.layers.convolutional import Conv2D, MaxPooling2D, ZeroPadding2D
@@ -15,7 +15,8 @@ from keras.layers.wrappers import Bidirectional
 from keras.models import Model
 from keras.layers.wrappers import TimeDistributed
 import tensorflow as tf
-from keras import backend as K
+
+# from keras import backend as K
 
 char = ''
 with open(r'home/utils/OCR/rcnn_dic.txt', encoding='utf-8') as f:
