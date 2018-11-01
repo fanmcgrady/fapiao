@@ -29,12 +29,12 @@ id_to_char = {i: j for i, j in enumerate(char)}
 
 # 分配显存
 # n_classes = 17
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
-K.clear_session()
-sess = tf.Session(config=config)
-K.set_session(sess)
+# os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+# config = tf.ConfigProto()
+# config.gpu_options.allow_growth = True
+# K.clear_session()
+# sess = tf.Session(config=config)
+# K.set_session(sess)
 
 class Timer(object):
     def __init__(self):
@@ -107,9 +107,9 @@ def predict(img_path, base_model, thresholding=160):
     argmax = np.argmax(y_pred, axis=2)[0]
     y_pred = y_pred[:, :, :]
 
-    output = K.ctc_decode(y_pred, input_length=np.ones(y_pred.shape[0]) * y_pred.shape[1], )[0][0]
-    out = output.eval(session=K.get_session())
-    # out = K.get_value(K.ctc_decode(y_pred, input_length=np.ones(y_pred.shape[0]) * y_pred.shape[1], )[0][0])[:, :]
+    # output = K.ctc_decode(y_pred, input_length=np.ones(y_pred.shape[0]) * y_pred.shape[1], )[0][0]
+    # out = output.eval(session=K.get_session())
+    out = K.get_value(K.ctc_decode(y_pred, input_length=np.ones(y_pred.shape[0]) * y_pred.shape[1], )[0][0])[:, :]
     out = u''.join([id_to_char[x] for x in out[0]])
 
     return out, im
