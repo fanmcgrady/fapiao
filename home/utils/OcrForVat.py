@@ -3,6 +3,8 @@
 if not views.local_start:
     import home.utils.OCR.OCR as ocr
 
+    global_model = ocr.load_model()
+
 from PIL import Image
 import os
 import SemanticCorrect.posteriorCrt
@@ -30,6 +32,7 @@ def jwkj_get_filePath_fileName_fileExt(filename):  # 提取路径
     (filepath, tempfilename) = os.path.split(filename)
     (shotname, extension) = os.path.splitext(tempfilename)
     return filepath, shotname, extension
+
 
 def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
     ocrResult = {}
@@ -59,7 +62,7 @@ def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
             if isusebaidu:
                 midResult = flow.OcrPic(sFPN)
             else:
-                midResult = ocr.OCR(sFPN)
+                midResult = ocr.OCR(sFPN, global_model)
             # else:
             #     midResult = OcrNoPic(sFPN)
 
@@ -85,7 +88,7 @@ def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
             if isusebaidu:
                 midResult = flow.OcrPic(sFPN)
             else:
-                midResult = ocr.OCR(sFPN)
+                midResult = ocr.OCR(sFPN, global_model)
 
             print('invoiceDateFix: ' + midResult)
             ocrResult['invoiceDate'] = midResult
