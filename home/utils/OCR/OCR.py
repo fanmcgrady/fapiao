@@ -2,7 +2,7 @@
 import time
 
 import cv2
-import keras.backend.tensorflow_backend as K
+# import keras.backend.tensorflow_backend as K
 import numpy as np
 import tensorflow as tf
 from PIL import Image
@@ -17,7 +17,7 @@ from keras.models import Model
 
 from home import views
 
-# from keras import backend as K
+from keras import backend as K
 
 char = ''
 with open(r'home/utils/OCR/rcnn_dic.txt', encoding='utf-8') as f:
@@ -62,6 +62,8 @@ def predict(img_path, base_model, thresholding=160):
         0 : 采用自动阈值
         > 0 : 采用人工设置的阈值
     """
+    K.clear_session()
+
     if thresholding > 255:
         thresholding = 255
     if thresholding < 0:
@@ -108,7 +110,6 @@ def predict(img_path, base_model, thresholding=160):
 
 
 def load_model():
-    K.clear_session()
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
