@@ -163,15 +163,16 @@ def load_model():
 
 
 # global_model = None
-# base_model = None
+base_model = None
 
-def OCR(image_path, base_model=None):
+
+def OCR(image_path):
     """
         imgae_path 输入图片路径，识别图片为行提取结果
         color: 0 二值， 1 灰度， 2 彩色
         base_model 为加载模型，这个模型最好在服务器启动时加载，计算时作为参数输入即可，减少加载模型所需要的时间
     """
-    # global base_model
+    global base_model
     if base_model is None:
         base_model = load_model()
     out, _ = predict(image_path, base_model)
