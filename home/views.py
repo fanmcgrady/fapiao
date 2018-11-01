@@ -8,12 +8,12 @@ if local_start:
     print("本地运行")
 else:
     print("服务器运行")
-    from home.utils.OCR.OCR import load_model
+    # from home.utils.OCR.OCR import load_model
 
-    print("加载模型")
-    global_model = load_model()
+    # print("加载模型")
+    # global_model = load_model()
     # load 进来模型紧接着就执行一次 predict 函数
-    global_model.predict(np.zeros((32, 160, 1)))
+    # global_model.predict(np.zeros((32, 160, 1)))
 
 import datetime
 import json
