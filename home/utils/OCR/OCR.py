@@ -151,7 +151,10 @@ def load_model():
     y_pred = Dense(n_classes, name='blstm2_out', activation='softmax')(m)
 
     global_model = Model(inputs=input, outputs=y_pred)
-    global_model.load_weights(modelPath)
+    # 定义模型结构，得到模型basemodel
+    g3 = tf.get_default_graph()
+    with g3.as_default():
+        global_model.load_weights(modelPath)
 
     # 预先预测一次
     # print("Test model")
