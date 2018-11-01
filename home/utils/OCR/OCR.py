@@ -156,7 +156,7 @@ def load_model():
 # global_model = None
 
 
-def OCR(image_path, base_model):
+def OCR(image_path):
     """
         imgae_path 输入图片路径，识别图片为行提取结果
         color: 0 二值， 1 灰度， 2 彩色
