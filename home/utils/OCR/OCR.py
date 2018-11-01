@@ -35,6 +35,8 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 # config = tf.ConfigProto()
 # config.gpu_options.allow_growth = True
 
+graph = None
+
 class Timer(object):
     def __init__(self):
         self.total_time = 0.
@@ -99,9 +101,14 @@ def predict(img_path, base_model, thresholding=160):
     X = img.reshape((32, 160, 1))
     X = np.array([X])
 
-    t.tic()
-    y_pred = base_model.predict(X)
-    t.toc()
+    global graph
+    graph = tf.get_default_graph()
+
+    with graph.as_default():
+        t.tic()
+        y_pred = base_model.predict(X)
+        t.toc()
+
     # print("times,",t.diff)
     argmax = np.argmax(y_pred, axis=2)[0]
     y_pred = y_pred[:, :, :]
@@ -151,10 +158,8 @@ def load_model():
     y_pred = Dense(n_classes, name='blstm2_out', activation='softmax')(m)
 
     # 定义模型结构，得到模型basemodel
-    g3 = tf.get_default_graph()
-    with g3.as_default():
-        global_model = Model(inputs=input, outputs=y_pred)
-        global_model.load_weights(modelPath)
+    global_model = Model(inputs=input, outputs=y_pred)
+    global_model.load_weights(modelPath)
 
     # 预先预测一次
     # print("Test model")
