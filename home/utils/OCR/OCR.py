@@ -2,11 +2,11 @@
 import time
 
 import cv2
-# import keras.backend.tensorflow_backend as K
+import keras.backend.tensorflow_backend as K
 import numpy as np
 import tensorflow as tf
 from PIL import Image
-from keras import backend as K
+# from keras import backend as K
 from keras.layers import Input, Dense, Flatten
 from keras.layers.convolutional import Conv2D, MaxPooling2D, ZeroPadding2D
 from keras.layers.core import Permute
@@ -26,9 +26,6 @@ n_classes = len(char)
 
 char_to_id = {j: i for i, j in enumerate(char)}
 id_to_char = {i: j for i, j in enumerate(char)}
-
-
-# n_classes = 17
 
 
 class Timer(object):
@@ -108,6 +105,7 @@ def predict(img_path, base_model, thresholding=160):
 
 
 def load_model():
+    n_classes = 17
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
