@@ -1,7 +1,8 @@
-﻿import time
+﻿import os
+import time
 
 import cv2
-# import keras.backend.tensorflow_backend as K
+import keras.backend.tensorflow_backend as K
 import numpy as np
 import tensorflow as tf
 from PIL import Image
@@ -16,7 +17,7 @@ from keras.models import Model
 
 from home import views
 
-from keras import backend as K
+# from keras import backend as K
 
 char = ''
 with open(r'home/utils/OCR/rcnn_dic.txt', encoding='utf-8') as f:
@@ -30,7 +31,7 @@ char_to_id = {j: i for i, j in enumerate(char)}
 id_to_char = {i: j for i, j in enumerate(char)}
 
 # n_classes = 17
-# os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 
@@ -146,28 +147,21 @@ def load_model():
     global_model.load_weights(modelPath)
 
     # 预先预测一次
-    print("Test model")
-    global_model.predict(np.zeros((1, 32, 160, 1)))
-    print("Test model over")
+    # print("Test model")
+    # global_model.predict(np.zeros((1, 32, 160, 1)))
+    # print("Test model over")
 
     return global_model
 
 
-global_model = None
 def OCR(image_path, base_model=None):
     """
         imgae_path 输入图片路径，识别图片为行提取结果
         color: 0 二值， 1 灰度， 2 彩色
         base_model 为加载模型，这个模型最好在服务器启动时加载，计算时作为参数输入即可，减少加载模型所需要的时间
     """
-    global global_model
     if base_model is None:
-        # base_model = views.global_model
-        if global_model is None:
-            base_model = load_model()
-            global_model = base_model
-        else:
-            base_model = global_model
+        base_model = views.global_model
     out, _ = predict(image_path, base_model)
 
     return out

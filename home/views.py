@@ -11,7 +11,7 @@ else:
     from home.utils.OCR.OCR import *
 
     print("加载模型")
-    # global_model = load_model()
+    global_model = load_model()
     # load 进来模型紧接着就执行一次 predict 函数
     # global_model.predict(np.array([32, 160, 1]))
     # global_model.predict(np.zeros((1, 32, 160, 1)))
