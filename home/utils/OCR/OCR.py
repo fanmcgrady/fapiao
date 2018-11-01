@@ -161,9 +161,6 @@ def load_model():
     return global_model
 
 
-global_model = load_model()
-# base_model = None
-
 def OCR(image_path):
     """
         imgae_path 输入图片路径，识别图片为行提取结果
@@ -173,7 +170,8 @@ def OCR(image_path):
     # global base_model
     # if base_model is None:
     #     base_model = load_model()
-    global global_model
+    from home import views
+    global_model = views.global_model
     out, _ = predict(image_path, global_model)
 
     return out
