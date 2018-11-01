@@ -8,14 +8,9 @@ if local_start:
     print("本地运行")
 else:
     print("服务器运行")
-    from home.utils.OCR.OCR import *
-
-    print("加载模型")
-    global_model = load_model()
-    # load 进来模型紧接着就执行一次 predict 函数
-    # global_model.predict(np.array([32, 160, 1]))
-    # global_model.predict(np.zeros((1, 32, 160, 1)))
-    # OCR("/home/huangzheng/ocr/tmp/Image_00002/Image_00002_invoiceNo.jpg", global_model)
+    # from home.utils.OCR.OCR import *
+    # print("加载模型")
+    # global_model = load_model()
 
 import datetime
 import json
