@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 import tensorflow as tf
 from PIL import Image
+from keras import backend as K
 from keras.layers import Input, Dense, Flatten
 from keras.layers.convolutional import Conv2D, MaxPooling2D, ZeroPadding2D
 from keras.layers.core import Permute
@@ -14,10 +15,6 @@ from keras.layers.recurrent import GRU
 from keras.layers.wrappers import Bidirectional
 from keras.layers.wrappers import TimeDistributed
 from keras.models import Model
-
-from home import views
-
-from keras import backend as K
 
 char = ''
 with open(r'home/utils/OCR/rcnn_dic.txt', encoding='utf-8') as f:
@@ -29,6 +26,7 @@ n_classes = len(char)
 
 char_to_id = {j: i for i, j in enumerate(char)}
 id_to_char = {i: j for i, j in enumerate(char)}
+
 
 # n_classes = 17
 
@@ -167,10 +165,11 @@ def OCR(image_path):
         base_model 为加载模型，这个模型最好在服务器启动时加载，计算时作为参数输入即可，减少加载模型所需要的时间
     """
     # global_model 只加载一次
-    global global_model
-    if global_model is None:
-        # base_model = views.global_model
-        global_model = load_model()
+    # global global_model
+    # if global_model is None:
+    # base_model = views.global_model
+    global_model = load_model()
+
     out, _ = predict(image_path, global_model)
 
     return out
