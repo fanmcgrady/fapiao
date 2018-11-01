@@ -289,8 +289,6 @@
                     $("#result").text("出错了，请联系我们完善程序，错误信息如下：" + arg.out);
                     $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试1");
                 }
-                // 按钮恢复
-                $("#button-tips").html("识别");
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试");
@@ -305,6 +303,7 @@
         // 分析完压缩包中的全部文件后返回
         if (current > fileTotal) {
             $("#status").html("分析完成").removeClass("text-danger");
+            // 按钮恢复
             $("#button-tips").html("识别");
             return;
         }
