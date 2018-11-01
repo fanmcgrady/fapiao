@@ -109,7 +109,7 @@ def load_model():
     n_classes = 17
     # os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     config = tf.ConfigProto()
-    config.gpu_options.allow_growth = True
+    # config.gpu_options.allow_growth = True
     sess = tf.Session(config=config)
     K.set_session(sess)
     modelPath = r'home/utils/OCR/model/weights-25.hdf5'
