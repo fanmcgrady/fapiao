@@ -60,7 +60,7 @@ def predict(img_path, base_model, thresholding=160):
         0 : 采用自动阈值
         > 0 : 采用人工设置的阈值
     """
-    K.clear_session()
+    # K.clear_session()
 
     if thresholding > 255:
         thresholding = 255
