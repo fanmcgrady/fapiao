@@ -16,7 +16,7 @@ from keras.models import Model
 
 from home import views
 
-# from keras import backend as K
+from keras import backend as K
 
 char = ''
 with open(r'home/utils/OCR/rcnn_dic.txt', encoding='utf-8') as f:
@@ -29,13 +29,11 @@ n_classes = len(char)
 char_to_id = {j: i for i, j in enumerate(char)}
 id_to_char = {i: j for i, j in enumerate(char)}
 
-n_classes = 17
+# n_classes = 17
 # os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 sess = tf.Session(config=config)
-K.set_session(sess)
-
 
 class Timer(object):
     def __init__(self):
@@ -112,6 +110,7 @@ def predict(img_path, base_model, thresholding=160):
 
 
 def load_model():
+    K.set_session(sess)
     modelPath = r'home/utils/OCR/model/weights-25.hdf5'
     print("加载OCR模型: {}".format(modelPath))
     input = Input(shape=(32, None, 1), name='the_input')
