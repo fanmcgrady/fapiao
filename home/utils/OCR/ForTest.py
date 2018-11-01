@@ -172,17 +172,17 @@ def OCR(image_path, base_model):
         base_model 为加载模型，这个模型最好在服务器启动时加载，计算时作为参数输入即可，减少加载模型所需要的时间
     """
     # global base_model
-    # if base_model is None:
-    #     base_model = load_model()
+    if base_model is None:
+        base_model = load_model()
     out, _ = predict(image_path, base_model)
 
     return out
 
 
 if __name__ == "__main__":
-    base_model = load_model()
+    # base_model = load_model()
     files = os.listdir("/home/huangzheng/ocr/tmp/Image_00002")
     for i in range(len(files)):
         test_image = r'/home/huangzheng/ocr/tmp/Image_00002/' + files[i]
-        out = OCR(test_image, base_model)
+        out = OCR(test_image)
         print('预测图片为: ' + test_image + '， 预测结果为：', out)
