@@ -32,8 +32,9 @@ id_to_char = {i: j for i, j in enumerate(char)}
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
-# K.clear_session()
-sess = None
+K.clear_session()
+sess = tf.Session(config=config)
+K.set_session(sess)
 
 class Timer(object):
     def __init__(self):
@@ -115,10 +116,6 @@ def predict(img_path, base_model, thresholding=160):
 
 
 def load_model():
-    global sess
-    if sess is None:
-        sess = tf.Session(config=config)
-    K.set_session(sess)
     modelPath = r'home/utils/OCR/model/weights-25.hdf5'
     print("加载OCR模型: {}".format(modelPath))
     input = Input(shape=(32, None, 1), name='the_input')
@@ -157,8 +154,6 @@ def load_model():
     # print("Test model")
     # global_model.predict(np.zeros((1, 32, 160, 1)))
     # print("Test model over")
-
-    sess = K.get_session()
 
     return global_model
 
