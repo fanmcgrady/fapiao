@@ -29,12 +29,12 @@ id_to_char = {i: j for i, j in enumerate(char)}
 
 # 分配显存
 # n_classes = 17
-# os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-# config = tf.ConfigProto()
-# config.gpu_options.allow_growth = True
-# K.clear_session()
-# sess = tf.Session(config=config)
-# K.set_session(sess)
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+K.clear_session()
+sess = tf.Session(config=config)
+
 
 class Timer(object):
     def __init__(self):
@@ -58,8 +58,6 @@ class Timer(object):
             return self.diff
 
 
-graph = None
-
 def predict(img_path, base_model, thresholding=160):
     """
         thresholding 输入范围 0 - 255
@@ -68,57 +66,58 @@ def predict(img_path, base_model, thresholding=160):
         > 0 : 采用人工设置的阈值
     """
     # K.clear_session()
-    global graph
-    with graph.as_default():
-        if thresholding > 255:
-            thresholding = 255
-        if thresholding < 0:
-            thresholding = 0
 
-        t = Timer()
-        img = Image.open(img_path)
-        im = img.convert('L')
-        scale = im.size[1] * 1.0 / 64
-        w = im.size[0] / scale
-        w = int(w)
-        # print('w:',w)
+    if thresholding > 255:
+        thresholding = 255
+    if thresholding < 0:
+        thresholding = 0
 
-        im = im.resize((160, 32), Image.ANTIALIAS)
-        img = np.array(im)
-        h, w = img.shape
+    t = Timer()
+    img = Image.open(img_path)
+    im = img.convert('L')
+    scale = im.size[1] * 1.0 / 64
+    w = im.size[0] / scale
+    w = int(w)
+    # print('w:',w)
 
-        if thresholding == 0:
-            img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 5)
-        else:
-            for i in range(h):
-                for j in range(w):
-                    if img[i, j] > thresholding:
-                        img[i, j] = 255
-                    else:
-                        img[i, j] = 0
+    im = im.resize((160, 32), Image.ANTIALIAS)
+    img = np.array(im)
+    h, w = img.shape
 
-        img = np.array(img)
+    if thresholding == 0:
+        img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 5)
+    else:
+        for i in range(h):
+            for j in range(w):
+                if img[i, j] > thresholding:
+                    img[i, j] = 255
+                else:
+                    img[i, j] = 0
 
-        img = img.astype(np.float32) / 255.0 - 0.5
-        X = img.reshape((32, 160, 1))
-        X = np.array([X])
+    img = np.array(img)
 
-        t.tic()
-        y_pred = base_model.predict(X)
-        t.toc()
-        # print("times,",t.diff)
-        argmax = np.argmax(y_pred, axis=2)[0]
-        y_pred = y_pred[:, :, :]
+    img = img.astype(np.float32) / 255.0 - 0.5
+    X = img.reshape((32, 160, 1))
+    X = np.array([X])
 
-        # output = K.ctc_decode(y_pred, input_length=np.ones(y_pred.shape[0]) * y_pred.shape[1], )[0][0]
-        # out = output.eval(session=K.get_session())
-        out = K.get_value(K.ctc_decode(y_pred, input_length=np.ones(y_pred.shape[0]) * y_pred.shape[1], )[0][0])[:, :]
-        out = u''.join([id_to_char[x] for x in out[0]])
+    t.tic()
+    y_pred = base_model.predict(X)
+    t.toc()
+    # print("times,",t.diff)
+    argmax = np.argmax(y_pred, axis=2)[0]
+    y_pred = y_pred[:, :, :]
+
+    # output = K.ctc_decode(y_pred, input_length=np.ones(y_pred.shape[0]) * y_pred.shape[1], )[0][0]
+    # out = output.eval(session=K.get_session())
+    out = K.get_value(K.ctc_decode(y_pred, input_length=np.ones(y_pred.shape[0]) * y_pred.shape[1], )[0][0])[:, :]
+    out = u''.join([id_to_char[x] for x in out[0]])
 
     return out, im
 
 
 def load_model():
+    global sess
+    K.set_session(sess)
     modelPath = r'home/utils/OCR/model/weights-25.hdf5'
     print("加载OCR模型: {}".format(modelPath))
     input = Input(shape=(32, None, 1), name='the_input')
@@ -157,9 +156,6 @@ def load_model():
     # print("Test model")
     # global_model.predict(np.zeros((1, 32, 160, 1)))
     # print("Test model over")
-
-    global graph
-    graph = tf.get_default_graph()
 
     return global_model
 
