@@ -28,6 +28,8 @@ n_classes = len(char)
 char_to_id = {j: i for i, j in enumerate(char)}
 id_to_char = {i: j for i, j in enumerate(char)}
 
+ocr_model = None
+
 
 class Timer(object):
     def __init__(self):
@@ -153,7 +155,8 @@ def OCR(image_path, base_model=None):
         base_model 为加载模型，这个模型最好在服务器启动时加载，计算时作为参数输入即可，减少加载模型所需要的时间
     """
     if base_model is None:
-        base_model = load_model()
-    out, _ = predict(image_path, base_model)
+        ocr_model = load_model()
+
+    out, _ = predict(image_path, ocr_model)
 
     return out
