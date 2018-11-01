@@ -106,7 +106,10 @@ def predict(img_path, base_model, thresholding=160):
     # print("times,",t.diff)
     argmax = np.argmax(y_pred, axis=2)[0]
     y_pred = y_pred[:, :, :]
-    out = K.get_value(K.ctc_decode(y_pred, input_length=np.ones(y_pred.shape[0]) * y_pred.shape[1], )[0][0])[:, :]
+
+    output = K.ctc_decode(y_pred, input_length=np.ones(y_pred.shape[0]) * y_pred.shape[1], )[0][0]
+    out = output.eval(session=K.get_session())
+    # out = K.get_value(K.ctc_decode(y_pred, input_length=np.ones(y_pred.shape[0]) * y_pred.shape[1], )[0][0])[:, :]
     out = u''.join([id_to_char[x] for x in out[0]])
 
     return out, im
