@@ -29,9 +29,9 @@ id_to_char = {i: j for i, j in enumerate(char)}
 
 # 分配显存
 # n_classes = 17
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
+# os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+# config = tf.ConfigProto()
+# config.gpu_options.allow_growth = True
 
 
 class Timer(object):
@@ -116,9 +116,9 @@ def predict(img_path, base_model, thresholding=160):
 
 
 def load_model():
-    K.clear_session()
-    sess = tf.Session(config=config)
-    K.set_session(sess)
+    # K.clear_session()
+    # sess = tf.Session(config=config)
+    # K.set_session(sess)
 
     modelPath = r'home/utils/OCR/model/weights-25.hdf5'
     print("加载OCR模型: {}".format(modelPath))
