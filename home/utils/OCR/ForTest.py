@@ -29,7 +29,7 @@ id_to_char = {i: j for i, j in enumerate(char)}
 
 # 分配显存
 # n_classes = 17
-# os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 # config = tf.ConfigProto()
 # config.gpu_options.allow_growth = True
 

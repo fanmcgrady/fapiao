@@ -35,9 +35,6 @@ def jwkj_get_filePath_fileName_fileExt(filename):  # 提取路径
 
 
 def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
-    if not views.local_start:
-        model = ocr.load_model()
-
     ocrResult = {}
     img = Image.open(filePath)
 
@@ -65,7 +62,7 @@ def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
             if isusebaidu:
                 midResult = flow.OcrPic(sFPN)
             else:
-                midResult = ocr.OCR(sFPN, model)
+                midResult = ocr.OCR(sFPN)
             # else:
             #     midResult = OcrNoPic(sFPN)
 
@@ -91,7 +88,7 @@ def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
             if isusebaidu:
                 midResult = flow.OcrPic(sFPN)
             else:
-                midResult = ocr.OCR(sFPN, model)
+                midResult = ocr.OCR(sFPN)
 
             print('invoiceDateFix: ' + midResult)
             ocrResult['invoiceDate'] = midResult
