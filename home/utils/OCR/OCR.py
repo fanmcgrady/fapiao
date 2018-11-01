@@ -155,9 +155,9 @@ def OCR(image_path, base_model=None):
         base_model 为加载模型，这个模型最好在服务器启动时加载，计算时作为参数输入即可，减少加载模型所需要的时间
     """
     if base_model is None:
-        # from home import views
-        # base_model = views.global_model
-        base_model = load_model()
+        from home import views
+        base_model = views.global_model
+        # base_model = load_model()
     out, _ = predict(image_path, base_model)
 
     return out
