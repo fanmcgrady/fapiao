@@ -116,6 +116,8 @@ def predict(img_path, base_model, thresholding=160):
 
 
 def load_model():
+    tf.reset_default_graph()  # 然后重置tf图，这句很关键
+
     modelPath = r'home/utils/OCR/model/weights-25.hdf5'
     print("加载OCR模型: {}".format(modelPath))
     input = Input(shape=(32, None, 1), name='the_input')
