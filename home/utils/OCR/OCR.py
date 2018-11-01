@@ -110,6 +110,7 @@ def predict(img_path, base_model, thresholding=160):
 
 
 def load_model():
+    K.clear_session()
     sess = tf.Session(config=config)
     K.set_session(sess)
     modelPath = r'home/utils/OCR/model/weights-25.hdf5'
