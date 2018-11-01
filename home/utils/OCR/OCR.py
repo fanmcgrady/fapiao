@@ -162,12 +162,7 @@ def OCR(image_path, base_model):
         color: 0 二值， 1 灰度， 2 彩色
         base_model 为加载模型，这个模型最好在服务器启动时加载，计算时作为参数输入即可，减少加载模型所需要的时间
     """
-    # global_model 只加载一次
-    # global global_model
-    # if global_model is None:
-    # base_model = views.global_model
-    # global_model = load_model()
-
+    base_model = load_model()
     out, _ = predict(image_path, base_model)
 
     return out

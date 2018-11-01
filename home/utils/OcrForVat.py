@@ -3,7 +3,7 @@
 if not views.local_start:
     import home.utils.OCR.OCR as ocr
 
-    global_model = ocr.load_model()
+    # global_model = ocr.load_model()
 
 from PIL import Image
 import os
@@ -62,7 +62,7 @@ def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
             if isusebaidu:
                 midResult = flow.OcrPic(sFPN)
             else:
-                midResult = ocr.OCR(sFPN, global_model)
+                midResult = ocr.OCR(sFPN)
             # else:
             #     midResult = OcrNoPic(sFPN)
 
@@ -88,7 +88,7 @@ def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
             if isusebaidu:
                 midResult = flow.OcrPic(sFPN)
             else:
-                midResult = ocr.OCR(sFPN, global_model)
+                midResult = ocr.OCR(sFPN)
 
             print('invoiceDateFix: ' + midResult)
             ocrResult['invoiceDate'] = midResult
