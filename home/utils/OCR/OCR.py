@@ -30,10 +30,8 @@ id_to_char = {i: j for i, j in enumerate(char)}
 # 分配显存
 # n_classes = 17
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-
-
-# config = tf.ConfigProto()
-# config.gpu_options.allow_growth = True
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
 
 graph = None
 
@@ -101,13 +99,9 @@ def predict(img_path, base_model, thresholding=160):
     X = img.reshape((32, 160, 1))
     X = np.array([X])
 
-    global graph
-    graph = tf.get_default_graph()
-
-    with graph.as_default():
-        t.tic()
-        y_pred = base_model.predict(X)
-        t.toc()
+    t.tic()
+    y_pred = base_model.predict(X)
+    t.toc()
 
     # print("times,",t.diff)
     argmax = np.argmax(y_pred, axis=2)[0]
@@ -122,9 +116,9 @@ def predict(img_path, base_model, thresholding=160):
 
 
 def load_model():
-    # K.clear_session()
-    # sess = tf.Session(config=config)
-    # K.set_session(sess)
+    K.clear_session()
+    sess = tf.Session(config=config)
+    K.set_session(sess)
 
     modelPath = r'home/utils/OCR/model/weights-25.hdf5'
     print("加载OCR模型: {}".format(modelPath))
@@ -180,6 +174,8 @@ def OCR(image_path):
     #     base_model = load_model()
     from home import views
     global_model = views.global_model
-    out, _ = predict(image_path, global_model)
+
+    with K.get_session().graph.as_default() as g:
+        out, _ = predict(image_path, global_model)
 
     return out
