@@ -158,6 +158,8 @@ def load_model():
     # global_model.predict(np.zeros((1, 32, 160, 1)))
     # print("Test model over")
 
+    sess = K.get_session()
+
     return global_model
 
 
