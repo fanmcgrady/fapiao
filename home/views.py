@@ -15,7 +15,7 @@ else:
     # load 进来模型紧接着就执行一次 predict 函数
     # global_model.predict(np.array([32, 160, 1]))
     # global_model.predict(np.zeros((1, 32, 160, 1)))
-    OCR("/home/huangzheng/ocr/tmp/Image_00002/Image_00002_invoiceNo.jpg", global_model)
+    # OCR("/home/huangzheng/ocr/tmp/Image_00002/Image_00002_invoiceNo.jpg", global_model)
 
 import datetime
 import json

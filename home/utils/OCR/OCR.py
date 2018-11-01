@@ -28,8 +28,6 @@ n_classes = len(char)
 char_to_id = {j: i for i, j in enumerate(char)}
 id_to_char = {i: j for i, j in enumerate(char)}
 
-ocr_model = None
-
 
 class Timer(object):
     def __init__(self):
@@ -145,6 +143,11 @@ def load_model():
 
     global_model = Model(inputs=input, outputs=y_pred)
     global_model.load_weights(modelPath)
+
+    # 预先预测一次
+    print("Test model")
+    global_model.predict(np.zeros((1, 32, 160, 1)))
+    print("Test model over")
 
     return global_model
 
