@@ -2,7 +2,7 @@
 import time
 
 import cv2
-import keras.backend.tensorflow_backend as K
+# import keras.backend.tensorflow_backend as K
 import numpy as np
 from PIL import Image
 from keras.layers.convolutional import Conv2D, MaxPooling2D, ZeroPadding2D
