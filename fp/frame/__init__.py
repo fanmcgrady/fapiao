@@ -14,3 +14,7 @@ importlib.reload(template_data)
 
 from . import template
 importlib.reload(template)
+
+from . import table
+
+importlib.reload(table)

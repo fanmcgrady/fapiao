@@ -25,6 +25,10 @@ def _make_canvas(image, image_shape):
     raise NotImplemented
 
 
+def _point(point):
+    x, y = point
+    return int(round(x)), int(round(y))
+
 def rects(image, rects, types=None, image_shape=None):
     image = _make_canvas(image, image_shape)
     if types is None:
@@ -59,12 +63,21 @@ def named_rects(image, named_rects, image_shape=None):
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, (155, 155, 155), 2, cv2.LINE_AA)
     return image
 
-
 def points(image, points, image_shape=None, radius=1):
     image = _make_canvas(image, image_shape)
     for x, y in points:
         x, y = int(x), int(y)
         cv2.circle(image, (x, y), radius, (255, 0, 0), -1)
+    return image
+
+
+def box(image, box, image_shape=None):
+    image = _make_canvas(image, image_shape)
+    points = cv2.boxPoints(box)
+    for i, (p0, p1) in enumerate(zip(points, np.roll(points, 2))):
+        p0, p1 = _point(p0), _point(p1)
+        cv2.line(image, p0, p1, (255, 0, 0), 2)
+        cv2.circle(image, p0, (i + 1) * 4, (255, 0, 0), -1)
     return image
 
 def roi_cut(image, roi):

@@ -13,6 +13,7 @@ def line_angle(line):
         return ang - 360.
 
 
+
 def line_length(line):
     x0, y0, x1, y1 = line
     return np.sqrt((x1 - x0) ** 2 + (y1 - y0) ** 2)
@@ -51,3 +52,50 @@ def intersect_point_dist(line, cross_point):
         d0 = np.linalg.norm([xp - x0, yp - y0])
         d1 = np.linalg.norm([xp - x1, yp - y1])
         return min(d0, d1)
+
+
+def point_line_distance(p1, p2, p3):
+    '''line end-point p1 p2, p3 is the third point to check'''
+    if not isinstance(p1, np.ndarray) or p1.dtype != np.float32:
+        p1 = np.array(p1, dtype=np.float32)
+    if not isinstance(p2, np.ndarray) or p2.dtype != np.float32:
+        p2 = np.array(p2, dtype=np.float32)
+    if not isinstance(p3, np.ndarray) or p3.dtype != np.float32:
+        p3 = np.array(p3, dtype=np.float32)
+    return np.abs(np.cross(p2 - p1, p3 - p1)) / np.linalg.norm(p2 - p1)
+
+
+def point_line_projection(p1, p2, p3):
+    if not isinstance(p1, np.ndarray) or p1.dtype != np.float32:
+        p1 = np.array(p1, dtype=np.float32)
+    if not isinstance(p2, np.ndarray) or p2.dtype != np.float32:
+        p2 = np.array(p2, dtype=np.float32)
+    if not isinstance(p3, np.ndarray) or p3.dtype != np.float32:
+        p3 = np.array(p3, dtype=np.float32)
+    v = p2 - p1
+    return v * np.dot(p3 - p1, v) / np.sum(v ** 2) + p1
+
+
+def point_lineseg_distance(p1, p2, p3):
+    '''
+    line (p1, p2), third point p3
+    If p3's projection is inside p1-p2, then the distance is perpendicular distance
+    otherwise is the distance to end-point.
+    
+    distance = point-line distance,   if p3's projection inside p1-p2
+               Eul-dist to endpoint,  else
+    '''
+    if not isinstance(p1, np.ndarray) or p1.dtype != np.float32:
+        p1 = np.array(p1, dtype=np.float32)
+    if not isinstance(p2, np.ndarray) or p2.dtype != np.float32:
+        p2 = np.array(p2, dtype=np.float32)
+    if not isinstance(p3, np.ndarray) or p3.dtype != np.float32:
+        p3 = np.array(p3, dtype=np.float32)
+    d = np.dot(p3 - p1, p2 - p1)
+    t = np.sum((p2 - p1) ** 2)
+    if d > t or d < 0:
+        d13 = np.linalg.norm(p3 - p1)
+        d23 = np.linalg.norm(p3 - p2)
+        return np.min([d13, d23])
+    else:
+        return point_line_distance(p1, p2, p3)

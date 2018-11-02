@@ -27,14 +27,6 @@ n_classes = len(char)
 char_to_id = {j: i for i, j in enumerate(char)}
 id_to_char = {i: j for i, j in enumerate(char)}
 
-# 分配显存
-# n_classes = 17
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
-
-graph = None
-
 class Timer(object):
     def __init__(self):
         self.total_time = 0.
@@ -117,6 +109,11 @@ def predict(img_path, base_model, thresholding=160):
 
 def load_model():
     K.clear_session()
+    # 分配显存
+    # n_classes = 17
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth = True
     sess = tf.Session(config=config)
     K.set_session(sess)
 

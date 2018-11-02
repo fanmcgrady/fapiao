@@ -54,6 +54,17 @@ def valid_size(size):
         return False
     return True
 
+
+def valid_line(line, strict=True):
+    if line is None:
+        return False
+    if len(line) != 4:
+        return False
+    x0, y0, x1, y1 = line
+    if x0 == x1 and y0 == y1:
+        return False
+    return True
+
 def is_colored(image, pix_diff_max=10, color_ratio_min=0.001):
     assert isinstance(image, np.ndarray)
     if len(image.shape) == 2:

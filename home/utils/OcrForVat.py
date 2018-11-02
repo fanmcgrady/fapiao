@@ -470,7 +470,7 @@ def getArrayFromStr(strRes):
     return resultArray
 
 
-def init(filepath):
+def init(filepath, type='special', pars=dict(textline_method='simple')):
     '''
     mage = cv2.imread(filepath,0)
     str_info, position = recog_qrcode(image, roi=None)
@@ -504,10 +504,10 @@ def init(filepath):
             print(jsoni)
             return json.dumps(jsoni).encode().decode("unicode-escape")
         else:
-            return newMubanDetect(filepath)
+            return newMubanDetect(filepath, type, pars)
     else:
         # print('newMubanD')
-        return newMubanDetect(filepath)
+        return newMubanDetect(filepath, type, pars)
     '''
     else:
         js = InterfaceType.JsonInterface.invoice()

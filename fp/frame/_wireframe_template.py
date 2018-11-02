@@ -6,10 +6,8 @@ import torchvision
 import yaml
 
 from .. import config
-
 importlib.reload(config)
 from . import template_data
-
 importlib.reload(template_data)
 
 def relative_points(y_ratios, x_ratiox):
@@ -35,9 +33,13 @@ class WireframeTemplateData(object):
         if y_ratios == None or x_ratiox == None:
             return
 
-        # self.points = None
-        # self.points_std = None
-
+        self.rectr = None
+        self.rectr_std = None
+        self.y_ratios = None
+        self.y_ratios_std = None
+        self.x_ratiox = None
+        self.x_ratiox_std = None
+    
     def fit(self, xml_files, prior):
         '''
         Args:
@@ -71,7 +73,7 @@ class WireframeTemplateData(object):
                     # make x_ratiox
                     x_ratios.append((xji - xa) / wa)
                     if i < len(rects_key) - 1:
-                        x_ratios.append((xji + wji - xa) / wa)
+                        x_ratios.append((xji + wji - xa) / wa) 
                     else:
                         if abs(xji + wji - xa - wa) > 10:
                             x_ratios.append((xji + wji - xa) / wa)
@@ -87,14 +89,14 @@ class WireframeTemplateData(object):
             batch_x_ratiox.append(x_ratiox)
 
         batch_rectr = torch.tensor(batch_rectr)
-        # print(batch_rectr.shape)
+        #print(batch_rectr.shape)
         rectr = torch.mean(batch_rectr, dim=0)
         rectr_std = torch.std(batch_rectr, dim=0)
         self.rectr = rectr
         self.rectr_std = rectr_std
 
         batch_y_ratios = torch.tensor(batch_y_ratios)
-        # print(batch_y_ratios.shape)
+        #print(batch_y_ratios.shape)
         y_ratios = torch.mean(batch_y_ratios, dim=0)
         y_ratios_std = torch.std(batch_y_ratios, dim=0)
         self.y_ratios = y_ratios
@@ -112,8 +114,8 @@ class WireframeTemplateData(object):
             x_ratios_std = torch.std(batch_x_ratios, dim=0)
             x_ratiox.append(x_ratios)
             x_ratiox_std.append(x_ratios_std)
-            # print(x_ratios.shape, x_ratios_std.shape)
-
+            #print(x_ratios.shape, x_ratios_std.shape)
+        
         self.x_ratiox = x_ratiox
         self.x_ratiox_std = x_ratiox_std
 
@@ -167,7 +169,7 @@ def min_dist_loss(template_points, detected_points):
     return torch.mean(global_dists)
 
 class WireframeTemplate(object):
-    def __init__(self, data, loss=min_dist_loss, debug=False):
+    def __init__(self, data, loss=min_dist_loss, header_fx=0.33, debug=False):
         ''''''
         self.data = data
         px = relative_points(data.y_ratios, data.x_ratiox)
@@ -178,7 +180,8 @@ class WireframeTemplate(object):
         self.points_std = torch.ones((len(ps),), dtype=torch.float32)
         self.loss = loss
 
-        self.learning_rate = 0.001
+        self.header_fx = header_fx
+        self.learning_rate = 0.0001
         self.max_iteration = 3000
         self.num_try = 20
 
@@ -192,45 +195,52 @@ class WireframeTemplate(object):
         ps = torch.stack([ps[:, 0] * wr + xr, ps[:, 1] * hr + yr], dim=1)
         return ps
 
-    def __call__(self, detected_points, image_size):
-        ''''''
+    def __call__(self, detected_points, image_size, init_rectr=None):
+        '''Match to get best rectr'''
         self.rectr = None
         image_size = torch.tensor(image_size, dtype=torch.float32)
         rel_detected_points = torch.from_numpy(detected_points) / image_size
 
         loss_val = None
-        for try_count in range(self.num_try):
-            _rectr = self.data.rand_rectr()
-            warped_points = self._warp(_rectr)
-            _loss = self.loss(warped_points, rel_detected_points)
-            _loss = _loss.detach().item()
-            if loss_val is None or loss_val > _loss:
-                loss_val = _loss
-                rectr = _rectr
+        if init_rectr is None:
+            for try_count in range(self.num_try):
+                _rectr = self.data.rand_rectr()  # make init rect from data
+                warped_points = self._warp(_rectr)
+                _loss = self.loss(warped_points, rel_detected_points)
+                _loss = _loss.detach().item()
+                if loss_val is None or loss_val > _loss:
+                    loss_val = _loss
+                    rectr = _rectr
+        else:
+            assert isinstance(init_rectr, list) or isinstance(init_rectr, tuple)
+            rectr = torch.tensor(init_rectr)
 
+        last_loss = None
         rectr.requires_grad = True
-        for i in range(self.max_iteration):
+        # self.max_iteration = 100
+        for i in range(self.max_iteration):  #
             warped_points = self._warp(rectr)
             loss = self.loss(warped_points, rel_detected_points)
             if False:
                 prior_sx = torch.norm(rectr[2] - 1.)
                 loss += prior_sx
             loss.backward()
-
-            if self.debug is not None and i % (self.max_iteration // 10) == 0:
-                t_str = ' '.join(['{:10.4f}'.format(t) for t in rectr])
-                g_str = ' '.join(['{:10.4f}'.format(t) for t in rectr.grad])
-                print('{:4d}|{:10.4f}|{:24s}|{:24s}'.format(i, loss.item(), t_str, g_str))
-
-            if torch.norm(rectr.grad) < config.EPSILON:
-                break
-
             with torch.no_grad():
                 rectr -= self.learning_rate * rectr.grad
                 # Manually zero the gradients after updating weights
                 rectr.grad.zero_()
 
-        self.rectr = rectr
+                if last_loss is not None:
+                    if abs(last_loss - loss.item()) < config.EPSILON:
+                        break
+                last_loss = loss.item()
+
+            if self.debug is not None and i % (self.max_iteration // 10) == 0:
+                t_str = ' '.join(['{:7.4f}'.format(t) for t in rectr])
+                g_str = ' '.join(['{:7.4f}'.format(t) for t in rectr.grad])
+                print('{:4d}|{:6.4f}|{:28s}|{:28s}'.format(i, loss.item(), t_str, g_str))
+
+        self.rectr = rectr        
         # slice rects
         return rectr.detach().cpu()
 
@@ -240,19 +250,20 @@ class WireframeTemplate(object):
         x, y, w, h = self.rectr * torch.tensor([W, H, W, H], dtype=torch.float32)
 
         if row == -1:
+            fx0, fx1 = self.header_fx, 1.0 - self.header_fx
             y0 = 0
             y1 = int(round(y.item()))
             if col == 0:
                 x0 = 0
-                x1 = int(round((x + w * 0.33).item()))
+                x1 = int(round((x + w * fx0).item()))
             elif col == 1:
-                x0 = int(round((x + w * 0.33).item()))
-                x1 = int(round((x + w * 0.67).item()))
+                x0 = int(round((x + w * fx0).item()))
+                x1 = int(round((x + w * fx1).item()))
             else:
-                x0 = int(round((x + w * 0.67).item()))
+                x0 = int(round((x + w * fx1).item()))
                 x1 = W
             return x0, y0, x1 - x0, y1 - y0
-
+        
         y_ratios = self.data.y_ratios
         if row == 0:
             yr0 = 0.0

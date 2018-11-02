@@ -1,8 +1,19 @@
 import importlib
 
-from . import _special_vat_invoice
-importlib.reload(_special_vat_invoice)
-from ._special_vat_invoice import SpecialVatInvoicePipeline
+from . import _special_vat_invoice_pipeline
+
+importlib.reload(_special_vat_invoice_pipeline)
+from ._special_vat_invoice_pipeline import SpecialVatInvoicePipeline
+
+from . import _normal_vat_invoice_pipeline
+
+importlib.reload(_normal_vat_invoice_pipeline)
+from ._normal_vat_invoice_pipeline import NormalVatInvoicePipeline
+
+from . import _elec_vat_invoice_pipeline
+
+importlib.reload(_elec_vat_invoice_pipeline)
+from ._elec_vat_invoice_pipeline import ElecVatInvoicePipeline
 
 class VatInvoicePipeline(object):
     def __init__(self, invoice_type, pars={}, debug=False):
@@ -15,11 +26,14 @@ class VatInvoicePipeline(object):
                 dict(textline_method='simple')
                 dict(textline_method='textboxes') (use deeplearning)
         '''
-        if invoice_type == 'special':
-            self.pipe = SpecialVatInvoicePipeline(pars=pars, debug=debug)
-        else:
+        _pipe = {'special': SpecialVatInvoicePipeline,
+                 'normal': NormalVatInvoicePipeline,
+                 'elec': ElecVatInvoicePipeline}
+        if invoice_type not in _pipe.keys():
             raise NotImplemented
-
+        self.invoice_type = invoice_type
+        self.pipe = _pipe[invoice_type](pars=pars, debug=debug)
+    
     def __call__(self, image):
         res = self.pipe(image)
         self.__dict__.update(vars(self.pipe))

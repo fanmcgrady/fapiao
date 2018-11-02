@@ -51,7 +51,7 @@ def _line_scan_right(bn_img, pts, max_len, thres):
     cnt = 0
     step = int(max_len / 8)
     while (True):
-        if pts[0][0] > bn_img.shape[1] - 4 or pts[1][0] > bn_img.shape[0] - 4 or cnt > max_len or \
+        if pts[0][0] > bn_img.shape[1] - 4 or pts[1][0] > bn_img.shape[1] - 4 or cnt > max_len or \
                 np.mean(bn_img[pts[0][1]:pts[1][1], pts[0][0]:pts[0][0] + step] / 255) < thres:
             break
         pts[0][0] += step

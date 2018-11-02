@@ -18,16 +18,13 @@ from ..util import check
 importlib.reload(check)
 
 from ..util import machine
-
 importlib.reload(machine)
 
 from ..util import data
-
 importlib.reload(data)
 
-if machine.is_('s11'):
+if machine.is_('s11'):  # currently, only 11-server provides Caffe
     from ..TextBoxes import detect_textline
-
     importlib.reload(detect_textline)
 
     TextlineTextBoxesDetect = detect_textline.TextBoxesDetect
