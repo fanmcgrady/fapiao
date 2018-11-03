@@ -1,6 +1,4 @@
 # 设置本地运行
-import numpy as np
-
 local_start = False
 
 # 判断运行方式
@@ -8,9 +6,9 @@ if local_start:
     print("本地运行")
 else:
     print("服务器运行")
-    from home.utils.OCR.OCR import *
 
     print("加载模型")
+    from home.utils.OCR.OCR import *
     global_model = load_model()
 
 import datetime
@@ -20,7 +18,6 @@ import zipfile
 
 from django.http import HttpResponse
 from django.shortcuts import render
-
 from SemanticCorrect import ComputeDistance
 
 # 取20个形似字
@@ -107,7 +104,6 @@ def getFileList(request):
             ret = {'status': False, 'path': file_path, 'out': str(e)}
 
         return HttpResponse(json.dumps(ret))
-
 
 # 专票
 def ocrForVat(request):
