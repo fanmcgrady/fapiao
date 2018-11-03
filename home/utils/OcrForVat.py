@@ -16,6 +16,7 @@ from home.utils import xmlToDict
 from home.utils import FindCircle
 from home.utils import flow
 from home.utils import muban
+from home.utils.TicToc import Timer
 
 import matplotlib.pyplot as pl
 import cv2
@@ -109,7 +110,7 @@ def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
     return json.dumps(jsoni).encode().decode("unicode-escape")
 
 
-def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')):
+def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple'), timer=None):
     # 'elec'：增值税电子发票
     # 'special'：增值税专用发票
     # 'normal'：增值税普通发票
@@ -158,6 +159,7 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
             attributeLine[c][1] = 0
         
     print(attributeLine)
+    timer.toc(content="行提取")
 
     # 生成行提取的图片
     plt_rects = []
@@ -174,9 +176,10 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
         pass
 
     jsonResult = CropPic(filepath, attributeLine, 11, debug=False, isusebaidu=False)  # ocr和分词
+    timer.toc(content="ocr识别")
     print(jsonResult)
 
-    return jsonResult
+    return jsonResult, timer
 
 
 def mubanDetectInvoiceDate(filepath, setKey='invoiceDate'):
@@ -478,8 +481,13 @@ def init(filepath, type='special', pars=dict(textline_method='simple')):
     #二维码无法识别
     if str_info == None:
     '''
+    timer = Timer()
+    timer.tic()
+
     if not views.local_start:
         res = scanQRc(filepath)
+        timer.toc(content="二维码识别")
+
         if res[0] != '':
             # 显示二维码
             plt_rects = []
@@ -502,12 +510,12 @@ def init(filepath, type='special', pars=dict(textline_method='simple')):
 
             jsoni = js.dic
             print(jsoni)
-            return json.dumps(jsoni).encode().decode("unicode-escape")
+            return json.dumps(jsoni).encode().decode("unicode-escape"), timer
         else:
-            return newMubanDetect(filepath, type, pars)
+            return newMubanDetect(filepath, type, pars, timer)
     else:
         # print('newMubanD')
-        return newMubanDetect(filepath, type, pars)
+        return newMubanDetect(filepath, type, pars, timer)
     '''
     else:
         js = InterfaceType.JsonInterface.invoice()
