@@ -123,6 +123,7 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
     im = cv2.resize(im, None, fx=0.5, fy=0.5)
 
     pipe(im)
+    timer.toc(content="行提取")
 
     # pl.figure(figsize=(12, 12))
     # pl.imshow(pipe.debug['result'])
@@ -147,7 +148,6 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
     else:
         print('type input error !')
 
-
     for c in attributeLine:
         attributeLine[c][0] = 2 * attributeLine[c][0] - 0.02 * 2 * attributeLine[c][2]
         attributeLine[c][1] = 2 * attributeLine[c][1] - 0.2 * 2 * attributeLine[c][3]
@@ -159,7 +159,7 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
             attributeLine[c][1] = 0
         
     print(attributeLine)
-    timer.toc(content="行提取")
+    timer.toc(content="行提取矫正")
 
     # 生成行提取的图片
     plt_rects = []
@@ -174,9 +174,10 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
         pl.savefig(pltpath)
     except:
         pass
+    timer.toc(content="行提取图绘制")
 
     jsonResult = CropPic(filepath, attributeLine, 11, debug=False, isusebaidu=False)  # ocr和分词
-    timer.toc(content="ocr识别")
+    timer.toc(content="切图ocr识别")
     print(jsonResult)
 
     return jsonResult, timer

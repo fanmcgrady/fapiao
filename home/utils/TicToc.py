@@ -28,8 +28,10 @@ class Timer(object):
 
     def __str__(self):
         text = ""
-        for key, value in self.times.items():
-            text += " - " + key + "耗时：" + str(value) + "s<br>"
+        index = 1
+        for key in self.times:
+            text += " " + index + " " + key + "耗时：" + str(self.times[key]) + "s<br>"
+            index += 1
 
         text += "总耗时：" + str(self.total_time) + "s"
 
