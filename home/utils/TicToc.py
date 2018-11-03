@@ -11,13 +11,19 @@ class Timer(object):
         # 一共多少段时间
         self.times = {}
         self.last_time = 0.
+        self.current_time = 0.
 
     def tic(self):
         self.start_time = time.time()
 
     def toc(self, average=True, content=""):
         self.last_time = self.start_time
-        self.diff = round(time.time() - self.last_time, 2)
+        self.current_time = time.time()
+
+        self.diff = round(self.current_time - self.last_time, 2)
+
+        self.last_time = self.current_time
+
         self.times[content] = self.diff
 
         self.total_time += self.diff
