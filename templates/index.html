@@ -96,11 +96,64 @@
                 <!-- Page-Title -->
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4 class="pull-left page-title">火车票</h4>
+                        <h4 class="pull-left page-title">发票</h4>
                         <ol class="breadcrumb pull-right">
                             <li><a href="/">首页</a></li>
                             <li class="active">发票识别系统</li>
                         </ol>
+                    </div>
+                </div>
+
+                <div class="row text-center">
+                    <div class="col-md-6 col-sm-6 col-lg-3">
+                        <div class="panel panel-border panel-success widget-s-1">
+                            <div class="panel-heading"></div>
+                            <div class="panel-body">
+                                <div class="h2 text-success">
+                                    <a href="ocrForVat?type=special" class="text-success" target="_blank">专票展示</a>
+                                </div>
+                                <span class="text-muted">展示专票识别的结果</span>
+                                <div class="text-right">
+                                    <i class="ion-ios7-refresh fa-2x text-success"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-lg-3">
+                        <div class="panel panel-border panel-warning widget-s-1">
+                            <div class="panel-heading"></div>
+                            <div class="panel-body">
+                                <div class="h2 text-warning">
+                                    <a href="ocrForVat?type=normal" class="text-warning" target="_blank">普票展示</a>
+                                </div>
+                                <span class="text-muted">展示普票识别的结果</span>
+                                <div class="text-right">
+                                    <i class="ion-ios7-refresh fa-2x text-warning"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-lg-3">
+                        <div class="panel panel-border panel-primary widget-s-1">
+                            <div class="panel-heading"></div>
+                            <div class="panel-body">
+                                <div class="h2 text-primary">
+                                    <a href="ocrForVat?type=elec" class="text-primary" target="_blank">电子票展示</a>
+                                </div>
+                                <span class="text-muted">展示电子票识别的结果</span>
+                                <div class="text-right">
+                                    <i class="ion-ios7-refresh fa-2x text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4 class="pull-left page-title">火车票</h4>
                     </div>
                 </div>
 
@@ -181,60 +234,6 @@
                     </div>
                 </div>
 
-
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h4 class="pull-left page-title">发票</h4>
-                    </div>
-                </div>
-
-                <div class="row text-center">
-                    <div class="col-md-6 col-sm-6 col-lg-3">
-                        <div class="panel panel-border panel-success widget-s-1">
-                            <div class="panel-heading"></div>
-                            <div class="panel-body">
-                                <div class="h2 text-success">
-                                    <a href="ocrForVat?type=special" class="text-success" target="_blank">专票展示</a>
-                                </div>
-                                <span class="text-muted">展示专票识别的结果</span>
-                                <div class="text-right">
-                                    <i class="ion-ios7-refresh fa-2x text-success"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-sm-6 col-lg-3">
-                        <div class="panel panel-border panel-warning widget-s-1">
-                            <div class="panel-heading"></div>
-                            <div class="panel-body">
-                                <div class="h2 text-warning">
-                                    <a href="ocrForVat?type=normal" class="text-warning" target="_blank">普票展示</a>
-                                </div>
-                                <span class="text-muted">展示普票识别的结果</span>
-                                <div class="text-right">
-                                    <i class="ion-ios7-refresh fa-2x text-warning"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-sm-6 col-lg-3">
-                        <div class="panel panel-border panel-primary widget-s-1">
-                            <div class="panel-heading"></div>
-                            <div class="panel-body">
-                                <div class="h2 text-primary">
-                                    <a href="ocrForVat?type=elec" class="text-primary" target="_blank">电子票展示</a>
-                                </div>
-                                <span class="text-muted">展示电子票识别的结果</span>
-                                <div class="text-right">
-                                    <i class="ion-ios7-refresh fa-2x text-primary"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-default">
@@ -244,10 +243,10 @@
                             <div class="panel-body">
                                 <ol>
                                     <li>选择文件。</li>
-                                    <li>点击“<span class="text-primary">识别</span>”按钮，开始火车票识别。</li>
+                                    <li>点击“<span class="text-primary">识别</span>”按钮，开始识别。</li>
                                     <li>分析完成后页面下方将显示结果。</li>
-                                    <li>本系统展示火车票识别的现有结果。</li>
                                     <li>IE低版本浏览器下存在兼容性问题，建议使用“<span class="text-primary">Chrome浏览器、Firefox浏览器、其他一些国产浏览器的"极速模式"</span>”。</li>
+                                    <li><span class="text-success">系统服务器采用深度学习超级计算机：NVIDIA DGX 工作站</span></li>
                                 </ol>
                             </div>
                         </div>

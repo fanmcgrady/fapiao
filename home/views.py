@@ -111,8 +111,16 @@ def ocrForVat(request):
     if request.method == 'GET':
         # GET车票类型
         type = request.GET['type']
+        if type == 'special':
+            typeText = "专票"
+        elif type == 'normal':
+            typeText = "普票"
+        elif type == 'elec':
+            typeText = "电子票"
+        else:
+            typeText = "错误"
         # GET方法跳转到ocrForVat.html界面
-        return render(request, 'ocrForVat.html', {'type': type})
+        return render(request, 'ocrForVat.html', {'type': type, 'typeText': typeText})
     elif request.method == "POST":
         # 发票类型：special，normal，elec
         type = request.POST['type']
