@@ -340,7 +340,8 @@
                             .append($("<p></p>").text("发票号码：" + invoice.invoiceNo))
                             .append($("<p></p>").text("发票日期：" + invoice.invoiceDate))
                             .append($("<p></p>").text("不含税金额：" + invoice.invoiceAmount))
-                            .append($("<p></p>").text("总金额：" + invoice.totalAmount))
+                            .append($("<p></p>").text("共耗时：" + arg.timer + "s"))
+                        {#.append($("<p></p>").text("总金额：" + invoice.totalAmount))#}
                     );
                 } else {
                     // 出错合并单元格并提示出错信息

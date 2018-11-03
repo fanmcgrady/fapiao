@@ -19,6 +19,7 @@ import zipfile
 from django.http import HttpResponse
 from django.shortcuts import render
 from SemanticCorrect import ComputeDistance
+from home.utils.TicToc import Timer
 
 # 取20个形似字
 print("读取全局字典")
@@ -123,12 +124,18 @@ def ocrForVat(request):
 
         try:
             # 识别 给前端传值
+            # 计时器
+            tt = Timer()
+            tt.tic()
             json_result = OcrForVat.init(full_path)
+            tt.toc()
+
             ret = {
                 'status': True,
                 'path': file_path,
                 'line': line_filename,
-                'result': json.loads(str(json_result).replace("'", "\""))
+                'result': json.loads(str(json_result).replace("'", "\"")),
+                'timer': tt.diff
             }
         # 打印错误原因
         except Exception as e:
