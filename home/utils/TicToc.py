@@ -26,7 +26,7 @@ class Timer(object):
         else:
             return self.diff
 
-    def __repr__(self):
+    def __str__(self):
         str = "【"
         for key, value in self.times:
             str += key + "耗时：" + value + "s<br>"
