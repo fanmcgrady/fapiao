@@ -8,12 +8,16 @@ class Timer(object):
         self.start_time = 0.
         self.diff = 0.
         self.average_time = 0.
+        # 一共多少段时间
+        self.times = []
 
     def tic(self):
         self.start_time = time.time()
 
     def toc(self, average=True):
         self.diff = round(time.time() - self.start_time, 2)
+        self.times.append(self.diff)
+
         self.total_time += self.diff
         self.calls += 1
         self.average_time = self.total_time / self.calls

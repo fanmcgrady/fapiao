@@ -109,9 +109,13 @@ def getFileList(request):
 # 专票
 def ocrForVat(request):
     if request.method == 'GET':
+        # GET车票类型
+        type = request.GET['type']
         # GET方法跳转到ocrForVat.html界面
-        return render(request, 'ocrForVat.html')
+        return render(request, 'ocrForVat.html', {'type': type})
     elif request.method == "POST":
+        # 发票类型：special，normal，elec
+        type = request.POST['type']
         # POST压缩包中的文件
         filename = request.POST['fileInZip']
 

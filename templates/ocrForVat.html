@@ -314,6 +314,8 @@
         var dic = new FormData();
         // 所有文件
         dic.append('fileInZip', currentFile);
+        // 接受传递的参数type
+        dic.append('type', '{{ type }}');
 
         $.ajax({
             url: '/ocrForVat',
