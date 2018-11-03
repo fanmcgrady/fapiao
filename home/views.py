@@ -1,4 +1,5 @@
 # 设置本地运行
+# local_start = True
 local_start = False
 
 # 判断运行方式
@@ -142,8 +143,9 @@ def ocrForVat(request):
                 'path': file_path,
                 'line': line_filename,
                 'result': json.loads(str(json_result).replace("'", "\"")),
-                'timer': timer
+                'timer': timer.__str__()
             }
+
         # 打印错误原因
         except Exception as e:
             print(e)

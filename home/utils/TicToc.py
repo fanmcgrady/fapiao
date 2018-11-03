@@ -27,8 +27,10 @@ class Timer(object):
             return self.diff
 
     def __str__(self):
-        str = "【"
-        for key, value in self.times:
-            str += key + "耗时：" + value + "s<br>"
+        text = ""
+        for key, value in self.times.items():
+            text += " - " + key + "耗时：" + str(value) + "s<br>"
 
-        str += "总耗时：" + str(self.total_time) + "s】"
+        text += "总耗时：" + str(self.total_time) + "s"
+
+        return text
