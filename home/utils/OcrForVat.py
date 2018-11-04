@@ -1,4 +1,6 @@
-﻿from home import views
+﻿import numpy as np
+
+from home import views
 
 if not views.local_start:
     import home.utils.OCR.OCR as ocr
@@ -33,6 +35,13 @@ def jwkj_get_filePath_fileName_fileExt(filename):  # 提取路径
     (filepath, tempfilename) = os.path.split(filename)
     (shotname, extension) = os.path.splitext(tempfilename)
     return filepath, shotname, extension
+
+
+def decWidth(array, axis):
+    array[0] = array[0] + axis * array[2]
+    array[2] = (1 - axis) * array[2]
+
+    return array
 
 
 def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
@@ -123,7 +132,7 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
     im = cv2.resize(im, None, fx=0.5, fy=0.5)
 
     pipe(im)
-    timer.toc(content="行提取")
+    timer.toc(content="图片预处理提取")
 
     # pl.figure(figsize=(12, 12))
     # pl.imshow(pipe.debug['result'])
@@ -131,14 +140,39 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
     attributeLine = {}
 
     if type == 'special' or type == 'normal':
+
+        if pipe.predict('tax_free_money') is None:
+            attributeLine = {
+                'invoiceCode': list(pipe.predict('type')),
+                'invoiceNo': list(pipe.predict('serial')),
+                # 'invoiceDate': list(pipe.predict('time')),
+                # 'invoiceAmount': list(pipe.predict('tax_free_money'))
+            } if pipe.predict('time') is None else {
+                'invoiceCode': list(pipe.predict('type')),
+                'invoiceNo': list(pipe.predict('serial')),
+                'invoiceDate': list(pipe.predict('time')),
+                # 'invoiceAmount': list(pipe.predict('tax_free_money'))
+            }
+
+        else:
+            attributeLine = {
+                'invoiceCode': list(pipe.predict('type')),
+                'invoiceNo': list(pipe.predict('serial')),
+                # 'invoiceDate': list(pipe.predict('time')),
+                'invoiceAmount': list(pipe.predict('tax_free_money'))
+            } if pipe.predict('time') is None else {
+                'invoiceCode': list(pipe.predict('type')),
+                'invoiceNo': list(pipe.predict('serial')),
+                'invoiceDate': list(pipe.predict('time')),
+                'invoiceAmount': list(pipe.predict('tax_free_money'))
+            }
+    elif type == 'elec':
         attributeLine = {
             'invoiceCode': list(pipe.predict('type')),
             'invoiceNo': list(pipe.predict('serial')),
-            'invoiceDate': list(pipe.predict('time')),
-            'invoiceAmount': list(pipe.predict('tax_free_money'))
-        }
-    elif type == 'elec':
-        attributeLine = {
+            'invoiceAmount': list(pipe.predict('tax_free_money')),
+            'verifyCode': list(pipe.predict('verify'))
+        } if pipe.predict('time') is None else {
             'invoiceCode': list(pipe.predict('type')),
             'invoiceNo': list(pipe.predict('serial')),
             'invoiceDate': list(pipe.predict('time')),
@@ -149,17 +183,68 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
         print('type input error !')
 
     for c in attributeLine:
-        attributeLine[c][0] = 2 * attributeLine[c][0] - 0.02 * 2 * attributeLine[c][2]
-        attributeLine[c][1] = 2 * attributeLine[c][1] - 0.2 * 2 * attributeLine[c][3]
-        attributeLine[c][2] = 2 * attributeLine[c][2] * 1.04
-        attributeLine[c][3] = 2 * attributeLine[c][3] * 1.4
+        attributeLine[c][0] = attributeLine[c][0] - 0.02 * attributeLine[c][2]
+        attributeLine[c][1] = attributeLine[c][1] - 0.2 * attributeLine[c][3]
+        attributeLine[c][2] = attributeLine[c][2] * 1.04
+        attributeLine[c][3] = attributeLine[c][3] * 1.4
         if attributeLine[c][0] < 0:
             attributeLine[c][0] = 0
         if attributeLine[c][1] < 0:
             attributeLine[c][1] = 0
-        
+
+    if type == 'elec':
+        attributeLine['invoiceCode'] = decWidth(attributeLine['invoiceCode'], float(86.0 / 220.0))
+        attributeLine['invoiceNo'] = decWidth(attributeLine['invoiceNo'], float(88.0 / 178.0))
+        if 'invoiceDate' in attributeLine.keys():
+            attributeLine['invoiceDate'] = decWidth(attributeLine['invoiceDate'], float(86.0 / 221.0))
+        attributeLine['verifyCode'] = decWidth(attributeLine['verifyCode'], float(90.0 / 324.0))
+
+
     print(attributeLine)
     timer.toc(content="行提取矫正")
+
+    img = Image.open(filepath)
+    # 如为simple方法 先存储pipe。surface_image为初始图（后续识别定位基于该图）
+    if pars == dict(textline_method='simple'):
+        surfaceImagePath = jwkj_get_filePath_fileName_fileExt(filepath)[0] + "./tmp/" + \
+                           jwkj_get_filePath_fileName_fileExt(filepath)[1] + "./origin.jpg"
+
+        cv2.imwrite(surfaceImagePath, pipe.surface_image)
+        filepathS = surfaceImagePath
+        img = Image.open(filepathS)  # 若为simple 方法 调用pipe后的图为初始图
+
+    # 二值化
+    im = img.convert('L')
+    img = np.array(im)
+    h, w = img.shape
+
+    # 是否采用自适应二值化方法
+    # isAdoptive = False
+    if type == 'elec':
+        isAdoptive = False  # 测试中
+    else:
+        isAdoptive = True  # 测试中
+
+    thresholding = 160
+
+    if isAdoptive:
+        # 自适应二值化
+        img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 5)
+    else:
+        # 手动二值化
+        for i in range(h):
+            for j in range(w):
+                if img[i, j] > thresholding:
+                    img[i, j] = 255
+                else:
+                    img[i, j] = 0
+
+    # 二值化图路径
+
+    binaryzationSurfaceImagePath = jwkj_get_filePath_fileName_fileExt(filepath)[0] + "./tmp/" + \
+                                   jwkj_get_filePath_fileName_fileExt(filepath)[1] + "./binaryzationSurfaceImage.jpg"
+
+    cv2.imwrite(binaryzationSurfaceImagePath, np.array(img))
 
     # 生成行提取的图片
     plt_rects = []
