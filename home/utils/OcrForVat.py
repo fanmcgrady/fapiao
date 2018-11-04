@@ -206,8 +206,8 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
     img = Image.open(filepath)
     # 如为simple方法 先存储pipe。surface_image为初始图（后续识别定位基于该图）
     if pars == dict(textline_method='simple'):
-        surfaceImagePath = jwkj_get_filePath_fileName_fileExt(filepath)[0] + "./tmp/" + \
-                           jwkj_get_filePath_fileName_fileExt(filepath)[1] + "./origin.jpg"
+        surfaceImagePath = jwkj_get_filePath_fileName_fileExt(filepath)[0] + "/tmp/" + \
+                           jwkj_get_filePath_fileName_fileExt(filepath)[1] + "/origin.jpg"
 
         cv2.imwrite(surfaceImagePath, pipe.surface_image)
         filepathS = surfaceImagePath
@@ -241,8 +241,8 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
 
     # 二值化图路径
 
-    binaryzationSurfaceImagePath = jwkj_get_filePath_fileName_fileExt(filepath)[0] + "./tmp/" + \
-                                   jwkj_get_filePath_fileName_fileExt(filepath)[1] + "./binaryzationSurfaceImage.jpg"
+    binaryzationSurfaceImagePath = jwkj_get_filePath_fileName_fileExt(filepath)[0] + "/tmp/" + \
+                                   jwkj_get_filePath_fileName_fileExt(filepath)[1] + "/binaryzationSurfaceImage.jpg"
 
     cv2.imwrite(binaryzationSurfaceImagePath, np.array(img))
 
