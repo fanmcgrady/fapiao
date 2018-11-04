@@ -55,7 +55,6 @@ def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
 
         sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/" + \
                jwkj_get_filePath_fileName_fileExt(filePath)[
-                   1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
                    1] + "_" + x + ".jpg"
         sp.save(sFPN)
 
@@ -84,7 +83,6 @@ def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
 
             sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/" + \
                    jwkj_get_filePath_fileName_fileExt(filePath)[
-                       1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
                        1] + "_" + 'invoiceDateFix' + ".jpg"
             sp.save(sFPN)
 
