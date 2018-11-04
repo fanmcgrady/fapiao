@@ -300,7 +300,9 @@ def mubanDetectInvoiceDate(filepath, setKey='invoiceDate'):
     if midProcessResult[1] == 11:
         # box = Detect.detect(cv2.imread(midProcessResult[0]), rate)
         print("1")
+        print(filepath)
         figureP = FindCircle.findSymbol(filepath)
+
         # StBox = sortBox(box)
         # print(box)
         # print(figureP)

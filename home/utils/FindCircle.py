@@ -39,6 +39,7 @@ def findSymbol(filePath):
     sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
         1] + "/" + jwkj_get_filePath_fileName_fileExt(filePath)[
                1] + "_GRAY.jpg"
+    print(sFPN)
     im = cv2.imread(filePath)  # 读取图片
     GrayImage = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
     ret, im_gray = cv2.threshold(GrayImage, 190, 255, cv2.THRESH_BINARY)  # 转换二值化
