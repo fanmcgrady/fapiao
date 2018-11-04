@@ -287,6 +287,17 @@ class posteriorCrt():
             else:
                 print('不含税金额解析错误！')
 
+        #发票日期
+        digitStrDate = ''
+        if len(self.VATdic['invoiceAmount']) >= 8:
+            for c in self.VATdic['invoiceDate']:
+                if c.isdigit():
+                    digitStrDate += c
+
+            if len(digitStrDate) == 8:
+                self.VATdic['invoiceDate'] = digitStrDate[:4] + '年' + digitStrDate[4:6] + '月' + digitStrDate[6:] + '日'
+
+
         # 发票代码
         digitStrCode = ''
         for c in self.VATdic['invoiceCode']:

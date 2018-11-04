@@ -117,7 +117,7 @@ def load_model():
     sess = tf.Session(config=config)
     K.set_session(sess)
 
-    modelPath = r'home/utils/OCR/model/weights-25.hdf5'
+    modelPath = r'home/utils/OCR/model/weights-20.hdf5'
     print("加载OCR模型: {}".format(modelPath))
     input = Input(shape=(32, None, 1), name='the_input')
     m = Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same', name='conv1')(input)
