@@ -48,13 +48,6 @@ def CropPic(filePath, recT, typeT, debug=False, isusebaidu=False):
     ocrResult = {}
     img = Image.open(filePath)
 
-    if os.path.exists(
-            jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
-                1]) == False:
-        os.mkdir(
-            jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
-                1])
-
     # 加载自识别ocr模型（增值税专票模型）可设置typeT为11加载
 
     for x in recT:
@@ -203,11 +196,15 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
     print(attributeLine)
     timer.toc(content="行提取矫正")
 
+    path, name_without_ext, ext = jwkj_get_filePath_fileName_fileExt(filepath)
+
+    if os.path.exists(path + "/tmp/" + name_without_ext) == False:
+        os.makedirs(path + "/tmp/" + name_without_ext)
+
     img = Image.open(filepath)
     # 如为simple方法 先存储pipe。surface_image为初始图（后续识别定位基于该图）
     if pars == dict(textline_method='simple'):
-        surfaceImagePath = jwkj_get_filePath_fileName_fileExt(filepath)[0] + "/tmp/" + \
-                           jwkj_get_filePath_fileName_fileExt(filepath)[1] + "/origin.jpg"
+        surfaceImagePath = path + "/tmp/" + name_without_ext + "/origin.jpg"
 
         cv2.imwrite(surfaceImagePath, pipe.surface_image)
         filepathS = surfaceImagePath
@@ -241,8 +238,7 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
 
     # 二值化图路径
 
-    binaryzationSurfaceImagePath = jwkj_get_filePath_fileName_fileExt(filepath)[0] + "/tmp/" + \
-                                   jwkj_get_filePath_fileName_fileExt(filepath)[1] + "/binaryzationSurfaceImage.jpg"
+    binaryzationSurfaceImagePath = path + "/tmp/" + name_without_ext + "/binaryzationSurfaceImage.jpg"
 
     cv2.imwrite(binaryzationSurfaceImagePath, np.array(img))
 
@@ -251,7 +247,7 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
     for x in attributeLine:
         plt_rects.append(attributeLine[x])
     # 显示
-    vis_textline0 = fp.util.visualize.rects(cv2.imread(filepath, 0), plt_rects)
+    vis_textline0 = fp.util.visualize.rects(cv2.imread(binaryzationSurfaceImagePath, 0), plt_rects)
     pl.imshow(vis_textline0)
     # 保存到line目录
     try:
@@ -261,7 +257,7 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
         pass
     timer.toc(content="行提取图绘制")
 
-    jsonResult = CropPic(filepath, attributeLine, 11, debug=False, isusebaidu=False)  # ocr和分词
+    jsonResult = CropPic(binaryzationSurfaceImagePath, attributeLine, 11, debug=False, isusebaidu=False)  # ocr和分词
     timer.toc(content="切图ocr识别")
     print(jsonResult)
 
