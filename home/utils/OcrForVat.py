@@ -299,6 +299,7 @@ def mubanDetectInvoiceDate(filepath, setKey='invoiceDate'):
 
     if midProcessResult[1] == 11:
         # box = Detect.detect(cv2.imread(midProcessResult[0]), rate)
+        print("1")
         figureP = FindCircle.findSymbol(filepath)
         # StBox = sortBox(box)
         # print(box)
@@ -306,8 +307,10 @@ def mubanDetectInvoiceDate(filepath, setKey='invoiceDate'):
         # print(StBox)
         Templet = simplyAdjust(TemType, [figureP[0], figureP[1]], tplt, w1)  # 增值税专票
 
+        print("2")
         attributeLine = lineToAttribute.getAtbt.compute(textline(midProcessResult[0]), Templet)
 
+        print("3")
         # 生成行提取的图片
         plt_rects = []
         for x in attributeLine:
@@ -318,7 +321,7 @@ def mubanDetectInvoiceDate(filepath, setKey='invoiceDate'):
         # 保存到line目录
         pltpath = midProcessResult[0].replace("upload", "line")
         pl.savefig(pltpath)
-
+        print("4")
     return attributeLine
 
 
