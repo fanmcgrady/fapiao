@@ -5,16 +5,16 @@ import json
 import os
 import sys
 
-from ocr import Detect
+import Detect
 
 import aircv as ac
 import cv2
-from ocr import xmlToDict
+import xmlToDict
 from PIL import Image
 from aip import AipOcr
 
-from ocr import InterfaceType.JsonInterface
-from ocr import SemanticCorrect.posteriorCrt
+import InterfaceType.JsonInterface
+import SemanticCorrect.posteriorCrt
 
 
 
