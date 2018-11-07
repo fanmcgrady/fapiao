@@ -9,11 +9,11 @@ import flow
 from home import views
 
 if not views.local_start:
-    from ocr.scanQRCode.scan_qrcode import recog_qrcode, recog_qrcode_ex
+    from scanQRCode.scan_qrcode import recog_qrcode, recog_qrcode_ex
 import json
 import os
 import numpy as np
-from ocr import SemanticCorrect
+import SemanticCorrect
 
 from TicToc import Timer
 

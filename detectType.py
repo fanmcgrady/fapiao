@@ -3,9 +3,9 @@ import os
 import cv2
 import numpy as np
 
-import ocr.fp.core
-import ocr.fp.frame
-import ocr.fp.train_ticket
+import fp.core
+import fp.frame
+import fp.train_ticket
 
 
 # %matplotlib inline

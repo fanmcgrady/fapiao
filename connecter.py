@@ -1,4 +1,4 @@
-from ocr.OCR.OCR import *
+from OCR.OCR import *
 
 def OCR(image_path):
     """
