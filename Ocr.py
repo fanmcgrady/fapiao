@@ -8,11 +8,8 @@ import matplotlib.pyplot as pl
 import fp
 import lineToAttribute.getAtbt
 import Detect
-import detectType
-import flow
 import muban
-import PipeInvoice
-import FindCircle
+from connector import FindCircle, detectType, flow, PipeInvoice
 import xmlToDict
 
 

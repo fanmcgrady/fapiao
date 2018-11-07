@@ -1,14 +1,10 @@
-﻿import sys
-sys.path.append("ocr")
-
-import copy
+﻿import copy
 
 import cv2
 import matplotlib.pyplot as pl
 from PIL import Image
 
-import FindCircle
-import flow
+from connector import FindCircle, flow, connecter
 from home import views
 
 if not views.local_start:
@@ -21,20 +17,15 @@ import fp
 import InterfaceType
 import lineToAttribute.getAtbt
 import xmlToDict
-import FindCircle
-import flow
 import muban
 
-from TicToc import Timer
+from connector.TicToc import Timer
 
 
 def jwkj_get_filePath_fileName_fileExt(filename):  # 提取路径
     (filepath, tempfilename) = os.path.split(filename)
     (shotname, extension) = os.path.splitext(tempfilename)
     return filepath, shotname, extension
-
-
-import connecter
 
 
 def newOcr(filepath):

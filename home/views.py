@@ -1,5 +1,6 @@
+# 加载黄政的代码
 import sys
-sys.path.append("ocr")
+sys.path.append("/home/huangzheng/ocr")
 
 # 设置本地运行
 # local_start = True
@@ -12,8 +13,7 @@ else:
     print("服务器运行")
 
     print("加载模型")
-    from ocr.OCR.OCR import *
-    global_model = load_model()
+    from connector import global_model
 
 import datetime
 import json
