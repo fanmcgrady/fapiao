@@ -504,8 +504,8 @@ def getArrayFromStr(strRes):
     return resultArray
 
 
-def init(filepath, type='special', pars=dict(textline_method='textboxes')):
-# def init(filepath, type='special', pars=dict(textline_method='simple')):
+# def init(filepath, type='special', pars=dict(textline_method='textboxes')):
+def init(filepath, type='special', pars=dict(textline_method='simple')):
     '''
     mage = cv2.imread(filepath,0)
     str_info, position = recog_qrcode(image, roi=None)
