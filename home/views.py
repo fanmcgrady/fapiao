@@ -9,7 +9,7 @@ else:
     print("服务器运行")
 
     print("加载模型")
-    from home.utils.OCR.OCR import *
+    from ocr.OCR.OCR import *
     global_model = load_model()
 
 import datetime
@@ -19,14 +19,14 @@ import zipfile
 
 from django.http import HttpResponse
 from django.shortcuts import render
-from SemanticCorrect import ComputeDistance
+from ocr import ComputeDistance
 
 # 取20个形似字
 print("读取全局字典")
-global_dic = ComputeDistance.load_dict('SemanticCorrect/hei_20.json')
+global_dic = ComputeDistance.load_dict('ocr/hei_20.json')
 
-from .utils import Ocr
-from .utils import OcrForVat
+import Ocr
+import OcrForVat
 
 
 # 批量上传获取文件列表
