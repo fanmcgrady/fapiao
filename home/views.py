@@ -13,7 +13,7 @@ else:
     print("服务器运行")
 
     print("加载模型")
-    from connector import global_model
+    from connector.connecter import global_model
 
 import datetime
 import json
