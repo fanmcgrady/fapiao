@@ -1,3 +1,6 @@
+import sys
+sys.path.append("ocr")
+
 # 设置本地运行
 # local_start = True
 local_start = False
