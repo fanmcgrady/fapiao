@@ -12,3 +12,7 @@ def OCR(image_path):
         out, _ = predict(image_path, global_model)
 
     return out
+
+# caffe 模型
+from fp.TextBoxes import detect_textline
+TextlineTextBoxesDetect = detect_textline.TextBoxesDetect
