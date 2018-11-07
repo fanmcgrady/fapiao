@@ -14,5 +14,5 @@ def OCR(image_path):
     return out
 
 # caffe 模型
-import fp
-TextlineTextBoxesDetect = fp.TextBoxes.detect_textline.TextBoxesDetect
+# import fp
+# TextlineTextBoxesDetect = fp.TextBoxes.detect_textline.TextBoxesDetect
