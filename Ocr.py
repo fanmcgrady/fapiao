@@ -5,15 +5,15 @@ import shutil
 import cv2
 import matplotlib.pyplot as pl
 
-import fp
-import lineToAttribute.getAtbt
-from home.utils import Detect
+import ocr.fp
+import ocr.lineToAttribute.getAtbt
+from ocr import Detect
 import detectType
 import flow
-from home.utils import muban
+from ocr import muban
 import PipeInvoice
 import FindCircle
-from home.utils import xmlToDict
+from ocr import xmlToDict
 
 
 # 矫正 -> 行提取 -> ocr
