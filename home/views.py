@@ -22,7 +22,7 @@ import zipfile
 
 from django.http import HttpResponse
 from django.shortcuts import render
-from ocr import ComputeDistance
+import ComputeDistance
 
 # 取20个形似字
 print("读取全局字典")
