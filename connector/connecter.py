@@ -2,6 +2,7 @@
 import importlib
 import fp.TextBoxes.detect_textline as dt
 importlib.reload(dt)
+
 global_caffe_model = dt.load_caffe_model()
 
 from OCR.OCR import *
