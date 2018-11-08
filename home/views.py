@@ -26,7 +26,7 @@ import ComputeDistance
 
 # 取20个形似字
 print("读取全局字典")
-global_dic = ComputeDistance.load_dict('ocr/hei_20.json')
+global_dic = ComputeDistance.load_dict('/home/huangzheng/ocr/hei_20.json')
 
 import Ocr
 import OcrForVat

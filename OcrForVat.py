@@ -305,7 +305,7 @@ def mubanDetectInvoiceDate(filepath, setKey='invoiceDate'):
     VATInvoiceTemplet = {
     }
 
-    dic = xmlToDict.XmlTodict('ocr/VATInvoiceSimpleMuban.xml')
+    dic = xmlToDict.XmlTodict('/home/huangzheng/ocr/VATInvoiceSimpleMuban.xml')
 
     # tplt = [dic['QRCode'][0], dic['QRCode'][1], dic['figureX'][0] + dic['figureX'][2] / 2, dic['figureX'][1] + dic['figureX'][3] / 2]
     tplt = [dic['figureX'][0] + dic['figureX'][2] / 2, dic['figureX'][1] + dic['figureX'][3] / 2]

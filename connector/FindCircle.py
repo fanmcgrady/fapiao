@@ -55,19 +55,19 @@ def findSymbol(filePath):
 
     imsrc = ac.imread(sFPN)
     # imsrcgray = ac.cvtColor(imsrc, cv2.COLOR_BGR2GRAY)
-    imobj = ac.imread('ocr/figureX.jpg')
+    imobj = ac.imread('/home/huangzheng/ocr/figureX.jpg')
     # imobjgray = ac.cvtColor(imobj, cv2.COLOR_BGR2GRAY)
 
     # find the match position
     pos = ac.find_template(imsrc, imobj, 0.3)
     if pos['result'] == None:
-        imobj = ac.imread('ocr/figure.jpg')
+        imobj = ac.imread('/home/huangzheng/ocr/figure.jpg')
         pos = ac.find_template(imsrc, imobj, 0.5)
     # print(type(pos))
 
     # define an area [600-1000, 950-1450]添加定位符区域确认
     if not (pos['result'][0] > 600 and pos['result'][0] < 1000 and pos['result'][1] > 950 and pos['result'][1] < 1450):
-        imobj = ac.imread('ocr/figureX1.jpg')
+        imobj = ac.imread('/home/huangzheng/ocr/figureX1.jpg')
         pos = ac.find_template(imsrc, imobj, 0.5)
 
     circle_center_pos = pos['result']
