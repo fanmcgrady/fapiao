@@ -1,7 +1,3 @@
-# caffe 模型
-import fp.TextBoxes.detect_textline as dt
-global_caffe_model = dt.load_caffe_model()
-
 from OCR.OCR import *
 
 global_model = load_model()
@@ -17,3 +13,6 @@ def OCR(image_path):
 
     return out
 
+# caffe 模型
+import fp.TextBoxes.detect_textline as dt
+global_caffe_model = dt.load_caffe_model()
