@@ -1,5 +1,7 @@
 # caffe 模型
-from fp.TextBoxes import detect_textline as dt
+import importlib
+import fp.TextBoxes.detect_textline as dt
+importlib.reload(fp.TextBoxes.detect_textline)
 global_caffe_model = dt.load_caffe_model()
 
 from OCR.OCR import *
