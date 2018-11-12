@@ -1,0 +1,15 @@
+给丛培鑫，服务器使用
+1、pwd查看当前目录
+/home/tangpeng
+
+2、查看开启的python进程
+ps -ef|grep runserver|grep -v grep
+
+3、关闭进程
+"tangpeng 24161 24159 27 09:51 ?        00:31:32 /home/tangpeng/anaconda3/envs/python36/bin/python manage.py runserver 0.0.0.0:8000 --insecure"
+kill -9 24161
+
+4、快速查看文件内容
+cat 文件名
+
+xshell
