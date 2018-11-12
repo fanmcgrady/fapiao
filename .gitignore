@@ -1,6 +1,3 @@
-db.sqlite3
 .idea/
 *.pyc
-home/utils/OCR/model
-home/migrations
 nohup.out
