@@ -281,7 +281,7 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
     for x in attributeLine:
         plt_rects.append(attributeLine[x])
     # 显示
-    vis_textline0 = fp.util.visualize.rects(cv2.imread(binaryzationSurfaceImagePath, 0), plt_rects)
+    vis_textline0 = fp.util.visualize.rects(cv2.imread(surfaceImagePath, 0), plt_rects)
     pl.imshow(vis_textline0)
     # 保存到line目录
     try:
