@@ -2,6 +2,9 @@
 import sys
 sys.path.append("/home/huangzheng/ocr")
 
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "2,3"
+
 # 设置本地运行
 # local_start = True
 local_start = False
@@ -17,7 +20,6 @@ else:
 
 import datetime
 import json
-import os
 import zipfile
 
 from django.http import HttpResponse
