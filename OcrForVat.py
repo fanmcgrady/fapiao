@@ -28,8 +28,8 @@ def jwkj_get_filePath_fileName_fileExt(filename):  # 提取路径
     return filepath, shotname, extension
 
 
-def newOcr(filepath, model):
-    return ocr.OCR(filepath, base_model=model)
+def newOcr(filepath):
+    return connecter.OCR(filepath)
 
 
 def decWidth(array, axis):
