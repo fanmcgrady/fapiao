@@ -3,3 +3,4 @@
 nohup.out
 home/migrations
 db.sqlite3
+*.sh

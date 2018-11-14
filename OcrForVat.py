@@ -28,8 +28,8 @@ def jwkj_get_filePath_fileName_fileExt(filename):  # 提取路径
     return filepath, shotname, extension
 
 
-def newOcr(filepath):
-    return connecter.OCR(filepath)
+def newOcr(filepath, model):
+    return ocr.OCR(filepath, base_model=model)
 
 
 def decWidth(array, axis):
@@ -56,9 +56,13 @@ def CropPic(filePath, recT, typeT, origin_filePath, debug=False, isusebaidu=Fals
 
     for x in recT:
         sp = img.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
+        if recT[x][0] == 0 and recT[x][1] == 0 and recT[x][2] == 0 and recT[x][3] == 0:
+            print("↑--------↑--------↑--------↑ recT : " + x + " is error↑--------↑--------↑")
+
+            continue
         # sp = img[int(recT[x][1]): int(recT[x][1] + recT[x][3]), int(recT[x][0]):int(recT[x][0] + recT[x][2])]
         sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + '/' + jwkj_get_filePath_fileName_fileExt(filePath)[
-            1] + "_" + x + ".jpg"
+                   1] + "_" + x + ".jpg"
         # cv2.imwrite(sFPN, sp)
         sp.save(sFPN)
         # print(x +"  : "+sFPN)
@@ -88,11 +92,12 @@ def CropPic(filePath, recT, typeT, origin_filePath, debug=False, isusebaidu=Fals
             recT['invoiceDate'] = mubanDetectInvoiceDate(origin_filePath)['invoiceDate']
             if recT['invoiceDate'] != None:
                 sp = imgl.crop((recT['invoiceDate'][0], recT['invoiceDate'][1],
-                               recT['invoiceDate'][0] + recT['invoiceDate'][2],
-                               recT['invoiceDate'][1] + recT['invoiceDate'][3]))
+                                recT['invoiceDate'][0] + recT['invoiceDate'][2],
+                                recT['invoiceDate'][1] + recT['invoiceDate'][3]))
 
-                sFPN = jwkj_get_filePath_fileName_fileExt(origin_filePath)[0] + "/tmp/" + \
-                               jwkj_get_filePath_fileName_fileExt(origin_filePath)[1] + "/" + jwkj_get_filePath_fileName_fileExt(origin_filePath)[
+                sFPN = jwkj_get_filePath_fileName_fileExt(origin_filePath)[0] + "./tmp/" + \
+                       jwkj_get_filePath_fileName_fileExt(origin_filePath)[1] + "/" + \
+                       jwkj_get_filePath_fileName_fileExt(origin_filePath)[
                            1] + "_" + 'invoiceDateFix' + ".jpg"
                 sp.save(sFPN)
 
@@ -146,7 +151,7 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
     # pl.show()
     attributeLine = {}
 
-    if type == 'special' or type == 'elec':
+    if type == 'special':
 
         if pipe.predict('tax_free_money') is None:
             attributeLine = {
@@ -173,33 +178,57 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
                 'invoiceDate': list(pipe.predict('time')),
                 'invoiceAmount': list(pipe.predict('tax_free_money'))
             }
-    elif type == 'normal':
-        attributeLine = {
-            'invoiceCode': list(pipe.predict('type')),
-            'invoiceNo': list(pipe.predict('serial')),
-            'invoiceAmount': list(pipe.predict('tax_free_money')),
-            'verifyCode': list(pipe.predict('verify'))
-        } if pipe.predict('time') is None else {
-            'invoiceCode': list(pipe.predict('type')),
-            'invoiceNo': list(pipe.predict('serial')),
-            'invoiceDate': list(pipe.predict('time')),
-            'invoiceAmount': list(pipe.predict('tax_free_money')),
-            'verifyCode': list(pipe.predict('verify'))
-        }
+    elif type == 'normal'or type == 'elec':
+        if pipe.predict('tax_free_money') is None:
+            attributeLine = {
+                'invoiceCode': list(pipe.predict('type')),
+                'invoiceNo': list(pipe.predict('serial')),
+                # 'invoiceAmount': list(pipe.predict('tax_free_money')),
+                'verifyCode': list(pipe.predict('verify'))
+            } if pipe.predict('time') is None else {
+                'invoiceCode': list(pipe.predict('type')),
+                'invoiceNo': list(pipe.predict('serial')),
+                'invoiceDate': list(pipe.predict('time')),
+                # 'invoiceAmount': list(pipe.predict('tax_free_money')),
+                'verifyCode': list(pipe.predict('verify'))
+            }
+
+        else:
+            attributeLine = {
+                'invoiceCode': list(pipe.predict('type')),
+                'invoiceNo': list(pipe.predict('serial')),
+                'invoiceAmount': list(pipe.predict('tax_free_money')),
+                'verifyCode': list(pipe.predict('verify'))
+            } if pipe.predict('time') is None else {
+                'invoiceCode': list(pipe.predict('type')),
+                'invoiceNo': list(pipe.predict('serial')),
+                'invoiceDate': list(pipe.predict('time')),
+                'invoiceAmount': list(pipe.predict('tax_free_money')),
+                'verifyCode': list(pipe.predict('verify'))
+            }
     else:
         print('type input error !')
 
+    # 设置框区缩放倍数
+    if pars == dict(textline_method='simple'):
+        wAxis = 0.02
+        hAxis = 0.2
+
+    elif pars == dict(textline_method='textboxes'):
+        wAxis = 0.05
+        hAxis = 0.2
+
     for c in attributeLine:
-        attributeLine[c][0] = attributeLine[c][0] - 0.02 * attributeLine[c][2]
-        attributeLine[c][1] = attributeLine[c][1] - 0.2 * attributeLine[c][3]
-        attributeLine[c][2] = attributeLine[c][2] * 1.04
-        attributeLine[c][3] = attributeLine[c][3] * 1.4
+        attributeLine[c][0] = attributeLine[c][0] - wAxis * attributeLine[c][2]
+        attributeLine[c][1] = attributeLine[c][1] - hAxis * attributeLine[c][3]
+        attributeLine[c][2] = attributeLine[c][2] * (1 + 2 * wAxis)
+        attributeLine[c][3] = attributeLine[c][3] * (1 + 2 * hAxis)
         if attributeLine[c][0] < 0:
             attributeLine[c][0] = 0
         if attributeLine[c][1] < 0:
             attributeLine[c][1] = 0
 
-    if type == 'elec':
+    if type == 'elec' and pars == dict(textline_method='simple'):
         attributeLine['invoiceCode'] = decWidth(attributeLine['invoiceCode'], float(86.0 / 220.0))
         attributeLine['invoiceNo'] = decWidth(attributeLine['invoiceNo'], float(88.0 / 178.0))
         if 'invoiceDate' in attributeLine.keys():
@@ -228,17 +257,11 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
     # 如为simple方法 先存储pipe。surface_image为初始图（后续识别定位基于该图）
     # if pars == dict(textline_method='simple'):
 
-    # print(jwkj_get_filePath_fileName_fileExt(filepath)[1])
-    #
-    # print(surfaceImagePath)
-
     surfaceImagePath = jwkj_get_filePath_fileName_fileExt(filepath)[0] + "/tmp/" + \
                        jwkj_get_filePath_fileName_fileExt(filepath)[1] + "/origin.jpg"
     cv2.imwrite(surfaceImagePath, pipe.surface_image)
-
     filepathS = surfaceImagePath
-    img = Image.open(filepathS)#若为simple 方法 调用pipe后的图为初始图
-
+    img = Image.open(filepathS)  # 若为simple 方法 调用pipe后的图为初始图
 
     # 二值化
     im = img.convert('L')
@@ -251,7 +274,6 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
         isAdoptive = False  # 测试中
     else:
         isAdoptive = True  # 测试中
-
 
     thresholding = 160
 
@@ -270,11 +292,9 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
     # 二值化图路径
 
     binaryzationSurfaceImagePath = jwkj_get_filePath_fileName_fileExt(filepath)[0] + "/tmp/" + \
-                           jwkj_get_filePath_fileName_fileExt(filepath)[1] + "/binaryzationSurfaceImage.jpg"
+                                   jwkj_get_filePath_fileName_fileExt(filepath)[1] + "/binaryzationSurfaceImage.jpg"
 
-    # print(binaryzationSurfaceImagePath+"    :binaryzationSurfaceImagePath")
     cv2.imwrite(binaryzationSurfaceImagePath, np.array(img))
-    # print(binaryzationSurfaceImagePath + "2    :over")
 
     # 生成行提取的图片
     plt_rects = []
@@ -399,7 +419,7 @@ def mubanDetect(filepath):
 
     if w1[0] + w1[1] > 1500:
         rate = 0.5
-        # print("rate : 0.5")
+        print("rate : 0.5")
 
     if midProcessResult[1] == 11:
         # box = Detect.detect(cv2.imread(midProcessResult[0]), rate)
@@ -509,7 +529,7 @@ def adjustToTextLine(mubandict, box, typeT, templet):  # box顺序需要调整
         if mubandict[x][1] < 0:
             mubandict[x][1] = 0
 
-    # print(mubandict)
+    print(mubandict)
 
     if typeT == 1:
         # 调整蓝票框
@@ -532,7 +552,7 @@ def simplyAdjust(mubandict, box, tplt, shape):
         mubandict[x][0] = shape[1] - mubandict[x][2]
     if mubandict[x][1] + mubandict[x][3] > shape[0]:
         mubandict[x][1] = shape[0] - mubandict[x][3]
-    # print(mubandict)
+    print(mubandict)
 
     mubandict = muban.de_muban(mubandict, 1.0)
     return mubandict
@@ -642,17 +662,17 @@ print(jpgs[9])
 '''
 
 if __name__ == '__main__':
-    # dset = '/home/huangzheng/ocr/testPic/3/'
-    # jpgs = fp.util.path.files_in_dir(dset, '.jpg')
-    # for c in jpgs:
-    #     print(c)
-    #     # dset = 'D:/Development/data/2/'
-    #     # c = 'Image_00147.jpg'
-    #     init(os.path.join(dset, c), type='special', pars=dict(textline_method='textboxes'))
-    #     print('__________________________  ' + c + '  _______________________')
+    dset = '/home/huangzheng/ocr/testPic/3/'
+    dset1 = '/home/huangzheng/ocr/testPic/3simple/'
+    jpgs = fp.util.path.files_in_dir(dset, '.jpg')
+    for c in jpgs:
+        print(c)
+        # dset = 'D:/Development/data/2/'
+        # c = 'Image_00147.jpg'
+        init(os.path.join(dset, c), type='special', pars=dict(textline_method='textboxes'))
+        init(os.path.join(dset1, c), type='special', pars=dict(textline_method='simple'))
+        print('__________________________  ' + c + '  _______________________')
 
-    print("in")
-    #init('/home/huangzheng/ocr/testPic/3/Image_00022.jpg', type='special', pars=dict(textline_method='simple'))
-    init('/home/huangzheng/ocr/testPic/3/Image_00025.jpg', type='special', pars=dict(textline_method='textboxes'))
+    # init('/home/huangzheng/ocr/Image_00181.jpg', type='special', pars=dict(textline_method='textboxes'))
     # init('Image_00164.jpg', type='normal', pars=dict(textline_method='simple'))
     # init('Image_00131.jpg', type='elec', pars=dict(textline_method='simple'))
