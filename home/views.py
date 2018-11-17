@@ -2,8 +2,8 @@
 import sys
 sys.path.append("/home/huangzheng/ocr")
 
-# import os
-# os.environ["CUDA_VISIBLE_DEVICES"] = "2,3"
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
 
 # 设置本地运行
 # local_start = True
