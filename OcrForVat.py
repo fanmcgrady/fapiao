@@ -1,5 +1,5 @@
 ﻿import copy
-import OCR.utils
+import OCR
 
 import cv2
 import matplotlib.pyplot as pl
