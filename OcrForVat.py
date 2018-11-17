@@ -1,4 +1,5 @@
 ﻿import copy
+import OCR
 
 import cv2
 import matplotlib.pyplot as pl
@@ -39,17 +40,17 @@ def decWidth(array, axis):
     return array
 
 
-def CropPic(filePath, recT, typeT, origin_filePath, debug=False, isusebaidu=False):
+def CropPic(filePath, recT, typeT, origin_filePath, pars, debug=False, isusebaidu=False):
     ocrResult = {}
     img = Image.open(filePath)
     # img = cv2.imread(filePath, 1)
 
     # 确认目录
     # if os.path.exists(
-    #         jwkj_get_filePath_fileName_fileExt(filePath)[0] + "./tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
+    #         jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
     #             1]) == False:
     #     os.mkdir(
-    #         jwkj_get_filePath_fileName_fileExt(filePath)[0] + "./tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
+    #         jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
     #             1])
 
     # 加载自识别ocr模型（增值税专票模型）可设置typeT为11加载
@@ -66,6 +67,8 @@ def CropPic(filePath, recT, typeT, origin_filePath, debug=False, isusebaidu=Fals
         # cv2.imwrite(sFPN, sp)
         sp.save(sFPN)
         # print(x +"  : "+sFPN)
+        if pars == dict(textline_method='simple') and x == 'invoiceNo':
+            OCR.utils.convert(sFPN)
 
         if debug == False:
             # if (x != 'invoiceNo'):
@@ -95,7 +98,7 @@ def CropPic(filePath, recT, typeT, origin_filePath, debug=False, isusebaidu=Fals
                                 recT['invoiceDate'][0] + recT['invoiceDate'][2],
                                 recT['invoiceDate'][1] + recT['invoiceDate'][3]))
 
-                sFPN = jwkj_get_filePath_fileName_fileExt(origin_filePath)[0] + "./tmp/" + \
+                sFPN = jwkj_get_filePath_fileName_fileExt(origin_filePath)[0] + "/tmp/" + \
                        jwkj_get_filePath_fileName_fileExt(origin_filePath)[1] + "/" + \
                        jwkj_get_filePath_fileName_fileExt(origin_filePath)[
                            1] + "_" + 'invoiceDateFix' + ".jpg"
@@ -138,7 +141,7 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
     # pars = dict(textline_method='textboxes')  # 使用 深度学习 方法，目前用的CPU，较慢 ?
     # pars = dict(textline_method='simple')  # 使用 深度学习 方法，目前用的CPU，较慢 ?
 
-    pipe = fp.vat_invoice.pipeline.VatInvoicePipeline(type, pars=pars, debug=False)  # 请用debug=False
+    pipe = fp.vat_invoice.pipeline.VatInvoicePipeline(type, pars=pars, debug=True)  # 请用debug=False
     # pipe = fp.vat_invoice.pipeline.VatInvoicePipeline('special', debug=False) # 请用False
     im = cv2.imread(filepath, 1)
     im = cv2.resize(im, None, fx=0.5, fy=0.5)
@@ -259,42 +262,43 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
 
     surfaceImagePath = jwkj_get_filePath_fileName_fileExt(filepath)[0] + "/tmp/" + \
                        jwkj_get_filePath_fileName_fileExt(filepath)[1] + "/origin.jpg"
+
     cv2.imwrite(surfaceImagePath, pipe.surface_image)
     filepathS = surfaceImagePath
-    img = Image.open(filepathS)  # 若为simple 方法 调用pipe后的图为初始图
-
-    # 二值化
-    im = img.convert('L')
-    img = np.array(im)
-    h, w = img.shape
-
-    # 是否采用自适应二值化方法
-    # isAdoptive = False
-    if type == 'elec':
-        isAdoptive = False  # 测试中
-    else:
-        isAdoptive = True  # 测试中
-
-    thresholding = 160
-
-    if isAdoptive:
-        # 自适应二值化
-        img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 5)
-    else:
-        # 手动二值化
-        for i in range(h):
-            for j in range(w):
-                if img[i, j] > thresholding:
-                    img[i, j] = 255
-                else:
-                    img[i, j] = 0
-
-    # 二值化图路径
-
-    binaryzationSurfaceImagePath = jwkj_get_filePath_fileName_fileExt(filepath)[0] + "/tmp/" + \
-                                   jwkj_get_filePath_fileName_fileExt(filepath)[1] + "/binaryzationSurfaceImage.jpg"
-
-    cv2.imwrite(binaryzationSurfaceImagePath, np.array(img))
+    # img = Image.open(filepathS)  # 若为simple 方法 调用pipe后的图为初始图
+    #
+    # # 二值化
+    # im = img.convert('L')
+    # img = np.array(im)
+    # h, w = img.shape
+    #
+    # # 是否采用自适应二值化方法
+    # # isAdoptive = False
+    # if type == 'elec':
+    #     isAdoptive = False  # 测试中
+    # else:
+    #     isAdoptive = True  # 测试中
+    #
+    # thresholding = 160
+    #
+    # if isAdoptive:
+    #     # 自适应二值化
+    #     img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 5)
+    # else:
+    #     # 手动二值化
+    #     for i in range(h):
+    #         for j in range(w):
+    #             if img[i, j] > thresholding:
+    #                 img[i, j] = 255
+    #             else:
+    #                 img[i, j] = 0
+    #
+    # # 二值化图路径
+    #
+    # binaryzationSurfaceImagePath = jwkj_get_filePath_fileName_fileExt(filepath)[0] + "/tmp/" + \
+    #                                jwkj_get_filePath_fileName_fileExt(filepath)[1] + "/binaryzationSurfaceImage.jpg"
+    #
+    # cv2.imwrite(binaryzationSurfaceImagePath, np.array(img))
 
     # 生成行提取的图片
     plt_rects = []
@@ -311,7 +315,7 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
         pass
     timer.toc(content="行提取图绘制")
 
-    jsonResult = CropPic(binaryzationSurfaceImagePath, attributeLine, 11, filepath, debug=False,
+    jsonResult = CropPic(filepathS, attributeLine, 11, filepath, pars, debug=True,
                          isusebaidu=False)  # ocr和分词
     timer.toc(content="切图ocr识别")
     print(jsonResult)
@@ -352,7 +356,7 @@ def mubanDetectInvoiceDate(filepath, setKey='invoiceDate'):
 
     if w1[0] + w1[1] > 1500:
         rate = 0.5
-        # print("rate : 0.5")
+        print("rate : 0.5")
 
     if midProcessResult[1] == 11:
         # box = Detect.detect(cv2.imread(midProcessResult[0]), rate)
@@ -379,83 +383,6 @@ def mubanDetectInvoiceDate(filepath, setKey='invoiceDate'):
         pl.savefig(pltpath)
 
     return attributeLine
-
-
-def mubanDetect(filepath):
-    # 预留
-    midProcessResult = [None, None]
-    midProcessResult[0] = filepath
-    midProcessResult[1] = 11
-    # vat发票专票
-    VATInvoiceTemplet = {
-    }
-
-    dic = xmlToDict.XmlTodict('VATInvoiceSimpleMuban.xml')
-
-    # tplt = [dic['QRCode'][0], dic['QRCode'][1], dic['figureX'][0] + dic['figureX'][2] / 2, dic['figureX'][1] + dic['figureX'][3] / 2]
-    tplt = [dic['figureX'][0] + dic['figureX'][2] / 2, dic['figureX'][1] + dic['figureX'][3] / 2]
-    # print(tplt)
-    '''
-    for c in tplt:
-        if c == None:
-            print('Templet VATInvoice error')
-    '''
-    TemType = {}
-    if midProcessResult[1] == 11:  # 增值税专用
-        for item in dic:
-            if item != 'QRCode' and item != 'figureX':
-                # print(item)
-                # tmp = MakeFileInV([[int(dic.get(item)[0]), int(dic.get(item)[1])], [int(dic.get(item)[2]), int(dic.get(item)[3])]], box, symbol, filePath, item, tplt)
-                VATInvoiceTemplet[item] = [int(dic.get(item)[0]), int(dic.get(item)[1]), int(dic.get(item)[2]),
-                                           int(dic.get(item)[3])]
-        TemType = VATInvoiceTemplet
-
-    fcv = cv2.imread(filepath, 1)
-    # print(fcv)
-    try:
-        w1 = fcv.shape
-    except:
-        print("picture is None")
-
-    if w1[0] + w1[1] > 1500:
-        rate = 0.5
-        print("rate : 0.5")
-
-    if midProcessResult[1] == 11:
-        # box = Detect.detect(cv2.imread(midProcessResult[0]), rate)
-        figureP = FindCircle.findSymbol(filepath)
-        # StBox = sortBox(box)
-        # print(box)
-        # print(figureP)
-        # print(StBox)
-        Templet = simplyAdjust(TemType, [figureP[0], figureP[1]], tplt, w1)  # 增值税专票
-
-    '''
-    im = cv2.imread(filepath, 0)
-    rec = []
-    for c in TemType:
-        rec.append(TemType[c])
-    vis_textline0 = fp.util.visualize.rects(im, rec)
-    # vis_textline1 = fp.util.visualize.rects(im, rects, types)
-    # 显示
-    pl.figure(figsize=(15, 10))
-    pl.subplot(2, 2, 1)
-    pl.imshow(im, 'gray')
-
-    pl.subplot(2, 2, 2)
-    pl.imshow(vis_textline0)
-    pl.show()
-    '''
-
-    attributeLine = lineToAttribute.getAtbt.compute(textline(midProcessResult[0]), Templet)
-
-    # print(attributeLine)
-    # print(type(attributeLine))
-    # print(attributeLine['departCity'])
-    jsonResult = flow.cropToOcr(midProcessResult[0], attributeLine, midProcessResult[1], isusebaidu=False)  # ocr和分词
-    print(jsonResult)
-    return jsonResult
-
 
 def textline(filepath):
     show_textline = False
@@ -602,8 +529,7 @@ def getArrayFromStr(strRes):
     return resultArray
 
 
-def init(filepath, type='special', pars=dict(textline_method='textboxes')):
-# def init(filepath, type='special', pars=dict(textline_method='simple')):
+def init(filepath, type='special', pars=dict(textline_method='simple')):
     '''
     mage = cv2.imread(filepath,0)
     str_info, position = recog_qrcode(image, roi=None)
@@ -662,17 +588,17 @@ print(jpgs[9])
 '''
 
 if __name__ == '__main__':
-    dset = '/home/huangzheng/ocr/testPic/3/'
-    dset1 = '/home/huangzheng/ocr/testPic/3simple/'
-    jpgs = fp.util.path.files_in_dir(dset, '.jpg')
-    for c in jpgs:
-        print(c)
-        # dset = 'D:/Development/data/2/'
-        # c = 'Image_00147.jpg'
-        init(os.path.join(dset, c), type='special', pars=dict(textline_method='textboxes'))
-        init(os.path.join(dset1, c), type='special', pars=dict(textline_method='simple'))
-        print('__________________________  ' + c + '  _______________________')
+    #dset = '/home/huangzheng/ocr/testPic/3/'
+    #dset1 = '/home/huangzheng/ocr/testPic/3simple/'
+    #jpgs = fp.util.path.files_in_dir(dset, '.jpg')
+    #for c in jpgs:
+    #    print(c)
+    #    # dset = 'D:/Development/data/2/'
+    #    # c = 'Image_00147.jpg'
+    #    init(os.path.join(dset, c), type='special', pars=dict(textline_method='textboxes'))
+    #    init(os.path.join(dset1, c), type='special', pars=dict(textline_method='simple'))
+    #    print('__________________________  ' + c + '  _______________________')
 
     # init('/home/huangzheng/ocr/Image_00181.jpg', type='special', pars=dict(textline_method='textboxes'))
-    # init('Image_00164.jpg', type='normal', pars=dict(textline_method='simple'))
+    init('/home/huangzheng/ocr/testPic/3/Image_00002.jpg', type='special', pars=dict(textline_method='textboxes'))
     # init('Image_00131.jpg', type='elec', pars=dict(textline_method='simple'))
