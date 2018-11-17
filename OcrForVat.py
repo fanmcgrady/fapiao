@@ -141,7 +141,7 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
     # pars = dict(textline_method='textboxes')  # 使用 深度学习 方法，目前用的CPU，较慢 ?
     # pars = dict(textline_method='simple')  # 使用 深度学习 方法，目前用的CPU，较慢 ?
 
-    pipe = fp.vat_invoice.pipeline.VatInvoicePipeline(type, pars=pars, debug=True)  # 请用debug=False
+    pipe = fp.vat_invoice.pipeline.VatInvoicePipeline(type, pars=pars, debug=False)  # 请用debug=False
     # pipe = fp.vat_invoice.pipeline.VatInvoicePipeline('special', debug=False) # 请用False
     im = cv2.imread(filepath, 1)
     im = cv2.resize(im, None, fx=0.5, fy=0.5)
@@ -315,7 +315,7 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
         pass
     timer.toc(content="行提取图绘制")
 
-    jsonResult = CropPic(filepathS, attributeLine, 11, filepath, pars, debug=True,
+    jsonResult = CropPic(filepathS, attributeLine, 11, filepath, pars, debug=False,
                          isusebaidu=False)  # ocr和分词
     timer.toc(content="切图ocr识别")
     print(jsonResult)
