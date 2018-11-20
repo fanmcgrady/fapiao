@@ -1,6 +1,5 @@
 ﻿import copy
 import OCR
-
 import cv2
 import matplotlib.pyplot as pl
 from PIL import Image
@@ -21,7 +20,6 @@ import xmlToDict
 import muban
 
 from connector.TicToc import Timer
-
 
 def jwkj_get_filePath_fileName_fileExt(filename):  # 提取路径
     (filepath, tempfilename) = os.path.split(filename)
@@ -53,10 +51,51 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, debug=False, isusebaid
     #         jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
     #             1])
 
-    # 加载自识别ocr模型（增值税专票模型）可设置typeT为11加载
+    #-----------------------------------------------------------二值化---------------------
+    isAdoptive = True
+    imgL = Image.open(filePath)  # 若为simple 方法 调用pipe后的图为初始图
+
+    # 二值化
+    imL = imgL.convert('L')
+    imgL = np.array(imL)
+    h, w = imgL.shape
+
+    # 是否采用自适应二值化方法
+    # isAdoptive = False
+    if type == 'elec':
+        isAdoptive = False  # 测试中
+    else:
+        isAdoptive = True  # 测试中
+
+    thresholding = 160
+
+    if isAdoptive:
+        # 自适应二值化
+        imgL = cv2.adaptiveThreshold(imgL, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 5)
+    else:
+        # 手动二值化
+        for i in range(h):
+            for j in range(w):
+                if imgL[i, j] > thresholding:
+                    imgL[i, j] = 255
+                else:
+                    imgL[i, j] = 0
+
+    # 二值化图路径
+
+    binaryzationSurfaceImagePath = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/binaryzationSurfaceImage.jpg"
+
+    cv2.imwrite(binaryzationSurfaceImagePath, np.array(imgL))
+
+    imgL = Image.open(binaryzationSurfaceImagePath)
+    #----------------------------------------------------二值化 ---------------------------------
 
     for x in recT:
-        sp = img.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
+
+        if x =='invoiceNo':
+            sp = img.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
+        else:
+            sp = imgL.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
         if recT[x][0] == 0 and recT[x][1] == 0 and recT[x][2] == 0 and recT[x][3] == 0:
             print("↑--------↑--------↑--------↑ recT : " + x + " is error↑--------↑--------↑")
 
@@ -600,5 +639,5 @@ if __name__ == '__main__':
     #    print('__________________________  ' + c + '  _______________________')
 
     # init('/home/huangzheng/ocr/Image_00181.jpg', type='special', pars=dict(textline_method='textboxes'))
-    init('/home/huangzheng/ocr/testPic/3/Image_00002.jpg', type='special', pars=dict(textline_method='textboxes'))
+    init('/home/huangzheng/ocr/testPic/3/Image_00002.jpg', type='special', pars=dict(textline_method='simple'))
     # init('Image_00131.jpg', type='elec', pars=dict(textline_method='simple'))
