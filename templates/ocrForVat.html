@@ -336,15 +336,29 @@
 
                     // 显示识别结果
                     var invoice = arg.result.invoice;
-                    tr.append(
-                        $('<td></td>')
-                            .append($("<p></p>").text("发票代码：" + invoice.invoiceCode))
-                            .append($("<p></p>").text("发票号码：" + invoice.invoiceNo))
-                            .append($("<p></p>").text("发票日期：" + invoice.invoiceDate))
-                            .append($("<p></p>").text("不含税金额：" + invoice.invoiceAmount))
-                            .append($("<p></p>").html(arg.timer))
-                        {#.append($("<p></p>").text("总金额：" + invoice.totalAmount))#}
-                    );
+                    if ('{{ type }}' == 'special') {
+                        tr.append(
+                            $('<td></td>')
+                                .append($("<p></p>").text("发票代码：" + invoice.invoiceCode))
+                                .append($("<p></p>").text("发票号码：" + invoice.invoiceNo))
+                                .append($("<p></p>").text("发票日期：" + invoice.invoiceDate))
+                                .append($("<p></p>").text("不含税金额：" + invoice.invoiceAmount))
+                                .append($("<p></p>").text("校验码：" + invoice.verifyCode))
+                                .append($("<p></p>").html(arg.timer))
+                            {#.append($("<p></p>").text("总金额：" + invoice.totalAmount))#}
+                        );
+                    } else {
+                        tr.append(
+                            $('<td></td>')
+                                .append($("<p></p>").text("发票代码：" + invoice.invoiceCode))
+                                .append($("<p></p>").text("发票号码：" + invoice.invoiceNo))
+                                .append($("<p></p>").text("发票日期：" + invoice.invoiceDate))
+                                .append($("<p></p>").text("不含税金额：" + invoice.invoiceAmount))
+                                .append($("<p></p>").text("校验码：" + invoice.verifyCode))
+                                .append($("<p></p>").html(arg.timer))
+                            {#.append($("<p></p>").text("总金额：" + invoice.totalAmount))#}
+                        );
+                    }
                 } else {
                     // 出错合并单元格并提示出错信息
                     tr.append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
