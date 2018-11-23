@@ -91,8 +91,15 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, debug=False, isusebaid
     #----------------------------------------------------二值化 ---------------------------------
 
     for x in recT:
+        if x == 'verifyCode':
+            if len(recT[x]) == 2:
+                sp1 = imgL.crop((recT[x][0][0], recT[x][0][1], recT[x][0][0] + recT[x][0][2], recT[x][0][1] + recT[x][0][3]))
+                sp2 = imgL.crop(
+                    (recT[x][1][0], recT[x][1][1], recT[x][1][0] + recT[x][1][2], recT[x][1][1] + recT[x][1][3]))
+            else:
+                sp = imgL.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
 
-        if x =='invoiceNo':
+        elif x =='invoiceNo':
             sp = img.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
         else:
             sp = imgL.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
@@ -101,10 +108,27 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, debug=False, isusebaid
 
             continue
         # sp = img[int(recT[x][1]): int(recT[x][1] + recT[x][3]), int(recT[x][0]):int(recT[x][0] + recT[x][2])]
-        sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + '/' + jwkj_get_filePath_fileName_fileExt(filePath)[
+
+        if x == 'verifyCode' and len(recT[x]) == 2:
+            # if len(recT[x]) == 2:#存图  verifyCode例外（多图）
+            sFPN1 = jwkj_get_filePath_fileName_fileExt(filePath)[0] + '/' + \
+                   jwkj_get_filePath_fileName_fileExt(filePath)[
+                       1] + "_" + x + "_1.jpg"
+            sFPN2 = jwkj_get_filePath_fileName_fileExt(filePath)[0] + '/' + \
+                    jwkj_get_filePath_fileName_fileExt(filePath)[
+                        1] + "_" + x + "_2.jpg"
+
+
+            sp1.save(sFPN1)
+            sp2.save(sFPN2)
+            # print('--------------  ---------------' + sFPN1)
+            # print('--------------  ---------------' + sFPN2)
+        else:
+            sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + '/' + jwkj_get_filePath_fileName_fileExt(filePath)[
                    1] + "_" + x + ".jpg"
-        # cv2.imwrite(sFPN, sp)
-        sp.save(sFPN)
+            # print('--------------  ---------------' + sFPN)
+            # cv2.imwrite(sFPN, sp)
+            sp.save(sFPN)
         # print(x +"  : "+sFPN)
         if pars == dict(textline_method='simple') and x == 'invoiceNo':
             OCR.utils.convert(sFPN)
@@ -113,9 +137,22 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, debug=False, isusebaid
             # if (x != 'invoiceNo'):
             # # 测试如此识别并不能修正字体不能识别的问题
             if isusebaidu:
-                midResult = flow.OcrPic(sFPN)
+                midResult = ''
+                if x == 'verifyCode' and len(recT[x]) == 2:
+                    # if len(recT[x]) == 2:
+                    midResult += flow.OcrPic(sFPN1)
+                    midResult += flow.OcrPic(sFPN2)
+                else:
+                    midResult = flow.OcrPic(sFPN)
             else:
-                midResult = newOcr(sFPN)
+                midResult = ''
+                if x == 'verifyCode' and len(recT[x]) == 2:
+                    # if len(recT[x]) == 2:
+                        midResult += newOcr(sFPN1)
+                        midResult += newOcr(sFPN2)
+                else:
+                    midResult = newOcr(sFPN)
+
             # else:
             #     midResult = OcrNoPic(sFPN)
 
@@ -170,8 +207,8 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, debug=False, isusebaid
     return json.dumps(jsoni).encode().decode("unicode-escape")
 
 
-def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple'), timer=None):
-    print(type)
+def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'), timer=None):
+    print(typeP)
     print(pars)
 
     # 'elec'：增值税电子发票
@@ -180,11 +217,12 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
     # pars = dict(textline_method='textboxes')  # 使用 深度学习 方法，目前用的CPU，较慢 ?
     # pars = dict(textline_method='simple')  # 使用 深度学习 方法，目前用的CPU，较慢 ?
 
-    pipe = fp.vat_invoice.pipeline.VatInvoicePipeline(type, pars=pars, debug=False)  # 请用debug=False
+    pipe = fp.vat_invoice.pipeline.VatInvoicePipeline(typeP, pars=pars, debug=False)  # 请用debug=False
     # pipe = fp.vat_invoice.pipeline.VatInvoicePipeline('special', debug=False) # 请用False
     im = cv2.imread(filepath, 1)
     im = cv2.resize(im, None, fx=0.5, fy=0.5)
 
+    # print('out pipe')
     pipe(im)
     timer.toc(content="行提取")
 
@@ -193,7 +231,7 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
     # pl.show()
     attributeLine = {}
 
-    if type == 'special':
+    if typeP == 'special':
 
         if pipe.predict('tax_free_money') is None:
             attributeLine = {
@@ -220,7 +258,7 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
                 'invoiceDate': list(pipe.predict('time')),
                 'invoiceAmount': list(pipe.predict('tax_free_money'))
             }
-    elif type == 'normal'or type == 'elec':
+    elif typeP == 'normal'or typeP == 'elec':
         if pipe.predict('tax_free_money') is None:
             attributeLine = {
                 'invoiceCode': list(pipe.predict('type')),
@@ -261,26 +299,50 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
         hAxis = 0.2
 
     for c in attributeLine:
-        attributeLine[c][0] = attributeLine[c][0] - wAxis * attributeLine[c][2]
-        attributeLine[c][1] = attributeLine[c][1] - hAxis * attributeLine[c][3]
-        attributeLine[c][2] = attributeLine[c][2] * (1 + 2 * wAxis)
-        attributeLine[c][3] = attributeLine[c][3] * (1 + 2 * hAxis)
-        if attributeLine[c][0] < 0:
-            attributeLine[c][0] = 0
-        if attributeLine[c][1] < 0:
-            attributeLine[c][1] = 0
+        # print(attributeLine[c])
+        attributeLine[c][0] = np.array(attributeLine[c][0]).tolist()
 
-    if type == 'elec' and pars == dict(textline_method='simple'):
+        if type(attributeLine[c][0]) == type([1,2,3]):
+
+            for ind, b in enumerate(attributeLine[c]):
+                # print(ind)
+                if ind != 0:
+                    attributeLine[c][ind] = np.array(attributeLine[c][ind]).tolist()
+                # print(attributeLine[c][ind])
+                attributeLine[c][ind][0] = attributeLine[c][ind][0] - wAxis * attributeLine[c][ind][2]
+                attributeLine[c][ind][1] = attributeLine[c][ind][1] - hAxis * attributeLine[c][ind][3]
+                attributeLine[c][ind][2] = attributeLine[c][ind][2] * (1 + 2 * wAxis)
+                attributeLine[c][ind][3] = attributeLine[c][ind][3] * (1 + 2 * hAxis)
+                if attributeLine[c][ind][0] < 0:
+                    attributeLine[c][ind][0] = 0
+                if attributeLine[c][ind][1] < 0:
+                    attributeLine[c][ind][1] = 0
+
+                # print(attributeLine[c][ind])
+
+        else:
+            attributeLine[c][0] = attributeLine[c][0] - wAxis * attributeLine[c][2]
+            attributeLine[c][1] = attributeLine[c][1] - hAxis * attributeLine[c][3]
+            attributeLine[c][2] = attributeLine[c][2] * (1 + 2 * wAxis)
+            attributeLine[c][3] = attributeLine[c][3] * (1 + 2 * hAxis)
+            if attributeLine[c][0] < 0:
+                attributeLine[c][0] = 0
+            if attributeLine[c][1] < 0:
+                attributeLine[c][1] = 0
+
+    if typeP == 'elec' and pars == dict(textline_method='simple'):
         attributeLine['invoiceCode'] = decWidth(attributeLine['invoiceCode'], float(86.0 / 220.0))
         attributeLine['invoiceNo'] = decWidth(attributeLine['invoiceNo'], float(88.0 / 178.0))
         if 'invoiceDate' in attributeLine.keys():
             attributeLine['invoiceDate'] = decWidth(attributeLine['invoiceDate'], float(86.0 / 221.0))
-        attributeLine['verifyCode'] = decWidth(attributeLine['verifyCode'], float(90.0 / 324.0))
+        for ind, c in enumerate(attributeLine['verifyCode']):
+            attributeLine['verifyCode'][ind] = decWidth(attributeLine['verifyCode'][ind], float(90.0 / 324.0))
 
 
     print(attributeLine)
     timer.toc(content="行提取矫正")
 
+    # print("0")
     # 新建目录tmp
     if os.path.exists(jwkj_get_filePath_fileName_fileExt(filepath)[0] + "/tmp") == False:
         os.mkdir(jwkj_get_filePath_fileName_fileExt(filepath)[0] + "/tmp")
@@ -295,6 +357,7 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
             jwkj_get_filePath_fileName_fileExt(filepath)[
                 1])
 
+    # print("2")
     # img = Image.open(filepath)
     # 如为simple方法 先存储pipe。surface_image为初始图（后续识别定位基于该图）
     # if pars == dict(textline_method='simple'):
@@ -340,9 +403,14 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
     # cv2.imwrite(binaryzationSurfaceImagePath, np.array(img))
 
     # 生成行提取的图片
+    # print("4")
     plt_rects = []
     for x in attributeLine:
-        plt_rects.append(attributeLine[x])
+        if x == 'verifyCode' and len(attributeLine[x]) == 2:
+            plt_rects.append(attributeLine[x][0])
+            plt_rects.append(attributeLine[x][1])
+        else:
+            plt_rects.append(attributeLine[x])
     # 显示
     vis_textline0 = fp.util.visualize.rects(cv2.imread(surfaceImagePath, 0), plt_rects)
     pl.imshow(vis_textline0)
@@ -353,6 +421,8 @@ def newMubanDetect(filepath, type='special', pars=dict(textline_method='simple')
     except:
         pass
     timer.toc(content="行提取图绘制")
+
+    # print('in')
 
     jsonResult = CropPic(filepathS, attributeLine, 11, filepath, pars, debug=False,
                          isusebaidu=False)  # ocr和分词
