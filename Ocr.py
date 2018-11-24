@@ -170,7 +170,8 @@ def surface(filename, type='blue'):
     try:
         pl.savefig(pltpath)
     except Exception as e:
-        print("绘制行提取图片不支持bmp格式：{}".format(e)):
+        print("绘制行提取图片不支持bmp格式：{}".format(e))
+        pass
 
     return midProcessResult[0], midProcessResult[1], attributeLine
 
