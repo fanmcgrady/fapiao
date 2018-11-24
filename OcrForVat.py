@@ -27,7 +27,7 @@ def jwkj_get_filePath_fileName_fileExt(filename):  # 提取路径
     return filepath, shotname, extension
 
 
-def newOcr(filepath):
+def newOcr(filepath, typeP):
     return connecter.OCR(filepath)
 
 
@@ -38,7 +38,7 @@ def decWidth(array, axis):
     return array
 
 
-def CropPic(filePath, recT, typeT, origin_filePath, pars, debug=False, isusebaidu=False):
+def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, isusebaidu=False):
     ocrResult = {}
     img = Image.open(filePath)
     # img = cv2.imread(filePath, 1)
@@ -62,7 +62,7 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, debug=False, isusebaid
 
     # 是否采用自适应二值化方法
     # isAdoptive = False
-    if type == 'elec':
+    if typeP == 'elec':
         isAdoptive = False  # 测试中
     else:
         isAdoptive = True  # 测试中
@@ -130,7 +130,7 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, debug=False, isusebaid
             # cv2.imwrite(sFPN, sp)
             sp.save(sFPN)
         # print(x +"  : "+sFPN)
-        if pars == dict(textline_method='simple') and x == 'invoiceNo':
+        if pars == dict(textline_method='simple') and x == 'invoiceNo' and (typeP == 'special' or typeP == 'normal'):
             OCR.utils.convert(sFPN)
 
         if debug == False:
@@ -148,10 +148,10 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, debug=False, isusebaid
                 midResult = ''
                 if x == 'verifyCode' and len(recT[x]) == 2:
                     # if len(recT[x]) == 2:
-                        midResult += newOcr(sFPN1)
-                        midResult += newOcr(sFPN2)
+                        midResult += newOcr(sFPN1, typeP)
+                        midResult += newOcr(sFPN2, typeP)
                 else:
-                    midResult = newOcr(sFPN)
+                    midResult = newOcr(sFPN, typeP)
 
             # else:
             #     midResult = OcrNoPic(sFPN)
@@ -424,7 +424,7 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
 
     # print('in')
 
-    jsonResult = CropPic(filepathS, attributeLine, 11, filepath, pars, debug=False,
+    jsonResult = CropPic(filepathS, attributeLine, 11, filepath, pars, typeP, debug=False,
                          isusebaidu=False)  # ocr和分词
     timer.toc(content="切图ocr识别")
     print(jsonResult)
