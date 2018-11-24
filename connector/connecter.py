@@ -1,4 +1,5 @@
 from OCR import OCR, dianpiao
+import keras.backend.tensorflow_backend as K
 
 global_model = OCR.load_model()
 dianpiao_global_model = dianpiao.load_model()
