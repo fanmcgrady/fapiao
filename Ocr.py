@@ -167,7 +167,10 @@ def surface(filename, type='blue'):
     pl.imshow(vis_textline0)
     # 保存到line目录
     pltpath = midProcessResult[0].replace("out", "line")
-    pl.savefig(pltpath)
+    try:
+        pl.savefig(pltpath)
+    except Exception as e:
+        print("绘制行提取图片不支持bmp格式：{}".format(e)):
 
     return midProcessResult[0], midProcessResult[1], attributeLine
 

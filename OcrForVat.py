@@ -28,7 +28,7 @@ def jwkj_get_filePath_fileName_fileExt(filename):  # 提取路径
 
 
 def newOcr(filepath, typeP):
-    return connecter.OCR(filepath)
+    return connecter.OCR(filepath, typeP)
 
 
 def decWidth(array, axis):
@@ -91,18 +91,25 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
     #----------------------------------------------------二值化 ---------------------------------
 
     for x in recT:
-        if x == 'verifyCode':
-            if len(recT[x]) == 2:
-                sp1 = imgL.crop((recT[x][0][0], recT[x][0][1], recT[x][0][0] + recT[x][0][2], recT[x][0][1] + recT[x][0][3]))
-                sp2 = imgL.crop(
-                    (recT[x][1][0], recT[x][1][1], recT[x][1][0] + recT[x][1][2], recT[x][1][1] + recT[x][1][3]))
+
+        if typeP == 'elec':#电票
+
+            sp = img.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
+
+        else:
+
+            if x == 'verifyCode':
+                if len(recT[x]) == 2:
+                    sp1 = imgL.crop((recT[x][0][0], recT[x][0][1], recT[x][0][0] + recT[x][0][2], recT[x][0][1] + recT[x][0][3]))
+                    sp2 = imgL.crop(
+                        (recT[x][1][0], recT[x][1][1], recT[x][1][0] + recT[x][1][2], recT[x][1][1] + recT[x][1][3]))
+                else:
+                    sp = imgL.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
+
+            elif x =='invoiceNo':
+                sp = img.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
             else:
                 sp = imgL.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
-
-        elif x =='invoiceNo':
-            sp = img.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
-        else:
-            sp = imgL.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
         if recT[x][0] == 0 and recT[x][1] == 0 and recT[x][2] == 0 and recT[x][3] == 0:
             print("↑--------↑--------↑--------↑ recT : " + x + " is error↑--------↑--------↑")
 
@@ -118,15 +125,14 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
                     jwkj_get_filePath_fileName_fileExt(filePath)[
                         1] + "_" + x + "_2.jpg"
 
-
             sp1.save(sFPN1)
             sp2.save(sFPN2)
-            # print('--------------  ---------------' + sFPN1)
-            # print('--------------  ---------------' + sFPN2)
+            print('--------------  ---------------' + sFPN1)
+            print('--------------  ---------------' + sFPN2)
         else:
             sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + '/' + jwkj_get_filePath_fileName_fileExt(filePath)[
                    1] + "_" + x + ".jpg"
-            # print('--------------  ---------------' + sFPN)
+            print('--------------  ---------------' + sFPN)
             # cv2.imwrite(sFPN, sp)
             sp.save(sFPN)
         # print(x +"  : "+sFPN)
@@ -136,6 +142,7 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
         if debug == False:
             # if (x != 'invoiceNo'):
             # # 测试如此识别并不能修正字体不能识别的问题
+            midResult = ''
             if isusebaidu:
                 midResult = ''
                 if x == 'verifyCode' and len(recT[x]) == 2:
@@ -183,7 +190,7 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
                 if isusebaidu:
                     midResult = flow.OcrPic(sFPN)
                 else:
-                    midResult = newOcr(sFPN)
+                    midResult = newOcr(sFPN, typeP)
                 # midResult = flow.OcrPic(sFPN)
 
                 print('invoiceDateFix: ' + midResult)
@@ -222,7 +229,6 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
     im = cv2.imread(filepath, 1)
     im = cv2.resize(im, None, fx=0.5, fy=0.5)
 
-    # print('out pipe')
     pipe(im)
     timer.toc(content="行提取")
 
@@ -317,7 +323,6 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
                     attributeLine[c][ind][0] = 0
                 if attributeLine[c][ind][1] < 0:
                     attributeLine[c][ind][1] = 0
-
                 # print(attributeLine[c][ind])
 
         else:
@@ -342,7 +347,6 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
     print(attributeLine)
     timer.toc(content="行提取矫正")
 
-    # print("0")
     # 新建目录tmp
     if os.path.exists(jwkj_get_filePath_fileName_fileExt(filepath)[0] + "/tmp") == False:
         os.mkdir(jwkj_get_filePath_fileName_fileExt(filepath)[0] + "/tmp")
@@ -357,7 +361,6 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
             jwkj_get_filePath_fileName_fileExt(filepath)[
                 1])
 
-    # print("2")
     # img = Image.open(filepath)
     # 如为simple方法 先存储pipe。surface_image为初始图（后续识别定位基于该图）
     # if pars == dict(textline_method='simple'):
@@ -414,12 +417,14 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
     # 显示
     vis_textline0 = fp.util.visualize.rects(cv2.imread(surfaceImagePath, 0), plt_rects)
     pl.imshow(vis_textline0)
+
     # 保存到line目录
+    pltpath = filepath.replace("upload", "line")
     try:
-        pltpath = filepath.replace("upload", "line")
         pl.savefig(pltpath)
-    except:
-        pass
+    except Exception as e:
+        print("绘制行提取图片不支持bmp格式：{}".format(e))
+
     timer.toc(content="行提取图绘制")
 
     # print('in')
@@ -465,7 +470,7 @@ def mubanDetectInvoiceDate(filepath, setKey='invoiceDate'):
 
     if w1[0] + w1[1] > 1500:
         rate = 0.5
-        print("rate : 0.5")
+        # print("rate : 0.5")
 
     if midProcessResult[1] == 11:
         # box = Detect.detect(cv2.imread(midProcessResult[0]), rate)
@@ -489,7 +494,10 @@ def mubanDetectInvoiceDate(filepath, setKey='invoiceDate'):
         pl.imshow(vis_textline0)
         # 保存到line目录
         pltpath = midProcessResult[0].replace("upload", "line")
-        pl.savefig(pltpath)
+        try:
+            pl.savefig(pltpath)
+        except Exception as e:
+            print("绘制行提取图片不支持bmp格式：{}".format(e))
 
     return attributeLine
 
@@ -565,7 +573,7 @@ def adjustToTextLine(mubandict, box, typeT, templet):  # box顺序需要调整
         if mubandict[x][1] < 0:
             mubandict[x][1] = 0
 
-    print(mubandict)
+    # print(mubandict)
 
     if typeT == 1:
         # 调整蓝票框
@@ -588,7 +596,7 @@ def simplyAdjust(mubandict, box, tplt, shape):
         mubandict[x][0] = shape[1] - mubandict[x][2]
     if mubandict[x][1] + mubandict[x][3] > shape[0]:
         mubandict[x][1] = shape[0] - mubandict[x][3]
-    print(mubandict)
+    # print(mubandict)
 
     mubandict = muban.de_muban(mubandict, 1.0)
     return mubandict
@@ -667,11 +675,15 @@ def init(filepath, type='special', pars=dict(textline_method='simple')):
             pl.imshow(vis_textline0)
             # 保存到line目录
             pltpath = filepath.replace("upload", "line")
-            pl.savefig(pltpath)
+            try:
+                pl.savefig(pltpath)
+            except Exception as e:
+                print("绘制行提取图片不支持bmp格式：{}".format(e))
 
             resArray = getArrayFromStr(res[0])
+            # print(resArray)
             js = InterfaceType.JsonInterface.invoice()
-            js.setVATInvoiceFromArray(resArray)
+            js.setVATInvoiceFromArray(resArray, type)
 
             jsoni = js.dic
             print(jsoni)
@@ -709,5 +721,6 @@ if __name__ == '__main__':
     #    print('__________________________  ' + c + '  _______________________')
 
     # init('/home/huangzheng/ocr/Image_00181.jpg', type='special', pars=dict(textline_method='textboxes'))
-    init('/home/huangzheng/ocr/testPic/3/Image_00002.jpg', type='special', pars=dict(textline_method='simple'))
+    # init('/home/huangzheng/ocr/testPic/3/Image_00003.jpg', type='special', pars=dict(textline_method='simple'))
     # init('Image_00131.jpg', type='elec', pars=dict(textline_method='simple'))
+    init('/home/huangzheng/ocr/testPic/1/Image_00129.jpg', type='normal', pars=dict(textline_method='simple'))
