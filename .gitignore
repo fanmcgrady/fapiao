@@ -4,3 +4,6 @@ nohup.out
 home/migrations
 db.sqlite3
 *.sh
+
+# 忽略ln链接过来的ocr库
+ocr
