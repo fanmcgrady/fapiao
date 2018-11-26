@@ -2,6 +2,7 @@
 import sys
 sys.path.append("/home/huangzheng/ocr")
 
+# 设置只用前两个GPU
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
 
