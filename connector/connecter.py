@@ -1,7 +1,11 @@
-from OCR import OCR, dianpiao
+from OCR import OCR as ocrVat
+from OCR import dianpiao as elecVat
+import keras.backend.tensorflow_backend as K
 
-global_model = OCR.load_model()
-dianpiao_global_model = dianpiao.load_model()
+
+global_model = ocrVat.load_model()
+dianpiao_global_model = elecVat.load_model()
+
 
 def OCR(image_path, typeP, thresholding = 160):
     """
@@ -10,12 +14,11 @@ def OCR(image_path, typeP, thresholding = 160):
     """
     global global_model
     global dianpiao_global_model
-
     with K.get_session().graph.as_default():
         if typeP == 'elec':
-            out, _ = dianpiao.predict(image_path, dianpiao_global_model, thresholding=thresholding)
+            out, _ = elecVat.predict(image_path, dianpiao_global_model, thresholding=thresholding)
         else:
-            out, _ = OCR.predict(image_path, global_model, thresholding=thresholding)
+            out, _ = ocrVat.predict(image_path, global_model, thresholding=thresholding)
 
     return out
 

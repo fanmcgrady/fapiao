@@ -227,7 +227,7 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
     pipe = fp.vat_invoice.pipeline.VatInvoicePipeline(typeP, pars=pars, debug=False)  # 请用debug=False
     # pipe = fp.vat_invoice.pipeline.VatInvoicePipeline('special', debug=False) # 请用False
     im = cv2.imread(filepath, 1)
-    im = cv2.resize(im, None, fx=0.5, fy=0.5)
+    #im = cv2.resize(im, None, fx=0.5, fy=0.5)
 
     pipe(im)
     timer.toc(content="行提取")
@@ -335,13 +335,13 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
             if attributeLine[c][1] < 0:
                 attributeLine[c][1] = 0
 
-    if typeP == 'elec' and pars == dict(textline_method='simple'):
-        attributeLine['invoiceCode'] = decWidth(attributeLine['invoiceCode'], float(86.0 / 220.0))
-        attributeLine['invoiceNo'] = decWidth(attributeLine['invoiceNo'], float(88.0 / 178.0))
-        if 'invoiceDate' in attributeLine.keys():
-            attributeLine['invoiceDate'] = decWidth(attributeLine['invoiceDate'], float(86.0 / 221.0))
-        for ind, c in enumerate(attributeLine['verifyCode']):
-            attributeLine['verifyCode'][ind] = decWidth(attributeLine['verifyCode'][ind], float(90.0 / 324.0))
+    # if typeP == 'elec' and pars == dict(textline_method='simple'):
+    #     attributeLine['invoiceCode'] = decWidth(attributeLine['invoiceCode'], float(86.0 / 220.0))
+    #     attributeLine['invoiceNo'] = decWidth(attributeLine['invoiceNo'], float(88.0 / 178.0))
+    #     if 'invoiceDate' in attributeLine.keys():
+    #         attributeLine['invoiceDate'] = decWidth(attributeLine['invoiceDate'], float(86.0 / 221.0))
+    #     for ind, c in enumerate(attributeLine['verifyCode']):
+    #         attributeLine['verifyCode'][ind] = decWidth(attributeLine['verifyCode'][ind], float(90.0 / 324.0))
 
 
     print(attributeLine)
