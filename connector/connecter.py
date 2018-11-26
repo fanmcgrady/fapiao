@@ -2,10 +2,8 @@ from OCR import OCR as ocrVat
 from OCR import dianpiao as elecVat
 import keras.backend.tensorflow_backend as K
 
-
 global_model = ocrVat.load_model()
 dianpiao_global_model = elecVat.load_model()
-
 
 def OCR(image_path, typeP, thresholding = 160):
     """
