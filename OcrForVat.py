@@ -27,8 +27,8 @@ def jwkj_get_filePath_fileName_fileExt(filename):  # 提取路径
     return filepath, shotname, extension
 
 
-def newOcr(filepath, typeP):
-    return connecter.OCR(filepath, typeP)
+def newOcr(filepath, typeP, x):
+    return connecter.OCR(filepath, typeP, x)
 
 
 def decWidth(array, axis):
@@ -155,10 +155,10 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
                 midResult = ''
                 if x == 'verifyCode' and len(recT[x]) == 2:
                     # if len(recT[x]) == 2:
-                        midResult += newOcr(sFPN1, typeP)
-                        midResult += newOcr(sFPN2, typeP)
+                    midResult += newOcr(sFPN1, typeP, x)
+                    midResult += newOcr(sFPN2, typeP, x)
                 else:
-                    midResult = newOcr(sFPN, typeP)
+                    midResult = newOcr(sFPN, typeP, x)
 
             # else:
             #     midResult = OcrNoPic(sFPN)
@@ -170,38 +170,39 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
     pC = SemanticCorrect.posteriorCrt.posteriorCrt()
 
     print("origin_filePath " + origin_filePath)
-    if typeT == 11 and debug == False:
-        if ocrResult['invoiceDate'][:4] == '开票日期' or len(ocrResult['invoiceDate']) < 4:
-
-            # 返回上级
-            imgl = Image.open(origin_filePath)
-            recT['invoiceDate'] = mubanDetectInvoiceDate(origin_filePath)['invoiceDate']
-            if recT['invoiceDate'] != None:
-                sp = imgl.crop((recT['invoiceDate'][0], recT['invoiceDate'][1],
-                                recT['invoiceDate'][0] + recT['invoiceDate'][2],
-                                recT['invoiceDate'][1] + recT['invoiceDate'][3]))
-
-                sFPN = jwkj_get_filePath_fileName_fileExt(origin_filePath)[0] + "/tmp/" + \
-                       jwkj_get_filePath_fileName_fileExt(origin_filePath)[1] + "/" + \
-                       jwkj_get_filePath_fileName_fileExt(origin_filePath)[
-                           1] + "_" + 'invoiceDateFix' + ".jpg"
-                sp.save(sFPN)
-
-                if isusebaidu:
-                    midResult = flow.OcrPic(sFPN)
-                else:
-                    midResult = newOcr(sFPN, typeP)
-                # midResult = flow.OcrPic(sFPN)
-
-                print('invoiceDateFix: ' + midResult)
-                ocrResult['invoiceDate'] = midResult
-            else:
-                print("find Circle error!")
+    # if typeT == 11 and debug == False:
+    #     if ocrResult['invoiceDate'][:4] == '开票日期' or len(ocrResult['invoiceDate']) < 4:
+    #
+    #         # 返回上级
+    #         imgl = Image.open(origin_filePath)
+    #         recT['invoiceDate'] = mubanDetectInvoiceDate(origin_filePath)['invoiceDate']
+    #         if recT['invoiceDate'] != None:
+    #             sp = imgl.crop((recT['invoiceDate'][0], recT['invoiceDate'][1],
+    #                             recT['invoiceDate'][0] + recT['invoiceDate'][2],
+    #                             recT['invoiceDate'][1] + recT['invoiceDate'][3]))
+    #
+    #             sFPN = jwkj_get_filePath_fileName_fileExt(origin_filePath)[0] + "/tmp/" + \
+    #                    jwkj_get_filePath_fileName_fileExt(origin_filePath)[1] + "/" + \
+    #                    jwkj_get_filePath_fileName_fileExt(origin_filePath)[
+    #                        1] + "_" + 'invoiceDateFix' + ".jpg"
+    #             sp.save(sFPN)
+    #
+    #             if isusebaidu:
+    #                 midResult = flow.OcrPic(sFPN)
+    #             else:
+    #                 midResult = newOcr(sFPN, typeP)
+    #             # midResult = flow.OcrPic(sFPN)
+    #
+    #             print('invoiceDateFix: ' + midResult)
+    #             ocrResult['invoiceDate'] = midResult
+    #         else:
+    #             print("find Circle error!")
 
     js = InterfaceType.JsonInterface.invoice()
     if typeT == 11:
         pC.setVATParaFromVATDict(ocrResult)
-        pC.startVATCrt()
+        if typeP !='elec':
+            pC.startVATCrt()
         js.setValueWithDict(pC.VATdic)
         jsoni = js.dic
 
@@ -227,7 +228,7 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
     pipe = fp.vat_invoice.pipeline.VatInvoicePipeline(typeP, pars=pars, debug=False)  # 请用debug=False
     # pipe = fp.vat_invoice.pipeline.VatInvoicePipeline('special', debug=False) # 请用False
     im = cv2.imread(filepath, 1)
-    #im = cv2.resize(im, None, fx=0.5, fy=0.5)
+    im = cv2.resize(im, None, fx=0.5, fy=0.5)
 
     pipe(im)
     timer.toc(content="行提取")
