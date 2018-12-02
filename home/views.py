@@ -44,14 +44,14 @@ def sendError(request):
 def getFileList(request):
     if request.method == "POST":
         # 是否使用服务器上的文件
-        use_server_path = request.POST['useServerPath']
-        server_path = request.POST['pathInput']
-        obj = request.FILES.get('fapiao')
+        if request.POST.has_key('useServerPath'):
+            use_server_path = request.POST['useServerPath']
 
-        print("{}, {}".format(use_server_path, type(use_server_path)))
+        obj = request.FILES.get('fapiao')
 
         if use_server_path == 'true':
             # 随机文件名
+            server_path = request.POST['pathInput']
             filename, zip_dir = generate_random_name(server_path)
             # 拼接存放位置路径
             file_path = os.path.join('upload', filename)
