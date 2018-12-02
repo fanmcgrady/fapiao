@@ -405,10 +405,12 @@
         // 绑定一些键盘快捷键
         jQuery(document).bind('keydown', 'return', function () {
             loadFiles();
+        }).bind('keydown', 'ctrl+k', function () {
+            switchInput();
         });
 
-        jQuery(document).bind('keydown', 'ctrl+k', function () {
-            switchInput();
+        jQuery("#path-input").bind('keydown', 'return', function () {
+            loadFiles();
         });
 
         jQuery("#btn-local-path").click(switchInput);
