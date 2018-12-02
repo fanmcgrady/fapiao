@@ -45,14 +45,14 @@ def getFileList(request):
         server_path = request.POST['pathInput']
         obj = request.FILES.get('fapiao')
 
+        print(use_server_path)
+        print(type(use_server_path))
+
         # 随机文件名
         filename, zip_dir = generate_random_name(obj.name)
         # 拼接存放位置路径
         file_path = os.path.join('upload', filename)
         full_path = os.path.join('allstatic', file_path)
-
-        print(use_server_path)
-        print(type(use_server_path))
 
         if use_server_path:
             shutil.copyfile(server_path, full_path)  # 复制文件
