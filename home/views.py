@@ -41,7 +41,7 @@ import OcrForVat
 def getFileList(request):
     if request.method == "POST":
         # 是否使用服务器上的文件
-        use_server_path = request.POST['serServerPath']
+        use_server_path = request.POST['useServerPath']
         server_path = request.POST['pathInput']
         obj = request.FILES.get('fapiao')
 
