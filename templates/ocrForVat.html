@@ -126,7 +126,11 @@
                             <div class="panel-body">
                                 <div class="input-group">
                                     <input type="file" id="example-input1-group2" name="example-input1-group2"
+                                           placeholder="请选择要上传的文件或zip压缩包"
                                            class="form-control input-lg">
+                                    <input type="text" id="path-input"
+                                           placeholder="请填写服务器文件路径"
+                                           class="form-control input-lg" style="display: none;"/>
                                     <span class="input-group-btn">
                                                 <button type="button"
                                                         class="btn-lg btn waves-effect waves-light btn-primary w-md"
@@ -225,11 +229,13 @@
 <script src="static/blue/assets/datatables/dataTables.bootstrap.js"></script>
 <script src="static/blue/assets/jquery-datatables-editable/datatables.editable.init.js"></script>
 <script type="text/javascript" src="static/blue/assets/spinner/spinner.min.js"></script>
+<script src="static/blue/js/jquery.hotkeys.js"></script>
 
 <script>
     var fileList;
     var fileTotal;
     var current;
+    var useServerPath = false;
 
     // 初始化
     function loadingShow() {
@@ -250,7 +256,12 @@
 
     function loadFiles() {
         // 验证
-        if ($("#example-input1-group2").val() == "") {
+        if (useServerPath) {
+            if ($("#path-input").val() == "") {
+                alert("请填写服务器文件路径");
+                return;
+            }
+        } else if ($("#example-input1-group2").val() == "") {
             alert("请上传文件");
             return;
         }
@@ -262,7 +273,10 @@
         var dic = new FormData();
         // 取上传文件
         var file = document.getElementById('example-input1-group2').files[0];
+        var pathInput = document.getElementById('path-input').value;
         dic.append('fapiao', file);
+        dic.append('pathInput', pathInput);
+        dic.append('useServerPath', useServerPath);
         $.ajax({
             url: '/getFileList',
             type: 'POST',
@@ -377,11 +391,23 @@
         })
     }
 
+    function switchInput() {
+        useServerPath = true;
+        $("#example-input1-group2").hide();
+        $("#path-input").show();
+    }
+
     jQuery(document).ready(function () {
         $('#search').click(function () {
             loadFiles();
         });
+
+        jQuery(document).bind('keydown', 'ctrl+k', function () {
+            switchInput();
+        });
+        jQuery("#btn-local-path").click(switchInput);
     });
+
 
 </script>
 </body>

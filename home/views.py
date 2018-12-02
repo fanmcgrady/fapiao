@@ -1,9 +1,11 @@
 # 加载黄政的代码
 import sys
+
 sys.path.append("/home/huangzheng/ocr")
 
 # 设置只用前两个GPU
 import os
+
 os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
 
 # 设置本地运行
@@ -17,7 +19,6 @@ else:
     print("服务器运行")
 
     print("加载模型")
-    from connector.connecter import *
 
 import datetime
 import json
@@ -26,6 +27,7 @@ import zipfile
 from django.http import HttpResponse
 from django.shortcuts import render
 import ComputeDistance
+import shutil
 
 # 取20个形似字
 print("读取全局字典")
@@ -38,6 +40,9 @@ import OcrForVat
 # 批量上传获取文件列表
 def getFileList(request):
     if request.method == "POST":
+        # 是否使用服务器上的文件
+        use_server_path = request.POST['serServerPath']
+        server_path = request.POST['pathInput']
         obj = request.FILES.get('fapiao')
 
         # 随机文件名
@@ -45,72 +50,75 @@ def getFileList(request):
         # 拼接存放位置路径
         file_path = os.path.join('upload', filename)
         full_path = os.path.join('allstatic', file_path)
-        # 上传文件写入
-        f = open(full_path, 'wb')
-        for chunk in obj.chunks():
-            f.write(chunk)
-        f.close()
+
+        if use_server_path:
+            shutil.copyfile(server_path, full_path)  # 复制文件
+        else:
+            # 上传文件写入
+            f = open(full_path, 'wb')
+            for chunk in obj.chunks():
+                f.write(chunk)
+            f.close()
 
         file_list = []
 
-        # 是否是zip文件，批量
-        if os.path.splitext(full_path)[1] == '.zip':
-            # 读zip文件
-            file_zip = zipfile.ZipFile(full_path, 'r')
-            # 拼接处理后图片路径
-            upload_dir = os.path.join('allstatic/upload', zip_dir)
-            out_dir = os.path.join('allstatic/out', zip_dir)
-            line_dir = os.path.join('allstatic/line', zip_dir)
-
-            # 遍历压缩包内文件 判断扩展名只要图片
-            for file in file_zip.namelist():
-                if file.endswith('.jpg') or \
-                        file.endswith('.jpeg') or \
-                        file.endswith('.png') or \
-                        file.endswith('.bmp'):
-
-                    # 创建三个目录 存放压缩包内所有图片的分析后文件
-                    upload_file = os.path.join(upload_dir, file)
-                    upload_file_root, _ = os.path.split(upload_file)
-                    out_file = os.path.join(out_dir, file)
-                    out_file_root, _ = os.path.split(out_file)
-                    line_file = os.path.join(line_dir, file)
-                    line_file_root, _ = os.path.split(line_file)
-
-                    if not os.path.exists(upload_file_root):
-                        os.makedirs(upload_file_root)
-                    if not os.path.exists(out_file_root):
-                        os.makedirs(out_file_root)
-                        os.makedirs(os.path.join(out_file_root, 'tmp'))
-                    if not os.path.exists(line_file_root):
-                        os.makedirs(line_file_root)
-
-                    # 解压到上传目录
-                    file_zip.extract(file, upload_dir)
-                    file_with_zipfold = os.path.join(zip_dir, file)
-                    file_list.append(file_with_zipfold)
-            file_zip.close()
-            # 清除完整路径
-            os.remove(full_path)
-        else:
-            # 单个处理
-            file_list.append(filename)
-
-        print(file_list)
-
-        # 向前端传值
         try:
+            # 是否是zip文件，批量
+            if os.path.splitext(full_path)[1] == '.zip':
+                # 读zip文件
+                file_zip = zipfile.ZipFile(full_path, 'r')
+                # 拼接处理后图片路径
+                upload_dir = os.path.join('allstatic/upload', zip_dir)
+                out_dir = os.path.join('allstatic/out', zip_dir)
+                line_dir = os.path.join('allstatic/line', zip_dir)
+
+                # 遍历压缩包内文件 判断扩展名只要图片
+                for file in file_zip.namelist():
+                    if file.endswith('.jpg') or \
+                            file.endswith('.jpeg') or \
+                            file.endswith('.png') or \
+                            file.endswith('.bmp'):
+
+                        # 创建三个目录 存放压缩包内所有图片的分析后文件
+                        upload_file = os.path.join(upload_dir, file)
+                        upload_file_root, _ = os.path.split(upload_file)
+                        out_file = os.path.join(out_dir, file)
+                        out_file_root, _ = os.path.split(out_file)
+                        line_file = os.path.join(line_dir, file)
+                        line_file_root, _ = os.path.split(line_file)
+
+                        if not os.path.exists(upload_file_root):
+                            os.makedirs(upload_file_root)
+                        if not os.path.exists(out_file_root):
+                            os.makedirs(out_file_root)
+                            os.makedirs(os.path.join(out_file_root, 'tmp'))
+                        if not os.path.exists(line_file_root):
+                            os.makedirs(line_file_root)
+
+                        # 解压到上传目录
+                        file_zip.extract(file, upload_dir)
+                        file_with_zipfold = os.path.join(zip_dir, file)
+                        file_list.append(file_with_zipfold)
+                file_zip.close()
+                # 清除完整路径
+                os.remove(full_path)
+            else:
+                # 单个处理
+                file_list.append(filename)
+
+            # 向前端传值
             ret = {
                 'status': True,
                 'path': file_path,
                 'out': file_list
             }
-        # 打印错误内容
+            # 打印错误内容
         except Exception as e:
             print(e)
             ret = {'status': False, 'path': file_path, 'out': str(e)}
 
         return HttpResponse(json.dumps(ret))
+
 
 # 专票
 def ocrForVat(request):
