@@ -36,6 +36,9 @@ global_dic = ComputeDistance.load_dict('/home/huangzheng/ocr/hei_20.json')
 import Ocr
 import OcrForVat
 
+# 上报错误信息
+def sendError(request):
+    pass
 
 # 批量上传获取文件列表
 def getFileList(request):
@@ -44,6 +47,8 @@ def getFileList(request):
         use_server_path = request.POST['useServerPath']
         server_path = request.POST['pathInput']
         obj = request.FILES.get('fapiao')
+
+        print("{}, {}".format(use_server_path, type(use_server_path)))
 
         if use_server_path == 'true':
             # 随机文件名
