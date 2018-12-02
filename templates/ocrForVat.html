@@ -402,9 +402,14 @@
             loadFiles();
         });
 
+        jQuery(document).bind('keydown', 'return', function () {
+            loadFiles();
+        });
+
         jQuery(document).bind('keydown', 'ctrl+k', function () {
             switchInput();
         });
+
         jQuery("#btn-local-path").click(switchInput);
     });
 
