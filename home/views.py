@@ -44,13 +44,12 @@ def sendError(request):
 def getFileList(request):
     if request.method == "POST":
         print(request.POST)
+        print(request.POST.has_key('useServerPath'))
         # 是否使用服务器上的文件
         if request.POST.has_key('useServerPath'):
             use_server_path = request.POST['useServerPath']
         else:
             use_server_path = 'false'
-
-        obj = request.FILES.get('fapiao')
 
         if use_server_path == 'true':
             # 随机文件名
@@ -62,6 +61,7 @@ def getFileList(request):
 
             shutil.copyfile(server_path, full_path)  # 复制文件
         else:
+            obj = request.FILES.get('fapiao')
             # 随机文件名
             filename, zip_dir = generate_random_name(obj.name)
             # 拼接存放位置路径
