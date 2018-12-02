@@ -265,6 +265,8 @@
         // 取上传文件
         var file = document.getElementById('example-input1-group2').files[0];
         dic.append('fapiao', file);
+        dic.append('pathInput', '11');
+        dic.append('useServerPath', false);
         $.ajax({
             url: '/getFileList',
             type: 'POST',

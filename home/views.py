@@ -297,34 +297,3 @@ def generate_random_name(file_name):
     _, ext = os.path.splitext(file_name)
 
     return timestamp + ext, timestamp
-
-
-##################
-# 其他系统外功能
-def resume(request):
-    files = os.listdir("allstatic/resume")
-
-    if request.method == 'GET':
-        return render(request, 'resume.html', {'count': len(files)})
-    elif request.method == "POST":
-        resume = request.FILES.get('resume')
-
-        file_path = os.path.join('resume', resume.name)
-        full_path = os.path.join('allstatic', file_path)
-
-        f = open(full_path, 'wb')
-        for chunk in resume.chunks():
-            f.write(chunk)
-        f.close()
-
-        try:
-            ret = {
-                'status': True,
-                'path': resume.name,
-                'count': len(files) + 1
-            }
-        except Exception as e:
-            print(e)
-            ret = {'status': False, 'path': file_path, 'out': str(e)}
-
-        return HttpResponse(json.dumps(ret))
