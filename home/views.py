@@ -51,6 +51,9 @@ def getFileList(request):
         file_path = os.path.join('upload', filename)
         full_path = os.path.join('allstatic', file_path)
 
+        print(use_server_path)
+        print(type(use_server_path))
+
         if use_server_path:
             shutil.copyfile(server_path, full_path)  # 复制文件
         else:
