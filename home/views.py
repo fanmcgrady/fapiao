@@ -43,7 +43,7 @@ def sendError(request):
 # 批量上传获取文件列表
 def getFileList(request):
     if request.method == "POST":
-        # 是否使用服务器上的文件
+        # 是否使用服务器上的文件，第二个参数是默认值false
         use_server_path = request.POST.get('useServerPath', 'false')
 
         if use_server_path == 'true':
