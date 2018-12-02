@@ -45,6 +45,8 @@ def getFileList(request):
         server_path = request.POST['pathInput']
         obj = request.FILES.get('fapiao')
 
+        print("{},{}".format(use_server_path, type(use_server_path)))
+
         # 随机文件名
         filename, zip_dir = generate_random_name(obj.name)
         # 拼接存放位置路径
