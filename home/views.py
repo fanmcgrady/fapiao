@@ -46,6 +46,8 @@ def getFileList(request):
         # 是否使用服务器上的文件
         if request.POST.has_key('useServerPath'):
             use_server_path = request.POST['useServerPath']
+        else:
+            use_server_path = 'false'
 
         obj = request.FILES.get('fapiao')
 
