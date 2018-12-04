@@ -19,6 +19,7 @@ else:
     print("服务器运行")
 
     print("加载模型")
+    from connector.connecter import *
 
 import datetime
 import json
