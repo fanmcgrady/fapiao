@@ -29,6 +29,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 import ComputeDistance
 import shutil
+import traceback
 
 # 取20个形似字
 print("读取全局字典")
@@ -45,30 +46,33 @@ def sendError(request):
 def getFileList(request):
     if request.method == "POST":
         # 是否使用服务器上的文件，第二个参数是默认值false
-        use_server_path = request.POST.get('useServerPath', 'false')
+        try:
+            use_server_path = request.POST.get('useServerPath', 'false')
 
-        if use_server_path == 'true':
-            # 随机文件名
-            server_path = request.POST['pathInput']
-            filename, zip_dir = generate_random_name(server_path)
-            # 拼接存放位置路径
-            file_path = os.path.join('upload', filename)
-            full_path = os.path.join('allstatic', file_path)
+            if use_server_path == 'true':
+                # 随机文件名
+                server_path = request.POST['pathInput']
+                filename, zip_dir = generate_random_name(server_path)
+                # 拼接存放位置路径
+                file_path = os.path.join('upload', filename)
+                full_path = os.path.join('allstatic', file_path)
 
-            shutil.copyfile(server_path, full_path)  # 复制文件
-        else:
-            obj = request.FILES.get('fapiao')
-            # 随机文件名
-            filename, zip_dir = generate_random_name(obj.name)
-            # 拼接存放位置路径
-            file_path = os.path.join('upload', filename)
-            full_path = os.path.join('allstatic', file_path)
+                shutil.copyfile(server_path, full_path)  # 复制文件
+            else:
+                obj = request.FILES.get('fapiao')
+                # 随机文件名
+                filename, zip_dir = generate_random_name(obj.name)
+                # 拼接存放位置路径
+                file_path = os.path.join('upload', filename)
+                full_path = os.path.join('allstatic', file_path)
 
-            # 上传文件写入
-            f = open(full_path, 'wb')
-            for chunk in obj.chunks():
-                f.write(chunk)
-            f.close()
+                # 上传文件写入
+                f = open(full_path, 'wb')
+                for chunk in obj.chunks():
+                    f.write(chunk)
+                f.close()
+        except Exception as e:
+            traceback.print_exc()
 
         file_list = []
 
