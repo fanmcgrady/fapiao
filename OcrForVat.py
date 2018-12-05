@@ -302,7 +302,7 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
         hAxis = 0.2
 
     elif pars == dict(textline_method='textboxes'):
-        wAxis = 0.05
+        wAxis = 0.02
         hAxis = 0.2
 
     for c in attributeLine:
@@ -648,6 +648,7 @@ def getArrayFromStr(strRes):
 
 
 def init(filepath, type='special', pars=dict(textline_method='simple')):
+#def init(filepath, type='special', pars=dict(textline_method='textboxes')):
     '''
     mage = cv2.imread(filepath,0)
     str_info, position = recog_qrcode(image, roi=None)
