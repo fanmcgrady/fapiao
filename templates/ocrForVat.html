@@ -160,6 +160,12 @@
                                         共 <span class="text-primary" id="total">0</span> 个文件，已分析 <span
                                             class="text-primary" id="current">0</span> 个文件
                                     </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <button id="download-btn" type="button" class="btn-lg btn waves-effect waves-light btn-primary w-md">
+                                            <i class="md md-file-download"></i>&nbsp;
+                                            <span id="button-tips">下载识别结果</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -359,7 +365,7 @@
                     var data = {
                         "id": index - 1,
                         "filename": filename,
-
+                        "invoice": invoice
                     };
                     resultData.push(data);
                     if ('{{ type }}' == 'special') {
@@ -411,6 +417,10 @@
         $("#path-input").show().focus();
     }
 
+    function saveJson() {
+        console.save(resultData, "result.json");
+    }
+
     jQuery(document).ready(function () {
         $('#search').click(function () {
             loadFiles();
@@ -428,6 +438,7 @@
         });
 
         jQuery("#btn-local-path").click(switchInput);
+        jQuery("#btn-download").click(saveJson);
     });
 
 
