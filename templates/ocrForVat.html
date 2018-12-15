@@ -161,7 +161,7 @@
                                             class="text-primary" id="current">0</span> 个文件
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row" style="margin-top:20px;">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <button id="download-btn" type="button" class="btn-lg btn waves-effect waves-light btn-primary w-md">
                                             <i class="md md-file-download"></i>&nbsp;
@@ -420,7 +420,10 @@
     }
 
     function saveJson() {
-        console.save(resultData, "result.json");
+        if (resultData.length > 0)
+            console.save(resultData, "result.json");
+        else
+            alert("没有要导出的数据");
     }
 
     jQuery(document).ready(function () {
