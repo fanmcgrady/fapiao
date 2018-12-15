@@ -146,6 +146,7 @@
                                         <table class="table table-bordered table-striped">
                                             <thead>
                                             <tr>
+                                                <th>序号</th>
                                                 <th>原始图片</th>
                                                 <th>行提取结果</th>
                                                 <th>识别结果</th>
@@ -237,6 +238,8 @@
     var current;
     var useServerPath = false;
 
+    var index;
+
     // 初始化
     function loadingShow() {
         $("#button-tips").html("处理中...");
@@ -246,6 +249,7 @@
         fileList = new Array();
         fileTotal = 0;
         current = 0;
+        index = 1;
 
         // 清空表格底部计数
         $("#total").text(0);
@@ -340,7 +344,9 @@
                 // 构造表格
                 var tr = $('<tr></tr>').attr('style', 'font-weight: bold;');
                 // 原始图片
-                tr.append($('<td><img src="static/' + arg.path + '"/></td>'));
+                tr.append($('<td><h3 class="panel-title text-info">' + index++ + '</h3></td>'));
+                filename = arg.path.substring(arg.path.lastIndexOf('/'));
+                tr.append($('<td><img src="static/' + arg.path + '"/>' + filename + '</td>'));
 
                 if (arg.status) {
                     // 行提取结果
