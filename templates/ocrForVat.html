@@ -231,6 +231,7 @@
 <script src="static/blue/assets/jquery-datatables-editable/datatables.editable.init.js"></script>
 <script type="text/javascript" src="static/blue/assets/spinner/spinner.min.js"></script>
 <script src="static/blue/js/jquery.hotkeys.js"></script>
+<script src="static/blue/js/save.js"></script>
 
 <script>
     var fileList;
@@ -239,6 +240,7 @@
     var useServerPath = false;
 
     var index;
+    var resultData = [];
 
     // 初始化
     function loadingShow() {
@@ -246,7 +248,7 @@
         $("#status").text("识别中...");
 
         // 初始化
-        fileList = new Array();
+        fileList = [];
         fileTotal = 0;
         current = 0;
         index = 1;
@@ -344,7 +346,7 @@
                 // 构造表格
                 var tr = $('<tr></tr>').attr('style', 'font-weight: bold;');
                 // 原始图片
-                tr.append($('<td><h3 class="panel-title text-info">' + index++ + '</h3></td>'));
+                tr.append($('<td><p>' + index++ + '</p></td>'));
                 filename = arg.path.substring(arg.path.lastIndexOf('/') + 1);
                 tr.append($('<td><img src="static/' + arg.path + '"/><br/>' + filename + '</td>'));
 
@@ -354,6 +356,12 @@
 
                     // 显示识别结果
                     var invoice = arg.result.invoice;
+                    var data = {
+                        "id": index - 1,
+                        "filename": filename,
+
+                    };
+                    resultData.push(data);
                     if ('{{ type }}' == 'special') {
                         tr.append(
                             $('<td></td>')
