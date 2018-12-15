@@ -345,8 +345,8 @@
                 var tr = $('<tr></tr>').attr('style', 'font-weight: bold;');
                 // 原始图片
                 tr.append($('<td><h3 class="panel-title text-info">' + index++ + '</h3></td>'));
-                filename = arg.path.substring(arg.path.lastIndexOf('/'));
-                tr.append($('<td><img src="static/' + arg.path + '"/>' + filename + '</td>'));
+                filename = arg.path.substring(arg.path.lastIndexOf('/') + 1);
+                tr.append($('<td><img src="static/' + arg.path + '"/><br/>' + filename + '</td>'));
 
                 if (arg.status) {
                     // 行提取结果
