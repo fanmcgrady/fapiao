@@ -96,6 +96,11 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
 
             sp = img.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
 
+            w, h = sp.size
+
+            if w / h * 32 > 512:
+                w = int(512 / 32 * h) - 1
+                sp = img.crop((recT[x][0], recT[x][1], recT[x][0] + w, recT[x][1] + h))
         else:
 
             if x == 'verifyCode':
@@ -147,18 +152,36 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
                 midResult = ''
                 if x == 'verifyCode' and len(recT[x]) == 2:
                     # if len(recT[x]) == 2:
-                    midResult += flow.OcrPic(sFPN1)
-                    midResult += flow.OcrPic(sFPN2)
+                    midResult1 = flow.OcrPic(sFPN1)
+                    midResult2 = flow.OcrPic(sFPN2)
+                    midResult += midResult1[-20:] if len(midResult1) > 19 else ''
+                    midResult += midResult2[-20:] if len(midResult2) > 19 else ''
                 else:
-                    midResult = flow.OcrPic(sFPN)
+                    if x == 'verifyCode':
+                        #校验码
+                        mdrs = flow.OcrPic(sFPN)
+                        midResult = mdrs[-20:] if len(mdrs) > 19 else ''
+                    else:
+                        midResult = flow.OcrPic(sFPN)
             else:
                 midResult = ''
                 if x == 'verifyCode' and len(recT[x]) == 2:
                     # if len(recT[x]) == 2:
-                    midResult += newOcr(sFPN1, typeP, x)
-                    midResult += newOcr(sFPN2, typeP, x)
+                    midResult1 = newOcr(sFPN1, typeP, x)
+                    midResult2 = newOcr(sFPN2, typeP, x)
+                    midResult += midResult1[-20:] if len(midResult1) > 19 else ''
+                    midResult += midResult2[-20:] if len(midResult2) > 19 else ''
                 else:
-                    midResult = newOcr(sFPN, typeP, x)
+                    if x == 'verifyCode':
+                        #校验码
+                        mdrs = newOcr(sFPN, typeP, x)
+                        midResult = mdrs[-20:] if len(mdrs) > 19 else ''
+                    elif typeP == 'elec' and x == 'invoiceAmount':
+                        midResult = newOcr(sFPN, 'normal', x)
+                    elif typeP == 'elec':
+                        midResult = newOcr(sFPN, typeP, x)
+                    else:
+                        midResult = newOcr(sFPN, typeP, x)
 
             # else:
             #     midResult = OcrNoPic(sFPN)
@@ -201,8 +224,14 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
     js = InterfaceType.JsonInterface.invoice()
     if typeT == 11:
         pC.setVATParaFromVATDict(ocrResult)
-        if typeP !='elec':
+        if typeP == 'normal':
+            tms = pC.VATdic['invoiceNoS']
+            pC.VATdic['invoiceNoS'] = pC.VATdic['invoiceNo']
+            pC.VATdic['invoiceNo'] = tms
+        if typeP != 'elec':
             pC.startVATCrt()
+        else:
+            pC.startElecVATCrt()
         js.setValueWithDict(pC.VATdic)
         jsoni = js.dic
 
@@ -228,7 +257,7 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
     pipe = fp.vat_invoice.pipeline.VatInvoicePipeline(typeP, pars=pars, debug=False)  # 请用debug=False
     # pipe = fp.vat_invoice.pipeline.VatInvoicePipeline('special', debug=False) # 请用False
     im = cv2.imread(filepath, 1)
-    im = cv2.resize(im, None, fx=0.5, fy=0.5)
+    # im = cv2.resize(im, None, fx=0.5, fy=0.5)
 
     pipe(im)
     timer.toc(content="行提取")
@@ -238,63 +267,77 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
     # pl.show()
     attributeLine = {}
 
-    if typeP == 'special':
+    # atbArray = ['type', 'serial', 'time', 'tax_free_money', 'serial_tiny', 'verify']
+    atbDic = {
+        'type': 'invoiceCode',
+        'serial': 'invoiceNo',
+        'time': 'invoiceDate',
+        'tax_free_money': 'invoiceAmount',
+        'serial_tiny': 'invoiceNoS',
+        'verify': 'verifyCode'}
 
-        if pipe.predict('tax_free_money') is None:
-            attributeLine = {
-                'invoiceCode': list(pipe.predict('type')),
-                'invoiceNo': list(pipe.predict('serial')),
-                # 'invoiceDate': list(pipe.predict('time')),
-                # 'invoiceAmount': list(pipe.predict('tax_free_money'))
-            } if pipe.predict('time') is None else {
-                'invoiceCode': list(pipe.predict('type')),
-                'invoiceNo': list(pipe.predict('serial')),
-                'invoiceDate': list(pipe.predict('time')),
-                # 'invoiceAmount': list(pipe.predict('tax_free_money'))
-            }
+    # if typeP == 'special' or :
 
-        else:
-            attributeLine = {
-                'invoiceCode': list(pipe.predict('type')),
-                'invoiceNo': list(pipe.predict('serial')),
-                # 'invoiceDate': list(pipe.predict('time')),
-                'invoiceAmount': list(pipe.predict('tax_free_money'))
-            } if pipe.predict('time') is None else {
-                'invoiceCode': list(pipe.predict('type')),
-                'invoiceNo': list(pipe.predict('serial')),
-                'invoiceDate': list(pipe.predict('time')),
-                'invoiceAmount': list(pipe.predict('tax_free_money'))
-            }
-    elif typeP == 'normal'or typeP == 'elec':
-        if pipe.predict('tax_free_money') is None:
-            attributeLine = {
-                'invoiceCode': list(pipe.predict('type')),
-                'invoiceNo': list(pipe.predict('serial')),
-                # 'invoiceAmount': list(pipe.predict('tax_free_money')),
-                'verifyCode': list(pipe.predict('verify'))
-            } if pipe.predict('time') is None else {
-                'invoiceCode': list(pipe.predict('type')),
-                'invoiceNo': list(pipe.predict('serial')),
-                'invoiceDate': list(pipe.predict('time')),
-                # 'invoiceAmount': list(pipe.predict('tax_free_money')),
-                'verifyCode': list(pipe.predict('verify'))
-            }
+    for atb in atbDic.keys():
+         if not pipe.predict(atb) is None:
+             attributeLine[atbDic[atb]] = list(pipe.predict(atb))
 
-        else:
-            attributeLine = {
-                'invoiceCode': list(pipe.predict('type')),
-                'invoiceNo': list(pipe.predict('serial')),
-                'invoiceAmount': list(pipe.predict('tax_free_money')),
-                'verifyCode': list(pipe.predict('verify'))
-            } if pipe.predict('time') is None else {
-                'invoiceCode': list(pipe.predict('type')),
-                'invoiceNo': list(pipe.predict('serial')),
-                'invoiceDate': list(pipe.predict('time')),
-                'invoiceAmount': list(pipe.predict('tax_free_money')),
-                'verifyCode': list(pipe.predict('verify'))
-            }
-    else:
-        print('type input error !')
+
+    #     if pipe.predict('tax_free_money') is None:
+    #         attributeLine = {
+    #             'invoiceCode': list(pipe.predict('type')),
+    #             'invoiceNo': list(pipe.predict('serial')),
+    #             # 'invoiceDate': list(pipe.predict('time')),
+    #             # 'invoiceAmount': list(pipe.predict('tax_free_money'))
+    #         } if pipe.predict('time') is None else {
+    #             'invoiceCode': list(pipe.predict('type')),
+    #             'invoiceNo': list(pipe.predict('serial')),
+    #             'invoiceDate': list(pipe.predict('time')),
+    #             # 'invoiceAmount': list(pipe.predict('tax_free_money'))
+    #         }
+    #
+    #     else:
+    #         attributeLine = {
+    #             'invoiceCode': list(pipe.predict('type')),
+    #             'invoiceNo': list(pipe.predict('serial')),
+    #             # 'invoiceDate': list(pipe.predict('time')),
+    #             'invoiceAmount': list(pipe.predict('tax_free_money'))
+    #         } if pipe.predict('time') is None else {
+    #             'invoiceCode': list(pipe.predict('type')),
+    #             'invoiceNo': list(pipe.predict('serial')),
+    #             'invoiceDate': list(pipe.predict('time')),
+    #             'invoiceAmount': list(pipe.predict('tax_free_money'))
+    #         }
+    # elif typeP == 'normal' or typeP == 'elec':
+    #     if pipe.predict('tax_free_money') is None:
+    #         attributeLine = {
+    #             'invoiceCode': list(pipe.predict('type')),
+    #             'invoiceNo': list(pipe.predict('serial')),
+    #             # 'invoiceAmount': list(pipe.predict('tax_free_money')),
+    #             'verifyCode': list(pipe.predict('verify'))
+    #         } if pipe.predict('time') is None else {
+    #             'invoiceCode': list(pipe.predict('type')),
+    #             'invoiceNo': list(pipe.predict('serial')),
+    #             'invoiceDate': list(pipe.predict('time')),
+    #             # 'invoiceAmount': list(pipe.predict('tax_free_money')),
+    #             'verifyCode': list(pipe.predict('verify'))
+    #         }
+    #
+    #     else:
+    #         attributeLine = {
+    #             'invoiceCode': list(pipe.predict('type')),
+    #             'invoiceNo': list(pipe.predict('serial')),
+    #             'invoiceAmount': list(pipe.predict('tax_free_money')),
+    #             'verifyCode': list(pipe.predict('verify'))
+    #         } if pipe.predict('time') is None else {
+    #             'invoiceCode': list(pipe.predict('type')),
+    #             'invoiceNo': list(pipe.predict('serial')),
+    #             'invoiceDate': list(pipe.predict('time')),
+    #             'invoiceAmount': list(pipe.predict('tax_free_money')),
+    #             'verifyCode': list(pipe.predict('verify'))
+    #         }
+    # else:
+    #     print('type input error !')
 
     # 设置框区缩放倍数
     if pars == dict(textline_method='simple'):
