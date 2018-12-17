@@ -459,13 +459,19 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
         else:
             plt_rects.append(attributeLine[x])
     # 显示
-    vis_textline0 = fp.util.visualize.rects(cv2.imread(surfaceImagePath, 0), plt_rects)
-    pl.imshow(vis_textline0)
+    # vis_textline0 = fp.util.visualize.rects(cv2.imread(surfaceImagePath, 0), plt_rects)
+    # pl.imshow(vis_textline0)
 
     # 保存到line目录
     pltpath = filepath.replace("upload", "line")
     try:
-        pl.savefig(pltpath)
+        for x, y, w, h in plt_rects:
+            p0 = int(round(x)), int(round(y))
+            p1 = int(round(x+w)), int(round(y+h))
+            cv2.rectangle(surfaceImagePath, p0, p1, (255,0,0), 4)
+
+        cv2.imwrite(pltpath, surfaceImagePath)
+        # pl.savefig(pltpath)
     except Exception as e:
         print("绘制行提取图片不支持bmp格式：{}".format(e))
 
