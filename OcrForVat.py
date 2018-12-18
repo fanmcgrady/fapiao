@@ -18,7 +18,6 @@ import InterfaceType
 import lineToAttribute.getAtbt
 import xmlToDict
 import muban
-import traceback
 
 from connector.TicToc import Timer
 
@@ -475,7 +474,6 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
         # pl.savefig(pltpath)
     except Exception as e:
         print("绘制行提取图片不支持bmp格式：{}".format(e))
-        traceback.print_exc()
 
     timer.toc(content="行提取图绘制")
 
