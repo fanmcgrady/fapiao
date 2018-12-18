@@ -469,9 +469,9 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
         for x, y, w, h in plt_rects:
             p0 = int(round(x)), int(round(y))
             p1 = int(round(x+w)), int(round(y+h))
-            cv2.rectangle(surfaceImagePath, p0, p1, (255,0,0), 4)
+            cv2.rectangle(pipe.surface_image, p0, p1, (255,0,0), 4)
 
-        cv2.imwrite(pltpath, surfaceImagePath)
+        cv2.imwrite(pltpath, pipe.surface_image)
         # pl.savefig(pltpath)
     except Exception as e:
         print("绘制行提取图片不支持bmp格式：{}".format(e))
