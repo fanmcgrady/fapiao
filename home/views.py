@@ -1,22 +1,35 @@
-# 加载黄政的代码
-import sys
-
-sys.path.append("/home/huangzheng/ocr")
-
-# 设置只用前两个GPU
-import os
-
-os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
-
 # 设置本地运行
 # local_start = True
 local_start = False
 
+import sys
 # 判断运行方式
 if local_start:
     print("本地运行")
+    sys.path.append("ocr")
+    import ComputeDistance
+
+    # 取20个形似字
+    print("读取全局字典")
+    global_dic = ComputeDistance.load_dict('ocr/hei_20.json')
+
 else:
     print("服务器运行")
+    # 加载黄政的代码
+    sys.path.append("/home/huangzheng/ocr")
+    import ComputeDistance
+
+    # 设置只用前两个GPU
+    import os
+
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
+
+    # 取20个形似字
+    print("读取全局字典")
+    global_dic = ComputeDistance.load_dict('/home/huangzheng/ocr/hei_20.json')
+
+    import Ocr
+    import OcrForVat
 
     print("加载模型")
     from connector.connecter import *
@@ -27,17 +40,10 @@ import zipfile
 
 from django.http import HttpResponse
 from django.shortcuts import render
-import ComputeDistance
+
 import shutil
 import traceback
 from .models import Bug
-
-# 取20个形似字
-print("读取全局字典")
-global_dic = ComputeDistance.load_dict('/home/huangzheng/ocr/hei_20.json')
-
-import Ocr
-import OcrForVat
 
 
 # 列出bug
