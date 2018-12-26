@@ -35,3 +35,8 @@ class Img(models.Model):
     line = models.CharField(max_length=50, default='')
     color = models.CharField(max_length=50, default='')
     type = models.CharField(max_length=20, default='blue')
+
+class Bug(models.Model):
+    path = models.CharField(max_length=50, default='')
+    line = models.CharField(max_length=50, default='')
+    info = models.TextField()

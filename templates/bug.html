@@ -112,11 +112,11 @@
                 <!-- Page-Title -->
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4 class="pull-left page-title">火车票矫正展示</h4>
+                        <h4 class="pull-left page-title">bug列表</h4>
                         <ol class="breadcrumb pull-right">
                             <li><a href="/">首页</a></li>
                             <li><a href="/">发票识别系统</a></li>
-                            <li class="active">火车票矫正</li>
+                            <li class="active">bug列表</li>
                         </ol>
                     </div>
                 </div>
@@ -125,20 +125,8 @@
                     <!-- Horizontal form -->
                     <div class="col-md-12">
                         <div class="panel panel-default">
-                            <div class="panel-heading"><h3 class="panel-title text-danger" id="status">上传火车票图片</h3></div>
-                            <div class="panel-body">
-                                    <div class="input-group">
-                                        <input type="file" id="example-input1-group2" name="example-input1-group2"
-                                               class="form-control input-lg">
-                                        <span class="input-group-btn">
-                                                <button type="button"
-                                                        class="btn-lg btn waves-effect waves-light btn-primary w-md"
-                                                        id="search"><i class="md md-verified-user"></i>&nbsp;<span
-                                                        id="button-tips">矫正</span></button>
-                                            </span>
-                                    </div>
+                            <div class="panel-heading"><h3 class="panel-title text-danger" id="status">上传火车票图片</h3>
                             </div>
-
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -146,11 +134,25 @@
                                             <thead>
                                             <tr>
                                                 <th>原始图片</th>
-                                                <th>矫正结果</th>
                                                 <th>行提取结果</th>
+                                                <th>错误信息</th>
+                                                <th>操作</th>
                                             </tr>
                                             </thead>
+
                                             <tbody id="result-table">
+                                            {% for bug in bug_list %}
+                                                <tr>
+                                                    <td><img src="static/{{ bug.path }}"/></td>
+                                                    {% if bug.line != "" %}
+                                                        <td><img src="static/{{ bug.line }}"/></td>
+                                                    {% else %}
+                                                        <td></td>
+                                                    {% endif %}
+                                                    <td><span class="label label-primary">{{ bug.info }}</span></td>
+                                                    <td><button>删除</button></td>
+                                                </tr>
+                                            {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>
@@ -174,12 +176,11 @@
                             </div>
                             <div class="panel-body">
                                 <ol>
-                                    <li>选择<span class="text-danger">单个图片</span>文件或者将多张图片打包成<span class="text-danger">zip压缩包批量上传</span>
-                                    </li>
+                                    <li>选择文件。</li>
                                     <li>点击“<span class="text-primary">矫正</span>”按钮，开始火车票识别。</li>
                                     <li>分析完成后页面下方将显示结果。</li>
-                                    <li>本页面展示火车票矫正结果。</li>
-                                    <li>IE低版本浏览器下存在兼容性问题，建议使用“<span class="text-primary">Chrome浏览器、Firefox浏览器、其他一些国产浏览器的"极速模式"</span>”。</li>
+                                    <li>本页面展示火车票矫正结果
+                                    </li>
                                 </ol>
                             </div>
                         </div>
@@ -197,6 +198,30 @@
     <!-- ============================================================== -->
     <!-- End Right content here -->
     <!-- ============================================================== -->
+
+    <!-- MODAL -->
+    <div id="dialog" class="modal-block mfp-hide">
+        <section class="panel panel-info panel-color">
+            <header class="panel-heading">
+                <h2 class="panel-title">确定要删除吗?</h2>
+            </header>
+            <div class="panel-body">
+                <div class="modal-wrapper">
+                    <div class="modal-text">
+                        <p>你确定要删除该列数据吗?</p>
+                    </div>
+                </div>
+
+                <div class="row m-t-20">
+                    <div class="col-md-12 text-right">
+                        <button id="dialogConfirm" class="btn btn-primary">确认</button>
+                        <button id="dialogCancel" class="btn btn-default">取消</button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
 
 </div>
 <!-- END wrapper -->
@@ -232,72 +257,6 @@
     var fileList;
     var fileTotal;
     var current;
-
-    // 初始化
-    function loadingShow() {
-        $("#button-tips").html("处理中...");
-        $("#status").text("识别中...");
-
-        // 初始化
-        fileList = new Array();
-        fileTotal = 0;
-        current = 0;
-
-        // 清空表格底部计数
-        $("#total").text(0);
-        $("#current").text(0);
-
-        $("#result-table").empty();
-    }
-
-    function upload() {
-        // 验证
-        if ($("#example-input1-group2").val() == "") {
-            alert("请上传文件");
-            return;
-        }
-
-        // 初始函数
-        loadingShow();
-
-        // 初始化
-        var dic = new FormData();
-        // 取上传文件
-        var file = document.getElementById('example-input1-group2').files[0];
-        dic.append('fapiao', file);
-        $.ajax({
-            url: '/getFileList',
-            type: 'POST',
-            data: dic,
-            processData: false,  // tell jQuery not to process the data
-            contentType: false,  // tell jQuery not to set contentType
-            dataType: 'JSON',
-            success: function (arg) {
-                if (arg.status) {
-                    // 矫正结果作为fileList
-                    fileList = arg.out;
-                    // 矫正结果文件数作为总文件数
-                    fileTotal = fileList.length;
-                    // 显示总文件数
-                    $("#total").html(fileTotal);
-
-                    // 识别
-                    ocrDetect();
-                } else {
-                    // 错误提示
-                    $("#result").text("出错了，请联系我们完善程序，错误信息如下：" + arg.out);
-                    $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试1");
-                }
-                // 按钮恢复
-                $("#button-tips").html("矫正");
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试");
-                alert("出错了，请联系我们完善程序，错误信息如下：\n" + jqXHR.responseText);
-                $("#button-tips").html("矫正");
-            }
-        })
-    }
 
     function ocrDetect() {
         current++;
@@ -357,9 +316,7 @@
     }
 
     jQuery(document).ready(function () {
-        $('#search').click(function () {
-            upload();
-        });
+
     });
 
 

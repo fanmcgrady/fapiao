@@ -30,6 +30,7 @@ from django.shortcuts import render
 import ComputeDistance
 import shutil
 import traceback
+from .models import Bug
 
 # 取20个形似字
 print("读取全局字典")
@@ -38,9 +39,25 @@ global_dic = ComputeDistance.load_dict('/home/huangzheng/ocr/hei_20.json')
 import Ocr
 import OcrForVat
 
-# 上报错误信息
-def sendError(request):
-    pass
+
+# 列出bug
+def listBugs(request):
+    if request.method == 'GET':
+        bug_list = Bug.objects.all()
+        return render(request, 'bug.html', {'bug_list': bug_list})
+    # 上报错误信息
+    elif request.method == "POST":
+        try:
+            path = request.POST['path']
+            line = request.POST['line']
+            info = request.POST['result']
+            Bug.objects.create(path=path, line=line, info=info)
+            ret = {'status': False}
+        except Exception as e:
+            ret = {'status': False}
+
+        return HttpResponse(json.dumps(ret))
+
 
 # 批量上传获取文件列表
 def getFileList(request):

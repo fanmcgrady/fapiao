@@ -150,6 +150,7 @@
                                                 <th>原始图片</th>
                                                 <th>行提取结果</th>
                                                 <th>识别结果</th>
+                                                <th>操作</th>
                                             </tr>
                                             </thead>
                                             <tbody id="result-table">
@@ -163,7 +164,8 @@
                                 </div>
                                 <div class="row" style="margin-top:20px;">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
-                                        <button id="btn-download" type="button" class="btn-lg btn waves-effect waves-light btn-primary w-md">
+                                        <button id="btn-download" type="button"
+                                                class="btn-lg btn waves-effect waves-light btn-primary w-md">
                                             <i class="md md-file-download"></i>&nbsp;
                                             <span id="button-tips">下载识别结果</span>
                                         </button>
@@ -398,6 +400,14 @@
                     tr.append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
                 }
 
+                // 操作
+                var btn = $('<td><button class="btn-sm btn waves-effect waves-light btn-primary w-md"><i class="md md-file-download"></i>&nbsp;<span>上报</span></button></td>');
+                btn.click(function () {
+                    {#sendBug(arg);#}
+                    alert(arg);
+                });
+                tr.append(btn);
+
                 // 显示结果图片
                 $('#result-table').append(tr);
                 // 显示当前处理完成文件数
@@ -414,10 +424,23 @@
         })
     }
 
-    function switchInput() {
-        useServerPath = true;
-        $("#example-input1-group2").hide();
-        $("#path-input").show().focus();
+    function sendBug(arg) {
+        var bug = new FormData();
+        //
+        dic.append('path', '');
+
+        $.ajax({
+                url: '/bug',
+                type: 'POST',
+                data: arg,
+                processData: false,  // tell jQuery not to process the data
+                contentType: false,  // tell jQuery not to set contentType
+                dataType: 'JSON',
+                success: function (arg) {
+                    alert("上报成功！");
+                }
+            }
+        );
     }
 
     function saveJson() {
