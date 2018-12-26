@@ -425,6 +425,8 @@
     }
 
     function sendBug(arg) {
+        // 根据status的状态，判断向info里面提交什么数据
+
         $.ajax({
                 url: '/bug',
                 type: 'POST',
