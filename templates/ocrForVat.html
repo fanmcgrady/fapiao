@@ -46,7 +46,7 @@
             vertical-align: middle;
         }
 
-        .table td:last-child {
+        .table td:nth-child(4) {
             text-align: left;
             vertical-align: middle;
         }
@@ -437,6 +437,12 @@
                 }
             }
         );
+    }
+
+    function switchInput() {
+        useServerPath = true;
+        $("#example-input1-group2").hide();
+        $("#path-input").show().focus();
     }
 
     function saveJson() {
