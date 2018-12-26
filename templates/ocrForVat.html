@@ -397,14 +397,14 @@
                     }
                 } else {
                     // 出错合并单元格并提示出错信息
-                    tr.append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
+                    tr.append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.result + '</span></td>'));
                 }
 
                 // 操作
                 var btn = $('<td><button class="btn-sm btn waves-effect waves-light btn-primary w-md"><i class="md md-file-download"></i>&nbsp;<span>上报</span></button></td>');
                 btn.click(function () {
-                    {#sendBug(arg);#}
-                    alert(arg);
+                    sendBug(arg);
+                    console.log(arg);
                 });
                 tr.append(btn);
 
@@ -425,10 +425,6 @@
     }
 
     function sendBug(arg) {
-        var bug = new FormData();
-        //
-        dic.append('path', '');
-
         $.ajax({
                 url: '/bug',
                 type: 'POST',

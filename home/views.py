@@ -200,7 +200,7 @@ def ocrForVat(request):
         # 打印错误原因
         except Exception as e:
             print(e)
-            ret = {'status': False, 'path': file_path, 'out': str(e)}
+            ret = {'status': False, 'path': file_path, 'result': str(e)}
 
         return HttpResponse(json.dumps(ret))
 
