@@ -274,11 +274,11 @@
     function loadFiles() {
         // 验证
         if (useServerPath) {
-            if ($("#path-input").val() == "") {
+            if ($("#path-input").val() === "") {
                 alert("请填写服务器文件路径");
                 return;
             }
-        } else if ($("#example-input1-group2").val() == "") {
+        } else if ($("#example-input1-group2").val() === "") {
             alert("请上传文件");
             return;
         }
@@ -286,7 +286,7 @@
         // 初始函数
         loadingShow();
 
-        // 初始化
+        // 构造上传表单
         var dic = new FormData();
         // 取上传文件
         var file = document.getElementById('example-input1-group2').files[0];
@@ -373,7 +373,7 @@
                         "invoice": invoice
                     };
                     resultData.push(data);
-                    if ('{{ type }}' == 'special') {
+                    if ('{{ type }}' === 'special') {
                         tr.append(
                             $('<td></td>')
                                 .append($("<p></p>").text("发票代码：" + invoice.invoiceCode))
