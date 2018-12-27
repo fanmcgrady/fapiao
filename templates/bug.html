@@ -47,6 +47,11 @@
         }
 
         .table td:last-child {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table td:nth-child(3) {
             text-align: left;
             vertical-align: middle;
         }
@@ -69,7 +74,7 @@
         <!-- LOGO -->
         <div class="topbar-left">
             <div class="text-center">
-                <a href="./index.html" class="logo"><i class="md md-verified-user"></i> <span>发票识别系统 </span></a>
+                <a href="/" class="logo"><i class="md md-verified-user"></i> <span>发票识别系统 </span></a>
             </div>
         </div>
         <!-- Button mobile view to collapse sidebar menu -->
@@ -150,7 +155,7 @@
                                                         <td></td>
                                                     {% endif %}
                                                     <td><span class="label label-primary">{{ bug.info }}</span></td>
-                                                    <td><button>删除</button></td>
+                                                    <td><button id="delete_info">删除</button></td>
                                                 </tr>
                                             {% endfor %}
                                             </tbody>
@@ -177,7 +182,7 @@
                             <div class="panel-body">
                                 <ol>
                                     <li>点击“<span class="text-primary">删除</span>”按钮，删除已解决的错误。</li>
-                                    <li>页面下方将显示识别有误的结果。</li>
+                                    <li>页面下方将显示识别有误的处理结果。</li>
                                     <li>IE低版本浏览器下存在兼容性问题，建议使用“<span class="text-primary">Chrome浏览器、Firefox浏览器、其他一些国产浏览器的"极速模式"</span>”。</li>
                                 </ol>
                             </div>
@@ -256,62 +261,12 @@
     var fileTotal;
     var current;
 
-    function ocrDetect() {
-        current++;
-        // 分析完压缩包中的全部文件后返回
-        if (current > fileTotal) {
-            $("#status").html("分析完成").removeClass("text-danger");
-            $("#button-tips").html("矫正");
-            return;
-        }
-        // 循环取队列头
-        var currentFile = fileList.shift();
-        // 提示正在分析的文件
-        $("#status").html("<i class='fa fa-spin fa-spinner'></i>&nbsp;&nbsp;正在分析文件:  " + currentFile).addClass("text-danger");		//页面中的状态进度条
-        var dic = new FormData();
-        // 所有文件
-        dic.append('fileInZip', currentFile);
-        // 接受传递的参数type
-        dic.append('type', '{{ type }}');
-
-        $.ajax({
-            url: '/detect',
-            type: 'POST',
-            data: dic,
-            processData: false,  // tell jQuery not to process the data
-            contentType: false,  // tell jQuery not to set contentType
-            dataType: 'JSON',
-            success: function (arg) {
-                // 构造表格
-                var tr = $('<tr></tr>').attr('style', 'font-weight: bold;');
-                // 原始图片
-                tr.append($('<td><img src="static/' + arg.path + '"/></td>'));
-
-                if (arg.status) {
-                    // 矫正图片
-                    tr.append($('<td><img src="static/' + arg.out + '"/></td>'));
-                    // 行提取图片
-                    tr.append($('<td><img src="static/' + arg.line + '"/></td>'));
-                } else {
-                    // 出错合并单元格并提示出错信息
-                    tr.append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
-                }
-
-                // 显示结果图片
-                $('#result-table').append(tr);
-                // 显示当前处理完成文件数
-                $("#current").html(current);
-
-                // 下一个文件
-                ocrDetect();
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                $("#status").html("图片处理过程中出错啦，请联系我们完善程序，换一张图片再试试");
-                alert("出错了，请联系我们完善程序，错误信息如下：\n" + jqXHR.responseText);
-                $("#button-tips").html("矫正");
-            }
-        })
+    function deleteinfo(){
+        var i=r.parentNode.parentNode.rowIndex;
+        // 定义变量获取行
+        $("#delete_info").deleteRow(i);
     }
+
 
     jQuery(document).ready(function () {
 

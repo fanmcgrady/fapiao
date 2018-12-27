@@ -51,6 +51,11 @@
             vertical-align: middle;
         }
 
+        .table td:nth-child(5) {
+            text-align: center;
+            vertical-align: middle;
+        }
+
         #result-table img {
             height: 200px;
         }
@@ -401,12 +406,17 @@
                 }
 
                 // 操作
-                var btn = $('<td><button class="btn-sm btn waves-effect waves-light btn-primary w-md"><i class="md md-file-upload"></i>&nbsp;<span>上报错误</span></button></td>');
+                var btn1 = $('<td><button class="btn-sm btn waves-effect waves-light btn-primary w-md"><i class="md md-file-upload"></i>&nbsp;<span>上报错误</span></button></td>');
                 btn.click(function () {
                     sendBug(arg);
                     console.log(arg);
                 });
-                tr.append(btn);
+                var btn2 = $('<td><button class="btn-sm btn waves-effect waves-light btn-primary w-md"><i class="md md-remove-red-eye"></i>&nbsp;<span>查看错误</span></button></td>');
+                btn.click(function () {
+                    window.location.herf="bug.html";
+                });
+                tr.append(btn1);
+                tr.append(btn2);
 
                 // 显示结果图片
                 $('#result-table').append(tr);
@@ -426,19 +436,36 @@
 
     function sendBug(arg) {
         // 根据status的状态，判断向info里面提交什么数据
+        var invoice = arg.result.invoice;
+        var dic = new FormData();
+
+        if (arg.status){
+            dic.append('type', '{{ type }}');
+            dic.append('info',invoice);
+
+        } else {
+            dic.append('type', '{{ type }}');
+            dic.append('info',arg.result);
+
+        }
 
         $.ajax({
                 url: '/bug',
                 type: 'POST',
-                data: arg,
+                data: dic,
                 processData: false,  // tell jQuery not to process the data
                 contentType: false,  // tell jQuery not to set contentType
                 dataType: 'JSON',
-                success: function (arg) {
+                success: function (dic) {
                     alert("上报成功！");
-                }
+                },
+
+                error: function (jqXHR, textStatus, errorThrown) {
+                $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试");
+                alert("出错了，请联系我们完善程序，错误信息如下：\n" + jqXHR.responseText);
+                $("#button-tips").html("识别");
             }
-        );
+            });
     }
 
     function switchInput() {
