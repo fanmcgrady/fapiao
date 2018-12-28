@@ -408,6 +408,7 @@
                 var td = $("<td></td>");
                 var btn1 = $('<td><button class="btn-sm btn waves-effect waves-light btn-primary w-md"><i class="md md-file-upload"></i>&nbsp;<span>上报错误</span></button></td>');
                 btn1.click(function () {
+                    alert("{{ type }}");
                     sendBug(arg, {{ type }});
                     console.log(arg);
                 });
@@ -442,8 +443,6 @@
 
     function sendBug(arg, type) {
         // 根据status的状态，判断向info里面提交什么数据
-        console.log(type);
-
         var info = "信息：";
         var invoice = arg.result.invoice;
         var typeforvat = type;
