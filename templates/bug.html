@@ -245,7 +245,6 @@
         if (confirm('确定要删除本行数据吗？')) {
             var dict = {};
             dict.id = bugId;
-            console.log(dict);
             $.ajax({
                 url: '/deleteinfo',
                 type: 'POST',
@@ -253,8 +252,8 @@
                 processData: false,  // tell jQuery not to process the data
                 contentType: false,  // tell jQuery not to set contentType
                 dataType: 'JSON',
-                success: function (args) {
-                    if (args.status) {
+                success: function (arg) {
+                    if (arg.status) {
                         $("#tr-" + bugId).remove();
                         alert('删除成功！');
                     } else {
