@@ -411,7 +411,7 @@
                     // alert("{{ type }}");
                     var sendtype = "{{ type }}";
                     sendBug(arg, sendtype);
-                    console.log(arg);
+                    // console.log(arg);
                 });
                 var btn2 = $('<td><button class="btn-sm btn waves-effect waves-light btn-primary w-md" ><i class="md md-remove-red-eye"></i>&nbsp;<span>查看错误</span></button></td>');
                 btn2.click(function () {
@@ -445,18 +445,21 @@
     function sendBug(arg, typeforvat) {
         // 根据status的状态，判断向info里面提交什么数据
         var info = "信息：";
+        var path = arg.path;
+        var line = arg.line;
         var invoice = arg.result.invoice;
-        // var dic = new FormData();
+        var dic = new FormData();
 
         if (arg.status){
-            // dic.append('type', '{{ type }}');
-            // dic.append('info',invoice);
+            dic.append('path', path);
+            dic.append('line', line);
             if (typeforvat === 'special') {
                 info += "发票类型：" + typeforvat;
                 info += "发票代码：" + invoice.invoiceCode;
                 info += "发票号码：" + invoice.invoiceNo;
                 info += "发票日期：" + invoice.invoiceDate;
                 info += "不含税金额：" + invoice.invoiceAmount;
+                dic.append('info', info);
             }
             else {
                 info += "发票类型：" + typeforvat;
@@ -465,19 +468,22 @@
                 info += "发票日期：" + invoice.invoiceDate;
                 info += "不含税金额：" + invoice.invoiceAmount;
                 info += "校验码：" + invoice.verifyCode;
+                dic.append('info', info);
             }
 
         } else {
-            // dic.append('type', '{{ type }}');
-            // dic.append('info',arg.result);
+            dic.append('path', path);
             info += "发票类型：" + typeforvat;
             info += "未识别信息：" + arg.result;
+            dic.append('info', info);
         }
+
+        alert("info");
 
         $.ajax({
                 url: '/bug',
                 type: 'POST',
-            data: info,
+            data: dic,
                 processData: false,  // tell jQuery not to process the data
                 contentType: false,  // tell jQuery not to set contentType
                 dataType: 'JSON',
