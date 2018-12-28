@@ -72,7 +72,8 @@ def deleteinfo(request):
     elif request.method == "POST":
         try:
             bugid = request.POST['id']
-            Bug.objets.get(id=bugid).delete()
+            # 'bug' has no attribute 'objects'
+            Bug.objects.get(id=bugid).delete()
             ret = {'status': True}
 
         except Exception as e:

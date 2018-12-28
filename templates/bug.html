@@ -243,12 +243,15 @@
 <script>
 
 
-    function deleteinfo(bugId) {
+    function deleteinfo(bugId, bugPath, bugLine, bugInfo) {
         if (confirm('确定要删除本行数据吗？')) {
             //var dict = {};
             // dict.id = bugId;
             var dic = new FormData();
             dic.append('id', bugId);
+            //dic.append('path',bugPath);
+            //dic.append('line',bugLine);
+            //dic.append('info',bugInfo);
 
             $.ajax({
                 url: '/deleteinfo',
