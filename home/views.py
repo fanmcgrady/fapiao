@@ -52,7 +52,7 @@ def listBugs(request):
         bug_list = Bug.objects.all()
         return render(request, 'bug.html', {'bug_list': bug_list})
     # 上报错误信息
-    elif
+    elif request.method == "POST":
         try:
             path = request.POST['path']
             line = request.POST['line']
@@ -71,10 +71,12 @@ def deleteinfo(request):
         return render(request, 'bug.html', {'bug_list': bug_list})
     elif request.method == "POST":
         try:
-            # 从bug_list中删除点击的需要删除的行
-
+            bugId = request.POST['id']
+            Bug.objets.filter(id=bugId).delete()
             ret = {'status': True}
+
             # Bug.objects.filter(country='').delete()
+            # objects.filter(id=52).update()
 
         except Exception as e:
             ret = {'status': False}

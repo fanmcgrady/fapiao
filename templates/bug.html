@@ -147,7 +147,7 @@
 
                                             <tbody id="result-table">
                                             {% for bug in bug_list %}
-                                                <tr>
+                                                <tr id="tr-{{ bug.id }}">
                                                     <td><img src="static/{{ bug.path }}"/></td>
                                                     {% if bug.line != "" %}
                                                         <td><img src="static/{{ bug.line }}"/></td>
@@ -155,7 +155,9 @@
                                                         <td></td>
                                                     {% endif %}
                                                     <td><span class="label label-primary">{{ bug.info }}</span></td>
-                                                    <td><button id="delete_info">删除</button></td>
+                                                    <td>
+                                                        <button onclick="deleteinfo({{ bug.id }})">删除</button>
+                                                    </td>
                                                 </tr>
                                             {% endfor %}
                                             </tbody>
@@ -183,7 +185,8 @@
                                 <ol>
                                     <li>点击“<span class="text-primary">删除</span>”按钮，删除已解决的错误。</li>
                                     <li>页面下方将显示识别有误的处理结果。</li>
-                                    <li>IE低版本浏览器下存在兼容性问题，建议使用“<span class="text-primary">Chrome浏览器、Firefox浏览器、其他一些国产浏览器的"极速模式"</span>”。</li>
+                                    <li>IE低版本浏览器下存在兼容性问题，建议使用“<span class="text-primary">Chrome浏览器、Firefox浏览器、其他一些国产浏览器的"极速模式"</span>”。
+                                    </li>
                                 </ol>
                             </div>
                         </div>
@@ -201,30 +204,6 @@
     <!-- ============================================================== -->
     <!-- End Right content here -->
     <!-- ============================================================== -->
-
-    <!-- MODAL -->
-    <div id="dialog" class="modal-block mfp-hide">
-        <section class="panel panel-info panel-color">
-            <header class="panel-heading">
-                <h2 class="panel-title">确定要删除吗?</h2>
-            </header>
-            <div class="panel-body">
-                <div class="modal-wrapper">
-                    <div class="modal-text">
-                        <p>你确定要删除该列数据吗?</p>
-                    </div>
-                </div>
-
-                <div class="row m-t-20">
-                    <div class="col-md-12 text-right">
-                        <button id="dialogConfirm" class="btn btn-primary">确认</button>
-                        <button id="dialogCancel" class="btn btn-default">取消</button>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-    </div>
 
 </div>
 <!-- END wrapper -->
@@ -257,61 +236,36 @@
 <script type="text/javascript" src="static/blue/assets/spinner/spinner.min.js"></script>
 
 <script>
-    var fileList;
-    var fileTotal;
-    var current;
 
-    function confirmAct() {
+    function deleteinfo(bugId) {
         if (confirm('确定要删除本行数据吗？')) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    function deleteinfo(){
-        var k = confirmAct();
-        var row_id = $(this).parent().attr("id");  // id
-
-        if (k) {
+            var dict = {};
+            dict.id = bugId;
             $.ajax({
                 url: '/deleteinfo',
                 type: 'POST',
-                data: row_id,
+                data: dict,
                 processData: false,  // tell jQuery not to process the data
                 contentType: false,  // tell jQuery not to set contentType
                 dataType: 'JSON',
-                success: function () {
-                    var tr = this.parentElement.parentElement;
-                    $('#result_table').deleteRow(tr.rowIndex);
-                    // var i=r.parentNode.parentNode.rowIndex;
-                    // 定义变量获取行
-                    // $("#result_table").deleteRow(i);
-                    alert('删除成功！');
-                },
+                success: function (args) {
+                    if (args.status) {
+                        $("#tr-" + bugId).remove();
+                        alert('删除成功！');
+                    } else {
+                        alert('删除失败！');
+                    }
 
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert("出错了，请联系我们完善程序，错误信息如下：\n" + jqXHR.responseText);
-                    $("#button-tips").html("识别");
-
-                })
-
+                }
+            });
         }
-        else {
-        }
-
-
     }
 
 
     jQuery(document).ready(function () {
-        $('#delete-info').click(function () {
-            deleteinfo();
-        })
-
+        // $('#delete-info').click(function () {
+        //   deleteinfo();
     });
-
 
 </script>
 </body>
