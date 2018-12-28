@@ -161,7 +161,8 @@
                                                     {% else %}
                                                         <td></td>
                                                     {% endif %}
-                                                    <td><span class="label label-primary">{{ bug.info }}</span></td>
+                                                    <td><span class="label label-primary">{{ bug.info }}.replace("<br>","<br/>")</span>
+                                                    </td>
 
                                                 </tr>
 
@@ -239,37 +240,12 @@
 
 <script>
 
-    function replaceBr() {
-        var content = $('.result-table tr td:nth-child(4)');
-        content.each(function () {
-            var txt = $(this).text();
-            var j = 0;
-            var span = document.createElement("span");
-            for (var i = 0; i < txt.length; i++) {
-                if (txt.charAt(i) === '\n') {
-                    var p = document.createElement("p");
-                    var partTxt = txt.slice(j, i);
-                    p.innerHTML = partTxt;
-                    if (partTxt === '') {
-                        p.appendChild(document.createElement("p"));
-                    }
-                    span.appendChild(p);
-                    j = i + 1;
-                }
-            }
-            var p_end = document.createElement("p");
-            p_end.innerHTML = txt.slice(j);
-            $(this).txt('');
-            span.appendChild(p_end);
-            $(this).append(span);
-        })
-    }
-
 
     function deleteinfo(bugId) {
         if (confirm('确定要删除本行数据吗？')) {
             var dict = {};
             dict.id = bugId;
+            console.log(dict);
             $.ajax({
                 url: '/deleteinfo',
                 type: 'POST',
@@ -294,8 +270,6 @@
     jQuery(document).ready(function () {
         // $('#delete-info').click(function () {
         //   deleteinfo();
-        // 内容中换行符显示，bug页面加载的时候就自动执行
-        replaceBr();
     });
 
 </script>

@@ -66,13 +66,14 @@ def listBugs(request):
 
 
 def deleteinfo(request):
+    from home import models
     if request.method == 'GET':
         bug_list = Bug.objects.all()
         return render(request, 'bug.html', {'bug_list': bug_list})
     elif request.method == "POST":
         try:
             bugId = request.POST['id']
-            Bug.objets.filter(id=bugId).delete()
+            models.Bug.objets.filter(id=bugId).delete()
             ret = {'status': True}
 
             # Bug.objects.filter(country='').delete()
