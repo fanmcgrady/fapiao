@@ -411,9 +411,9 @@
                     sendBug(arg);
                     console.log(arg);
                 });
-                var btn2 = $('<td><button class="btn-sm btn waves-effect waves-light btn-primary w-md"><i class="md md-remove-red-eye"></i>&nbsp;<span>查看错误</span></button></td>');
+                var btn2 = $('<td><button class="btn-sm btn waves-effect waves-light btn-primary w-md" ><i class="md md-remove-red-eye"></i>&nbsp;<span>查看错误</span></button></td>');
                 btn2.click(function () {
-                    window.location.herf="bug.html";
+                    jumpbug();
                 });
                 td.append(btn1);
                 td.append(btn2);
@@ -435,9 +435,15 @@
         })
     }
 
+    function jumpbug() {
+        window.open("bug.html");
+
+    }
+
     function sendBug(arg) {
         // 根据status的状态，判断向info里面提交什么数据
         // var info;
+        var dic = new FormData();
         if (arg.status){
             dic.append('type', '{{ type }}');
             dic.append('info',invoice);
