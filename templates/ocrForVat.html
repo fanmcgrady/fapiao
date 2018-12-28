@@ -444,7 +444,7 @@
 
     function sendBug(arg, typeforvat) {
         // 根据status的状态，判断向info里面提交什么数据
-        var info = "信息：";
+        var info = "信息：" + '<br>';
         var path = arg.path;
         var line = arg.line;
         var invoice = arg.result.invoice;
@@ -454,19 +454,19 @@
             dic.append('path', path);
             dic.append('line', line);
             if (typeforvat === 'special') {
-                info += "发票类型：" + typeforvat;
-                info += "发票代码：" + invoice.invoiceCode;
-                info += "发票号码：" + invoice.invoiceNo;
-                info += "发票日期：" + invoice.invoiceDate;
+                info += "发票类型：" + typeforvat + '<br>';
+                info += "发票代码：" + invoice.invoiceCode + '<br>';
+                info += "发票号码：" + invoice.invoiceNo + '<br>';
+                info += "发票日期：" + invoice.invoiceDate + '<br>';
                 info += "不含税金额：" + invoice.invoiceAmount;
                 dic.append('info', info);
             }
             else {
-                info += "发票类型：" + typeforvat;
-                info += "发票代码：" + invoice.invoiceCode;
-                info += "发票号码：" + invoice.invoiceNo;
-                info += "发票日期：" + invoice.invoiceDate;
-                info += "不含税金额：" + invoice.invoiceAmount;
+                info += "发票类型：" + typeforvat + '<br>';
+                info += "发票代码：" + invoice.invoiceCode + '<br>';
+                info += "发票号码：" + invoice.invoiceNo + '<br>';
+                info += "发票日期：" + invoice.invoiceDate + '<br>';
+                info += "不含税金额：" + invoice.invoiceAmount + '<br>';
                 info += "校验码：" + invoice.verifyCode;
                 dic.append('info', info);
             }
@@ -474,7 +474,7 @@
         } else {
             dic.append('path', path);
             dic.append('line', line);
-            info += "发票类型：" + typeforvat;
+            info += "发票类型：" + typeforvat + '<br>';
             info += "未识别信息：" + arg.result;
             dic.append('info', info);
         }

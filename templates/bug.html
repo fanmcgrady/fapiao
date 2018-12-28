@@ -138,6 +138,7 @@
                                         <table class="table table-bordered table-striped">
                                             <thead>
                                             <tr>
+                                                <th>序号</th>
                                                 <th>原始图片</th>
                                                 <th>行提取结果</th>
                                                 <th>错误信息</th>
@@ -148,6 +149,8 @@
                                             <tbody id="result-table">
                                             {% for bug in bug_list %}
                                                 <tr id="tr-{{ bug.id }}">
+                                                    <td><span class="label label-primary">{{ forloop.counter }}</span>
+                                                    </td>
                                                     <td><img src="static/{{ bug.path }}"/></td>
                                                     {% if bug.line != "" %}
                                                         <td><img src="static/{{ bug.line }}"/></td>
@@ -159,13 +162,10 @@
                                                         <button onclick="deleteinfo({{ bug.id }})">删除</button>
                                                     </td>
                                                 </tr>
+
                                             {% endfor %}
                                             </tbody>
                                         </table>
-                                    </div>
-                                    <div class="col-md-12 col-sm-12 col-xs-12">
-                                        共 <span class="text-primary" id="total">0</span> 个文件，已分析 <span
-                                            class="text-primary" id="current">0</span> 个文件
                                     </div>
                                 </div>
                             </div>
@@ -236,6 +236,7 @@
 <script type="text/javascript" src="static/blue/assets/spinner/spinner.min.js"></script>
 
 <script>
+
 
     function deleteinfo(bugId) {
         if (confirm('确定要删除本行数据吗？')) {
