@@ -453,7 +453,7 @@
 
     function sendBug(arg, typeforvat) {
         // 根据status的状态，判断向info里面提交什么数据
-        var info = "信息：" + '<br>';
+        var info = "信息：" + '\n';
         var path = arg.path;
         var line = arg.line;
         var invoice = arg.result.invoice;
@@ -464,7 +464,7 @@
             dic.append('line', line);
             if (typeforvat === 'special') {
                 info += "发票类型：" + typeforvat + '\n';
-                //info += "发票代码：" + invoice.invoiceCode + '\n';
+                info += "发票代码：" + invoice.invoiceCode + '\n';
                 //info += "发票号码：" + invoice.invoiceNo + '\n';
                 //info += "发票日期：" + invoice.invoiceDate + '\n';
                 //info += "不含税金额：" + invoice.invoiceAmount;
@@ -472,7 +472,7 @@
             }
             else {
                 info += "发票类型：" + typeforvat + '\n';
-                //info += "发票代码：" + invoice.invoiceCode + '\n';
+                info += "发票代码：" + invoice.invoiceCode + '\n';
                 //info += "发票号码：" + invoice.invoiceNo + '\n';
                 //info += "发票日期：" + invoice.invoiceDate + '\n';
                 //info += "不含税金额：" + invoice.invoiceAmount + '\n';
