@@ -436,14 +436,16 @@
     }
 
     function jumpbug() {
-        window.open("bug.html");
+        window.open("bug?");
 
     }
 
     function sendBug(arg) {
         // 根据status的状态，判断向info里面提交什么数据
         // var info;
+        var invoice = arg.result.invoice;
         var dic = new FormData();
+
         if (arg.status){
             dic.append('type', '{{ type }}');
             dic.append('info',invoice);
