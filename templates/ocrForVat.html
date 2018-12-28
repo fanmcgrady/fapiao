@@ -403,15 +403,15 @@
                 } else {
                     // 出错合并单元格并提示出错信息
                     var length = arg.result.length;
-                    console.log(length);
-                    var resultinfo = "出错了，请联系我们完善程序，错误信息如下：";
-                    for (var i = 0; i < length; i++) {
-                        resultinfo += arg.result.substring(i, i + 1);
-                        if (i % 30 === 0) {
-                            resultinfo += '\n';
-                        }
+                    // var resultinfo = "出错了，请联系我们完善程序，错误信息如下：";
+                    var td = $('<td colspan="2"></td>');
+                    for (var i = 0; i < length;) {
+                        td.append($("<p></p>").text(arg.result.substring(i, i + 30)));
+                        i = i + 30;
                     }
-                    tr.append($('<td colspan="2"><span class="label label-primary">' + resultinfo + '</span></td>'));
+                    tr.append(td);
+                    //tr.append($('<td colspan="2"><span class="label label-primary">' + resultinfo + '</span></td>'));
+
                 }
                 // 操作按钮
                 var td = $("<td></td>");
