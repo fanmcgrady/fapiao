@@ -71,11 +71,12 @@ def deleteinfo(request):
         return render(request, 'bug.html', {'bug_list': bug_list})
     elif request.method == "POST":
         try:
-            bugId = request.POST['id']
-            Bug.objets.get(id=bugId).delete()
+            bugid = request.POST['id']
+            Bug.objets.get(id=bugid).delete()
             ret = {'status': True}
 
         except Exception as e:
+            print(e)
             ret = {'status': False}
 
         return HttpResponse(json.dumps(ret))
