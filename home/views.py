@@ -52,13 +52,30 @@ def listBugs(request):
         bug_list = Bug.objects.all()
         return render(request, 'bug.html', {'bug_list': bug_list})
     # 上报错误信息
-    elif request.method == "POST":
+    elif
         try:
             path = request.POST['path']
             line = request.POST['line']
             info = request.POST['result']
             Bug.objects.create(path=path, line=line, info=info)
+            ret = {'status': True}
+        except Exception as e:
             ret = {'status': False}
+
+        return HttpResponse(json.dumps(ret))
+
+
+def deleteinfo(request):
+    if request.method == 'GET':
+        bug_list = Bug.objects.all()
+        return render(request, 'bug.html', {'bug_list': bug_list})
+    elif request.method == "POST":
+        try:
+            # 从bug_list中删除点击的需要删除的行
+
+            ret = {'status': True}
+            # Bug.objects.filter(country='').delete()
+
         except Exception as e:
             ret = {'status': False}
 

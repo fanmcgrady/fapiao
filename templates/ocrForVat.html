@@ -407,12 +407,12 @@
 
                 // 操作
                 var btn1 = $('<td><button class="btn-sm btn waves-effect waves-light btn-primary w-md"><i class="md md-file-upload"></i>&nbsp;<span>上报错误</span></button></td>');
-                btn.click(function () {
+                btn1.click(function () {
                     sendBug(arg);
                     console.log(arg);
                 });
                 var btn2 = $('<td><button class="btn-sm btn waves-effect waves-light btn-primary w-md"><i class="md md-remove-red-eye"></i>&nbsp;<span>查看错误</span></button></td>');
-                btn.click(function () {
+                btn2.click(function () {
                     window.location.herf="bug.html";
                 });
                 tr.append(btn1);
@@ -461,7 +461,6 @@
                 },
 
                 error: function (jqXHR, textStatus, errorThrown) {
-                $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试");
                 alert("出错了，请联系我们完善程序，错误信息如下：\n" + jqXHR.responseText);
                 $("#button-tips").html("识别");
             }

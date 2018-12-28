@@ -74,7 +74,7 @@
         <!-- LOGO -->
         <div class="topbar-left">
             <div class="text-center">
-                <a href="/" class="logo"><i class="md md-verified-user"></i> <span>发票识别系统 </span></a>
+                <a href="./index.html" class="logo"><i class="md md-verified-user"></i> <span>发票识别系统 </span></a>
             </div>
         </div>
         <!-- Button mobile view to collapse sidebar menu -->
@@ -261,14 +261,54 @@
     var fileTotal;
     var current;
 
+    function confirmAct() {
+        if (confirm('确定要删除本行数据吗？')) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     function deleteinfo(){
-        var i=r.parentNode.parentNode.rowIndex;
-        // 定义变量获取行
-        $("#delete_info").deleteRow(i);
+        var k = confirmAct();
+        var row_id = $(this).parent().attr("id");  // id
+
+        if (k) {
+            $.ajax({
+                url: '/deleteinfo',
+                type: 'POST',
+                data: row_id,
+                processData: false,  // tell jQuery not to process the data
+                contentType: false,  // tell jQuery not to set contentType
+                dataType: 'JSON',
+                success: function () {
+                    var tr = this.parentElement.parentElement;
+                    $('#result_table').deleteRow(tr.rowIndex);
+                    // var i=r.parentNode.parentNode.rowIndex;
+                    // 定义变量获取行
+                    // $("#result_table").deleteRow(i);
+                    alert('删除成功！');
+                },
+
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("出错了，请联系我们完善程序，错误信息如下：\n" + jqXHR.responseText);
+                    $("#button-tips").html("识别");
+
+                })
+
+        }
+        else {
+        }
+
+
     }
 
 
     jQuery(document).ready(function () {
+        $('#delete-info').click(function () {
+            deleteinfo();
+        })
 
     });
 
