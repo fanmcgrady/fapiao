@@ -56,7 +56,7 @@ def listBugs(request):
         try:
             path = request.POST['path']
             line = request.POST['line']
-            info = request.POST['result']
+            info = request.POST['info']
             Bug.objects.create(path=path, line=line, info=info)
             ret = {'status': True}
         except Exception as e:

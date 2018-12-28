@@ -473,12 +473,13 @@
 
         } else {
             dic.append('path', path);
+            dic.append('line', line);
             info += "发票类型：" + typeforvat;
             info += "未识别信息：" + arg.result;
             dic.append('info', info);
         }
 
-        console.log(info);
+        console.log(dic);
 
         $.ajax({
                 url: '/bug',
@@ -490,6 +491,9 @@
             success: function (arg) {
                 if (arg.status) {
                     alert("上报成功！");
+                }
+                else {
+                    alert("上报失败！");
                 }
                 },
 
