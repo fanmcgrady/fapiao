@@ -454,19 +454,19 @@
             dic.append('path', path);
             dic.append('line', line);
             if (typeforvat === 'special') {
-                info += "发票类型：" + typeforvat + '<br>';
-                info += "发票代码：" + invoice.invoiceCode + '<br>';
-                info += "发票号码：" + invoice.invoiceNo + '<br>';
-                info += "发票日期：" + invoice.invoiceDate + '<br>';
+                info += "发票类型：" + typeforvat + '\n';
+                info += "发票代码：" + invoice.invoiceCode + '\n';
+                info += "发票号码：" + invoice.invoiceNo + '\n';
+                info += "发票日期：" + invoice.invoiceDate + '\n';
                 info += "不含税金额：" + invoice.invoiceAmount;
                 dic.append('info', info);
             }
             else {
-                info += "发票类型：" + typeforvat + '<br>';
-                info += "发票代码：" + invoice.invoiceCode + '<br>';
-                info += "发票号码：" + invoice.invoiceNo + '<br>';
-                info += "发票日期：" + invoice.invoiceDate + '<br>';
-                info += "不含税金额：" + invoice.invoiceAmount + '<br>';
+                info += "发票类型：" + typeforvat + '\n';
+                info += "发票代码：" + invoice.invoiceCode + '\n';
+                info += "发票号码：" + invoice.invoiceNo + '\n';
+                info += "发票日期：" + invoice.invoiceDate + '\n';
+                info += "不含税金额：" + invoice.invoiceAmount + '\n';
                 info += "校验码：" + invoice.verifyCode;
                 dic.append('info', info);
             }
@@ -474,8 +474,15 @@
         } else {
             dic.append('path', path);
             dic.append('line', line);
-            info += "发票类型：" + typeforvat + '<br>';
-            info += "未识别信息：" + arg.result;
+            info += "发票类型：" + typeforvat + '\n';
+            info += "未识别信息：" + '\n';
+            var resultLength = arg.result.length;
+            for (var i = 0; i < resultLength; i++) {
+                info += arg.result.substring(i, i + 1);
+                if (i % 30 === 0) {
+                    info += '\n';
+                }
+            }
             dic.append('info', info);
         }
 
