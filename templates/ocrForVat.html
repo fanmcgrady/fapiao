@@ -405,10 +405,11 @@
                     var length = arg.result.length;
                     // var resultinfo = "出错了，请联系我们完善程序，错误信息如下：";
                     var td = $('<td colspan="2"></td>');
-                    for (var i = 0; i < length;) {
-                        td.append($("<p></p>").text(arg.result.substring(i, i + 30)));
-                        i = i + 30;
-                    }
+                    //for (var i = 0; i < length;) {
+                    //td.append($("<p></p>").text(arg.result.substring(i, i + 30)));
+                    //i = i + 30;
+                    //}
+                    td.append($("<p></p>").html(arg.result));
                     tr.append(td);
                     //tr.append($('<td colspan="2"><span class="label label-primary">' + resultinfo + '</span></td>'));
 
@@ -465,18 +466,18 @@
             if (typeforvat === 'special') {
                 info += "发票类型：" + typeforvat + '\n';
                 info += "发票代码：" + invoice.invoiceCode + '\n';
-                //info += "发票号码：" + invoice.invoiceNo + '\n';
-                //info += "发票日期：" + invoice.invoiceDate + '\n';
-                //info += "不含税金额：" + invoice.invoiceAmount;
+                info += "发票号码：" + invoice.invoiceNo + '\n';
+                info += "发票日期：" + invoice.invoiceDate + '\n';
+                info += "不含税金额：" + invoice.invoiceAmount;
                 dic.append('info', info);
             }
             else {
                 info += "发票类型：" + typeforvat + '\n';
                 info += "发票代码：" + invoice.invoiceCode + '\n';
-                //info += "发票号码：" + invoice.invoiceNo + '\n';
-                //info += "发票日期：" + invoice.invoiceDate + '\n';
-                //info += "不含税金额：" + invoice.invoiceAmount + '\n';
-                //info += "校验码：" + invoice.verifyCode;
+                info += "发票号码：" + invoice.invoiceNo + '\n';
+                info += "发票日期：" + invoice.invoiceDate + '\n';
+                info += "不含税金额：" + invoice.invoiceAmount + '\n';
+                info += "校验码：" + invoice.verifyCode;
 
                 dic.append('info', info);
             }
