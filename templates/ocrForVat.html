@@ -455,7 +455,7 @@
         var invoice = arg.result.invoice;
         var dic = new FormData();
 
-        if (arg.status){
+        if (arg.status) {
             dic.append('path', path);
             dic.append('line', line);
             if (typeforvat === 'special') {
@@ -465,8 +465,7 @@
                 info += "发票日期：" + invoice.invoiceDate + '\n';
                 info += "不含税金额：" + invoice.invoiceAmount;
                 dic.append('info', info);
-            }
-            else if (typeforvat === 'normal') {
+            } else if (typeforvat === 'normal') {
                 info += "发票类型：" + "普票" + '\n';
                 info += "发票代码：" + invoice.invoiceCode + '\n';
                 info += "发票号码：" + invoice.invoiceNo + '\n';
@@ -475,9 +474,7 @@
                 info += "校验码：" + invoice.verifyCode;
 
                 dic.append('info', info);
-            }
-
-            else if (typeforvat === 'elec') {
+            } else if (typeforvat === 'elec') {
                 info += "发票类型：" + "电子票" + '\n';
                 info += "发票代码：" + invoice.invoiceCode + '\n';
                 info += "发票号码：" + invoice.invoiceNo + '\n';
@@ -506,26 +503,25 @@
         console.log(info);
 
         $.ajax({
-                url: '/bug',
-                type: 'POST',
+            url: '/bug',
+            type: 'POST',
             data: dic,
-                processData: false,  // tell jQuery not to process the data
-                contentType: false,  // tell jQuery not to set contentType
-                dataType: 'JSON',
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            dataType: 'JSON',
             success: function (arg) {
                 if (arg.status) {
                     alert("上报成功！");
-                }
-                else {
+                } else {
                     alert("上报失败！");
                 }
-                },
+            },
 
-                error: function (jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 alert("出错了，请联系我们完善程序，错误信息如下：\n" + jqXHR.responseText);
                 $("#button-tips").html("识别");
             }
-            });
+        });
     }
 
     function switchInput() {
