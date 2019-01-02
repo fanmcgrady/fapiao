@@ -169,9 +169,9 @@
                                             <tr>
                                                 <th>序号</th>
                                                 <th>原始图片</th>
-                                                <th>操作</th>
                                                 <th>行提取结果</th>
                                                 <th>错误信息</th>
+                                                <th>操作</th>
 
                                             </tr>
                                             </thead>
@@ -182,9 +182,6 @@
                                                     <td><span class="label label-primary">{{ forloop.counter }}</span>
                                                     </td>
                                                     <td><img src="static/{{ bug.path }}"/></td>
-                                                    <td>
-                                                        <button onclick="deleteInfo({{ bug.id }})">删除</button>
-                                                    </td>
                                                     {% if bug.line != "" %}
                                                         <td><img src="static/{{ bug.line }}"/></td>
                                                     {% else %}
@@ -192,6 +189,9 @@
                                                     {% endif %}
                                                     <td><p class="label label-primary"
                                                            id="bug-info">{{ bug.info|linebreaksbr }}</p>
+                                                    </td>
+                                                    <td>
+                                                        <button onclick="deleteInfo({{ bug.id }})">删除</button>
                                                     </td>
 
                                                 </tr>
