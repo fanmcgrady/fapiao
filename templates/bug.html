@@ -190,7 +190,7 @@
                                                     {% else %}
                                                         <td></td>
                                                     {% endif %}
-                                                    <td><span class="label label-primary" id="bug-info"></span>
+                                                    <td><p class="label label-primary" id="bug-info"></p>
                                                     </td>
 
                                                 </tr>
@@ -242,7 +242,7 @@
 
 <script>
 
-    window.onload = function () {
+    function transBr() {
         var buginfo = {{ bug.info }};
         for (var i = 0; i < bugInfo.length; i++) {
             if (bugInfo[i] === '<br>') {
@@ -252,7 +252,8 @@
         document.getElementById("bug-info").innerHTML = buginfo;
     }
 
-    function deleteInfo(bugId, bugPath, bugLine, bugInfo) {
+
+    function deleteInfo(bugId) {
         if (confirm('确定要删除本行数据吗？')) {
             //var dict = {};
             // dict.id = bugId;
@@ -281,7 +282,7 @@
 
     jQuery(document).ready(function () {
         // $('#delete-info').click(function () {
-        //   deleteinfo();
+        transBr();
     });
 
 </script>
