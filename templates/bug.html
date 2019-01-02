@@ -184,7 +184,8 @@
                                                     </td>
                                                     <td><img src="static/{{ bug.path }}"/></td>
                                                     <td>
-                                                        <button onclick="deleteInfo({{ bug.id }})">删除</button>
+                                                        <button onclick="deleteInfo({{ bug.id }}, {{ bug.info }})">删除
+                                                        </button>
                                                     </td>
                                                     {% if bug.line != "" %}
                                                         <td><img src="static/{{ bug.line }}"/></td>
@@ -192,7 +193,7 @@
                                                         <td></td>
                                                     {% endif %}
                                                     <td><p class="label label-primary"
-                                                           id="bug-info">{{ bug.info|linebreaksbr|safe }}</p>
+                                                           id="bug-info">{{ bug.info|linebreaksbr|escapejs }}</p>
                                                     </td>
 
 
@@ -256,10 +257,11 @@
     //}
 
 
-    function deleteInfo(bugId) {
+    function deleteInfo(bugId, buginfo) {
         if (confirm('确定要删除本行数据吗？')) {
             //var dict = {};
             // dict.id = bugId;
+            console.log(buginfo);
             var dic = new FormData();
             dic.append('id', bugId);
 
