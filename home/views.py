@@ -46,6 +46,12 @@ import traceback
 from .models import Bug
 
 
+def buginfor(request):
+    bugcontext = {}
+    bugcontext['buginfor'] = Bug.info.replace('<br>', '<br/>')
+    return render(request, 'bug.html', bugcontext)
+
+
 # 列出bug
 def listBugs(request):
     if request.method == 'GET':
