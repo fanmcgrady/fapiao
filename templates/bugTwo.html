@@ -150,7 +150,7 @@
                         <ol class="breadcrumb pull-right">
                             <li><a href="/">首页</a></li>
                             <li><a href="/">发票识别系统</a></li>
-                            <li class="active">发票bug列表</li>
+                            <li class="active">火车票识别bug列表</li>
                         </ol>
                     </div>
                 </div>
@@ -167,7 +167,7 @@
                                             <tr>
                                                 <th>序号</th>
                                                 <th>原始图片</th>
-                                                <th>行提取结果</th>
+                                                <th>out</th>
                                                 <th>错误信息</th>
                                                 <th>操作</th>
 
@@ -175,21 +175,21 @@
                                             </thead>
 
                                             <tbody id="result-table">
-                                            {% for bug in bug_list %}
-                                                <tr id="tr-{{ bug.id }}">
+                                            {% for bugTwo in bugTwo_list %}
+                                                <tr id="tr-{{ bugTwo.id }}">
                                                     <td><span class="label label-primary">{{ forloop.counter }}</span>
                                                     </td>
                                                     <td><img src="static/{{ bug.path }}"/></td>
 
-                                                    {% if bug.line != "" %}
-                                                        <td><img src="static/{{ bug.line }}"/></td>
+                                                    {% if bug.out != "" %}
+                                                        <td><img src="static/{{ bugTwo.out }}"/></td>
                                                     {% else %}
                                                         <td></td>
                                                     {% endif %}
-                                                    <td><p id="bug-info">{{ bug.info|linebreaksbr }}</p>
+                                                    <td><p id="bug-info">{{ bugTwo.info|linebreaksbr }}</p>
                                                     </td>
                                                     <td>
-                                                        <button onclick="deleteInfo({{ bug.id }})">删除
+                                                        <button onclick="deleteInfoTwo({{ bugTwo.id }})">删除
                                                         </button>
                                                     </td>
 
@@ -217,7 +217,7 @@
                             <div class="panel-body">
                                 <ol>
                                     <li>点击“<span class="text-primary">删除</span>”按钮，删除已解决的错误。</li>
-                                    <li>页面下方将显示发票识别有误的处理结果。</li>
+                                    <li>页面下方将显示火车票识别有误的处理结果。</li>
                                     <li>IE低版本浏览器下存在兼容性问题，建议使用“<span class="text-primary">Chrome浏览器、Firefox浏览器、其他一些国产浏览器的"极速模式"</span>”。
                                     </li>
                                 </ol>
@@ -254,7 +254,7 @@
     //}
 
 
-    function deleteInfo(bugId) {
+    function deleteInfoTwo(bugId) {
         if (confirm('确定要删除本行数据吗？')) {
             //var dict = {};
             // dict.id = bugId;
@@ -262,7 +262,7 @@
             dic.append('id', bugId);
 
             $.ajax({
-                url: '/deleteInfo',
+                url: '/deleteInfoTwo',
                 type: 'POST',
                 data: dic,
                 processData: false,  // tell jQuery not to process the data

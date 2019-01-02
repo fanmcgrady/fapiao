@@ -51,10 +51,16 @@
             vertical-align: middle;
         }
 
-        .table td:last-child {
+        .table td:nth-child(5) {
             text-align: left;
             vertical-align: middle;
         }
+
+        .table td:last-child {
+            text-align: center;
+            vertical-align: middle;
+        }
+
         #result-table img {
             height: 200px;
         }
@@ -154,6 +160,7 @@
                                                 <th>行提取结果</th>
                                                 <th>语义矫正结果</th>
                                                 <th>识别结果</th>
+                                                <th>操作</th>
                                             </tr>
                                             </thead>
                                             <tbody id="result-table">
@@ -350,7 +357,7 @@
                     tr.append($("<td></td>").text("识别中..."));
 
                     // 继续语义矫正、分析
-                    ocrWithoutSurface(arg);
+                    ocrWithoutSurface(arg, arg.path);
                 } else {
                     // 出错合并单元格并提示出错信息
                     tr.append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
@@ -367,11 +374,12 @@
         })
     }
 
-    function ocrWithoutSurface(result) {
+    function ocrWithoutSurface(result, apath) {
         var dicNew = new FormData();
         // 构造矫正图片集和行提取结果
         dicNew.append('outFilename', result.out);
         dicNew.append('lineResult', result.lineResult);
+        dicNew.append('path', apath);
 
         $.ajax({
             url: '/ocrWithoutSurface',
@@ -406,9 +414,30 @@
                     );
                 } else {
                     // 出错后合并单元格显示原因
-                    lastTr.find("td:nth-child(4)").text("").append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
+                    var td = $('<td colspan="2"></td>');
+                    td.append($("<p></p>").html(arg.out));
+                    lastTr.find("td:nth-child(4)").text("").append(td);
+                    // lastTr.find("td:nth-child(4)").text("").append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
                     lastTr.find("td:nth-child(5)").remove();
                 }
+
+                // 操作按钮
+                var td = $("<td></td>");
+                var btn1 = $('<td><button class="btn-sm btn waves-effect waves-light btn-primary w-md"><i class="md md-file-upload"></i>&nbsp;<span>上报错误</span></button></td>');
+                btn1.click(function () {
+                    var sendtype = "{{ type }}";
+                    sendBugTwo(arg, sendtype);
+                    // console.log(arg);
+                });
+                var btn2 = $('<td><button class="btn-sm btn waves-effect waves-light btn-primary w-md" ><i class="md md-remove-red-eye"></i>&nbsp;<span>查看错误</span></button></td>');
+                btn2.click(function () {
+                    jumpBugTwo();
+                });
+                td.append(btn1);
+                td.append("<br/>");
+                td.append(btn2);
+                lastTr.append(td);
+
                 // 显示结果
                 $('#result-table').append(lastTr);
                 // 显示当前处理完成文件数
@@ -424,6 +453,102 @@
             }
         })
     }
+
+    function jumpBugTwo() {
+        window.open("bugTwo?");
+
+    }
+
+    function sendBugTwo(arg, typeforvat) {
+        // 根据status的状态，判断向info里面提交什么数据
+        var info = "信息：" + '\n';
+        var path = arg.path;
+        var out = arg.out;
+
+        var invoice = arg.result.invoice;
+        var dic = new FormData();
+
+        if (arg.status) {
+            dic.append('path', path);
+            dic.append('out', out);
+            if (typeforvat === 'blue') {
+                info += "车票类型：" + "蓝票" + '\n';
+                info += invoice.departCity + "-" + invoice.arriveCity + "\n";
+                info += invoice.trainNumber + '\n';
+                info += invoice.passenger + '\n';
+                info += invoice.idNum + '\n';
+                info += invoice.invoiceDate + '\n';
+                info += invoice.totalAmount + '\n';
+                info += invoice.m + '\n';
+                info += "票号：" + invoice.ticketsNum;
+                dic.append('info', info);
+            }
+            else if (typeforvat === 'red') {
+                info += "车票类型：" + "红票" + '\n';
+                info += invoice.departCity + "-" + invoice.arriveCity + "\n";
+                info += invoice.trainNumber + '\n';
+                info += invoice.passenger + '\n';
+                info += invoice.idNum + '\n';
+                info += invoice.invoiceDate + '\n';
+                info += invoice.totalAmount + '\n';
+                info += invoice.m + '\n';
+                info += "票号：" + invoice.ticketsNum;
+                dic.append('info', info);
+            }
+
+            else if (typeforvat === 'excess') {
+                info += "车票类型：" + "补票" + '\n';
+                info += invoice.departCity + "-" + invoice.arriveCity + "\n";
+                info += invoice.trainNumber + '\n';
+                info += invoice.passenger + '\n';
+                info += invoice.idNum + '\n';
+                info += invoice.invoiceDate + '\n';
+                info += invoice.totalAmount + '\n';
+                info += invoice.m + '\n';
+                info += "票号：" + invoice.ticketsNum;
+                dic.append('info', info);
+            }
+
+        } else {
+            dic.append('path', path);
+            dic.append('out', '');
+            info += "车票类型：" + typeforvat + '\n';
+            info += "未识别信息：" + '\n';
+            var resultLength = arg.out.length;
+            for (var i = 0; i < resultLength; i++) {
+                info += arg.result.substring(i, i + 1);
+                if (i % 30 === 0) {
+                    info += '\n';
+                }
+            }
+            dic.append('info', info);
+        }
+
+        //console.log(info);
+
+        $.ajax({
+            url: '/bugTwo',
+            type: 'POST',
+            data: dic,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            dataType: 'JSON',
+            success: function (arg) {
+                if (arg.status) {
+                    alert("上报成功！");
+                }
+                else {
+                    alert("上报失败！");
+                }
+            },
+
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("出错了，请联系我们完善程序，错误信息如下：\n" + jqXHR.responseText);
+                $("#button-tips").html("识别");
+            }
+        });
+    }
+
 
     jQuery(document).ready(function () {
         $('#search').click(function () {

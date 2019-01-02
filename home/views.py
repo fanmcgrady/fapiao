@@ -44,6 +44,8 @@ from django.shortcuts import render
 import shutil
 import traceback
 from .models import Bug
+from .models import BugTwo
+from .models import BugThree
 
 
 # 列出bug
@@ -65,15 +67,76 @@ def listBugs(request):
         return HttpResponse(json.dumps(ret))
 
 
-def deleteInfo(request):
+def listBugsTwo(request):
     if request.method == 'GET':
-        bug_list = Bug.objects.all()
-        return render(request, 'bug.html', {'bug_list': bug_list})
+        bugTwo_list = BugTwo.objects.all()
+        return render(request, 'bugTwo.html', {'bugTwo_list': bugTwo_list})
+    # 上报错误信息
     elif request.method == "POST":
         try:
+            path = request.POST['path']
+            out = request.POST['out']
+            info = request.POST['info']
+            BugTwo.objects.create(path=path, out=out, info=info)
+            ret = {'status': True}
+        except Exception as e:
+            ret = {'status': False}
+
+        return HttpResponse(json.dumps(ret))
+
+
+def listBugsThree(request):
+    if request.method == 'GET':
+        bugThree_list = BugThree.objects.all()
+        return render(request, 'bugThree.html', {'bugThree_list': bugThree_list})
+    # 上报错误信息
+    elif request.method == "POST":
+        try:
+            path = request.POST['path']
+            out = request.POST['out']
+            line = request.POST['line']
+            info = request.POST['info']
+            BugThree.objects.create(path=path, out=out, line=line, info=info)
+            ret = {'status': True}
+        except Exception as e:
+            ret = {'status': False}
+
+        return HttpResponse(json.dumps(ret))
+
+
+def deleteInfo(request):
+    if request.method == "POST":
+        try:
             bugid = request.POST['id']
-            # 'bug' has no attribute 'objects'
             Bug.objects.get(id=bugid).delete()
+            ret = {'status': True}
+
+        except Exception as e:
+            print(e)
+            ret = {'status': False}
+
+        return HttpResponse(json.dumps(ret))
+
+
+def deleteInfoTwo(request):
+    if request.method == "POST":
+        try:
+            bugid = request.POST['id']
+            BugTwo.objects.get(id=bugid).delete()
+            ret = {'status': True}
+
+        except Exception as e:
+            print(e)
+            ret = {'status': False}
+
+        return HttpResponse(json.dumps(ret))
+
+
+def deleteInfoThree(request):
+    if request.method == "POST":
+        try:
+            bugid = request.POST['id']
+            BugThree.objects.get(id=bugid).delete()
             ret = {'status': True}
 
         except Exception as e:
@@ -238,6 +301,8 @@ def ocrWithoutSurface(request):
         # POST行提取结果
         line_result = request.POST["lineResult"]
 
+        path = request.POST["path"]
+
         try:
             # 行提取结果语义矫正 语义识别
             result, origin = Ocr.ocrWithoutSurface(out_filename, json.loads(line_result.replace("'", "\"")))
@@ -255,11 +320,12 @@ def ocrWithoutSurface(request):
                 'status': True,
                 'out': out_filename,
                 'result': result_dict,
-                'diff': diff_dict
+                'diff': diff_dict,
+                'path': path
             }
         except Exception as e:
             print(e)
-            ret = {'status': False, 'out': str(e)}
+            ret = {'status': False, 'path': path, 'out': str(e)}
 
     return HttpResponse(json.dumps(ret, indent=2))
 

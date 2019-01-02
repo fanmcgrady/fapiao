@@ -36,7 +36,21 @@ class Img(models.Model):
     color = models.CharField(max_length=50, default='')
     type = models.CharField(max_length=20, default='blue')
 
+
 class Bug(models.Model):
     path = models.CharField(max_length=50, default='')
+    line = models.CharField(max_length=50, default='')
+    info = models.TextField()
+
+
+class BugTwo(models.Model):
+    path = models.CharField(max_length=50, default='')
+    out = models.CharField(max_length=50, default='')
+    info = models.TextField()
+
+
+class BugThree(models.Model):
+    path = models.CharField(max_length=50, default='')
+    out = models.CharField(max_length=50, default='')
     line = models.CharField(max_length=50, default='')
     info = models.TextField()
