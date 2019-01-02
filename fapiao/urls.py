@@ -17,11 +17,9 @@ from django.conf.urls import url
 
 from home import views as home_views
 
-from django.contrib import admin
-
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    # url(r'^admin/', admin.site.urls),
     url(r'^$', home_views.buginfor),
     # url(r'^articles/(.*?)$',home_views.article),
     # url(r"^reg$",home_views.reg),
