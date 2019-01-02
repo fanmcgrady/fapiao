@@ -80,7 +80,7 @@
             vertical-align: middle;
         }
 
-        .table td:nth-child(3) {
+        .table td:nth-child(5) {
             text-align: left;
             vertical-align: middle;
         }
@@ -183,14 +183,14 @@
                                                     </td>
                                                     <td><img src="static/{{ bug.path }}"/></td>
                                                     <td>
-                                                        <button onclick="deleteinfo({{ bug.id }})">删除</button>
+                                                        <button onclick="deleteInfo({{ bug.id }})">删除</button>
                                                     </td>
                                                     {% if bug.line != "" %}
                                                         <td><img src="static/{{ bug.line }}"/></td>
                                                     {% else %}
                                                         <td></td>
                                                     {% endif %}
-                                                    <td><span class="label label-primary">{{ bug.info }}.replace("<br>","<br/>")</span>
+                                                    <td><span class="label label-primary" id="bug-info"></span>
                                                     </td>
 
                                                 </tr>
@@ -242,19 +242,25 @@
 
 <script>
 
+    window.onload = function () {
+        var buginfo = {{ bug.info }};
+        for (var i = 0; i < bugInfo.length; i++) {
+            if (bugInfo[i] === '<br>') {
+                bugInfo[i] = '<br/>';
+            }
+        }
+        document.getElementById("bug-info").innerHTML = buginfo;
+    }
 
-    function deleteinfo(bugId, bugPath, bugLine, bugInfo) {
+    function deleteInfo(bugId, bugPath, bugLine, bugInfo) {
         if (confirm('确定要删除本行数据吗？')) {
             //var dict = {};
             // dict.id = bugId;
             var dic = new FormData();
             dic.append('id', bugId);
-            //dic.append('path',bugPath);
-            //dic.append('line',bugLine);
-            //dic.append('info',bugInfo);
 
             $.ajax({
-                url: '/deleteinfo',
+                url: '/deleteInfo',
                 type: 'POST',
                 data: dic,
                 processData: false,  // tell jQuery not to process the data
@@ -272,7 +278,6 @@
             });
         }
     }
-
 
     jQuery(document).ready(function () {
         // $('#delete-info').click(function () {

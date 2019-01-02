@@ -402,16 +402,11 @@
                     }
                 } else {
                     // 出错合并单元格并提示出错信息
-                    var length = arg.result.length;
-                    // var resultinfo = "出错了，请联系我们完善程序，错误信息如下：";
+                    // var length = arg.result.length;
                     var td = $('<td colspan="2"></td>');
-                    //for (var i = 0; i < length;) {
-                    //td.append($("<p></p>").text(arg.result.substring(i, i + 30)));
-                    //i = i + 30;
-                    //}
                     td.append($("<p></p>").html(arg.result));
                     tr.append(td);
-                    //tr.append($('<td colspan="2"><span class="label label-primary">' + resultinfo + '</span></td>'));
+                    //tr.append($('<td colspan="2"><span class="label label-primary">' + arg.result + '</span></td>'));
 
                 }
                 // 操作按钮
@@ -425,9 +420,10 @@
                 });
                 var btn2 = $('<td><button class="btn-sm btn waves-effect waves-light btn-primary w-md" ><i class="md md-remove-red-eye"></i>&nbsp;<span>查看错误</span></button></td>');
                 btn2.click(function () {
-                    jumpbug();
+                    jumpBug();
                 });
                 td.append(btn1);
+                td.append("<br/>");
                 td.append(btn2);
                 tr.append(td);
 
@@ -447,7 +443,7 @@
         })
     }
 
-    function jumpbug() {
+    function jumpBug() {
         window.open("bug?");
 
     }
@@ -464,15 +460,26 @@
             dic.append('path', path);
             dic.append('line', line);
             if (typeforvat === 'special') {
-                info += "发票类型：" + typeforvat + '\n';
+                info += "发票类型：" + "专票" + '\n';
                 info += "发票代码：" + invoice.invoiceCode + '\n';
                 info += "发票号码：" + invoice.invoiceNo + '\n';
                 info += "发票日期：" + invoice.invoiceDate + '\n';
                 info += "不含税金额：" + invoice.invoiceAmount;
                 dic.append('info', info);
             }
-            else {
-                info += "发票类型：" + typeforvat + '\n';
+            else if (typeforvat === 'normal') {
+                info += "发票类型：" + "普票" + '\n';
+                info += "发票代码：" + invoice.invoiceCode + '\n';
+                info += "发票号码：" + invoice.invoiceNo + '\n';
+                info += "发票日期：" + invoice.invoiceDate + '\n';
+                info += "不含税金额：" + invoice.invoiceAmount + '\n';
+                info += "校验码：" + invoice.verifyCode;
+
+                dic.append('info', info);
+            }
+
+            else if (typeforvat === 'elec') {
+                info += "发票类型：" + "电子票" + '\n';
                 info += "发票代码：" + invoice.invoiceCode + '\n';
                 info += "发票号码：" + invoice.invoiceNo + '\n';
                 info += "发票日期：" + invoice.invoiceDate + '\n';

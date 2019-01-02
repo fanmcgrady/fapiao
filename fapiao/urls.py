@@ -33,7 +33,7 @@ urlpatterns = [
     url(r"^ocrWithoutSurface$", home_views.ocrWithoutSurface),
     url(r"^ocrForVat$", home_views.ocrForVat),
     url(r"^bug$", home_views.listBugs),
-    url(r"^deleteinfo$", home_views.deleteinfo),
+    url(r"^deleteInfo$", home_views.deleteInfo),
 
     # 批量上传
     url(r"^getFileList$", home_views.getFileList),

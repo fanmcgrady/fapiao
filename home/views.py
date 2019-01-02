@@ -65,7 +65,7 @@ def listBugs(request):
         return HttpResponse(json.dumps(ret))
 
 
-def deleteinfo(request):
+def deleteInfo(request):
     if request.method == 'GET':
         bug_list = Bug.objects.all()
         return render(request, 'bug.html', {'bug_list': bug_list})
