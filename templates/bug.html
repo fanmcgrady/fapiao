@@ -184,7 +184,7 @@
                                                     </td>
                                                     <td><img src="static/{{ bug.path }}"/></td>
                                                     <td>
-                                                        <button onclick="deleteInfo({{ bug.id }}, {{ bug.info }})">删除
+                                                        <button onclick="deleteInfo({{ bug.id }})">删除
                                                         </button>
                                                     </td>
                                                     {% if bug.line != "" %}
@@ -257,11 +257,10 @@
     //}
 
 
-    function deleteInfo(bugId, buginfo) {
+    function deleteInfo(bugId) {
         if (confirm('确定要删除本行数据吗？')) {
             //var dict = {};
             // dict.id = bugId;
-            console.log(buginfo);
             var dic = new FormData();
             dic.append('id', bugId);
 
