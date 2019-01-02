@@ -190,7 +190,7 @@
                                                     {% else %}
                                                         <td></td>
                                                     {% endif %}
-                                                    <td><p class="label label-primary" id="bug-info"></p>
+                                                    <td><p class="label label-primary" id="bug-info">{{ bug.info }}</p>
                                                     </td>
 
                                                 </tr>
@@ -242,15 +242,15 @@
 
 <script>
 
-    function transBr() {
-        var buginfo = {{ bug.info }};
-        for (var i = 0; i < bugInfo.length; i++) {
-            if (bugInfo[i] === '<br>') {
-                bugInfo[i] = '<br/>';
-            }
-        }
-        document.getElementById("bug-info").innerHTML = buginfo;
-    }
+    //function transBr() {
+    //var buginfo = {{ bug.info }};
+    //for (var i = 0; i < bugInfo.length; i++) {
+    //if (bugInfo[i] === '<br>') {
+    //bugInfo[i] = '<br/>';
+    //}
+    //}
+    //document.getElementById("bug-info").innerHTML = buginfo;
+    //}
 
 
     function deleteInfo(bugId) {
@@ -282,7 +282,7 @@
 
     jQuery(document).ready(function () {
         // $('#delete-info').click(function () {
-        transBr();
+        // transBr();
     });
 
 </script>
