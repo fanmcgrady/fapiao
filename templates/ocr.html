@@ -380,7 +380,7 @@
         dicNew.append('outFilename', result.out);
         dicNew.append('lineResult', result.lineResult);
         dicNew.append('path', result.path);
-        console.log(result.path);
+        // console.log(result.path);
 
         $.ajax({
             url: '/ocrWithoutSurface',
@@ -465,7 +465,7 @@
         var info = "信息：" + '\n';
         var path = arg.path;
         var out = arg.out;
-        //console.log(path);
+        console.log(path);
 
         // 出错的时候就没有result返回
 
