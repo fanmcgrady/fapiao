@@ -414,7 +414,7 @@
                     );
                 } else {
                     // 出错后合并单元格显示原因
-                    var td = $('<td colspan="2"></td>');
+                    var td = $('<td></td>');
                     td.append($("<p></p>").html(arg.out));
                     lastTr.find("td:nth-child(4)").text("").append(td);
                     // lastTr.find("td:nth-child(4)").text("").append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
@@ -436,7 +436,7 @@
                 td.append(btn1);
                 td.append("<br/>");
                 td.append(btn2);
-                lastTr.find("td:nth-child(5)").append(td);
+                lastTr.append(td);
 
                 // 显示结果
                 $('#result-table').append(lastTr);
