@@ -357,7 +357,7 @@
                     tr.append($("<td></td>").text("识别中..."));
 
                     // 继续语义矫正、分析
-                    ocrWithoutSurface(arg, arg.path);
+                    ocrWithoutSurface(arg);
                 } else {
                     // 出错合并单元格并提示出错信息
                     tr.append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
@@ -374,12 +374,12 @@
         })
     }
 
-    function ocrWithoutSurface(result, apath) {
+    function ocrWithoutSurface(result) {
         var dicNew = new FormData();
         // 构造矫正图片集和行提取结果
         dicNew.append('outFilename', result.out);
         dicNew.append('lineResult', result.lineResult);
-        dicNew.append('path', apath);
+        dicNew.append('path', result.path);
 
         $.ajax({
             url: '/ocrWithoutSurface',
@@ -416,8 +416,7 @@
                     // 出错后合并单元格显示原因
                     var td = $('<td colspan="2"></td>');
                     td.append($("<p></p>").html(arg.out));
-                    lastTr.append(td);
-                    // lastTr.find("td:nth-child(4)").text("").append(td);
+                    lastTr.find("td:nth-child(4)").text("").append(td);
                     // lastTr.find("td:nth-child(4)").text("").append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
                     // lastTr.find("td:nth-child(5)").remove();
                 }
@@ -437,7 +436,7 @@
                 td.append(btn1);
                 td.append("<br/>");
                 td.append(btn2);
-                lastTr.append(td);
+                lastTr.find("td:nth-child(6)").append(td);
 
                 // 显示结果
                 $('#result-table').append(lastTr);
