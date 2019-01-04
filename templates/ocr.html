@@ -416,9 +416,10 @@
                     // 出错后合并单元格显示原因
                     var td = $('<td colspan="2"></td>');
                     td.append($("<p></p>").html(arg.out));
-                    lastTr.find("td:nth-child(4)").text("").append(td);
+                    lastTr.append(td);
+                    // lastTr.find("td:nth-child(4)").text("").append(td);
                     // lastTr.find("td:nth-child(4)").text("").append($('<td colspan="2"><span class="label label-primary">出错了，请联系我们完善程序，错误信息如下：' + arg.out + '</span></td>'));
-                    lastTr.find("td:nth-child(5)").remove();
+                    // lastTr.find("td:nth-child(5)").remove();
                 }
 
                 // 操作按钮
@@ -427,7 +428,7 @@
                 btn1.click(function () {
                     var sendtype = "{{ type }}";
                     sendBugTwo(arg, sendtype);
-                    // console.log(arg);
+                    console.log(arg);
                 });
                 var btn2 = $('<td><button class="btn-sm btn waves-effect waves-light btn-primary w-md" ><i class="md md-remove-red-eye"></i>&nbsp;<span>查看错误</span></button></td>');
                 btn2.click(function () {
@@ -465,10 +466,12 @@
         var path = arg.path;
         var out = arg.out;
 
-        var invoice = arg.result.invoice;
+        // 出错的时候就没有result返回
+
         var dic = new FormData();
 
         if (arg.status) {
+            var invoice = arg.result.invoice;
             dic.append('path', path);
             dic.append('out', out);
             if (typeforvat === 'blue') {
