@@ -375,9 +375,13 @@
                     var data = {
                         "id": index - 1,
                         "filename": filename,
+                        "path": arg.path,
                         "invoice": invoice
                     };
+
+                    // 向结果数组加入数据
                     resultData.push(data);
+
                     if ('{{ type }}' === 'special') {
                         tr.append(
                             $('<td></td>')
