@@ -28,7 +28,17 @@ urlpatterns = [
     # url(r"^list$", home_views.alist),
     # url(r"^postarticles$", home_views.postarticles),
 
+    # 统一入口
     url(r"^$", home_views.index),
+    url(r"^ocrForSpecVat$", home_views.ocrForSpecVat),
+
+    # API
+    url(r"^qr_api$", home_views.QR_API),
+    url(r"^type_api$", home_views.Type_API),
+
+    # 原首页
+    url(r"^old$", home_views.old),
+
     url(r"^detect$", home_views.surface),
     url(r"^ocr$", home_views.ocr),
     url(r"^ocrWithoutSurface$", home_views.ocrWithoutSurface),
@@ -43,3 +53,4 @@ urlpatterns = [
     # 批量上传
     url(r"^getFileList$", home_views.getFileList),
 ]
+
