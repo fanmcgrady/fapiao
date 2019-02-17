@@ -3,6 +3,7 @@
 local_start = False
 
 import sys
+
 # 判断运行方式
 if local_start:
     print("本地运行")
@@ -30,15 +31,18 @@ else:
 
     import Ocr
     import OcrForVat
+    import OcrForSpecVat
+    import API
 
     print("加载模型")
-    from connector.connecter import *
 
 import datetime
 import json
 import zipfile
+import base64
 
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render
 
 import shutil
@@ -46,6 +50,161 @@ import traceback
 from .models import Bug
 from .models import BugTwo
 from .models import BugThree
+
+
+# API
+def QR_API(request):
+    if request.method == "POST":
+        base64_data = request.POST['picture']
+        # 随机文件名
+        filename, _ = generate_random_name()
+        # 拼接存放位置路径
+        file_path = os.path.join('upload', filename)
+        full_path = os.path.join('allstatic', file_path)
+
+        # 文件写入
+        with open(full_path, "wb") as f:
+            f.write(base64.b64decode(base64_data))
+
+        try:
+            # 识别 给前端传值
+            json_result = API.runQR(full_path)
+
+            if json_result is None:
+                ret = {
+                    "returnStateInfo": {
+                        "returnCode": "9999",
+                        "returnMessage": "处理失败: 二维码识别不清晰，识别失败"
+                    },
+                    "invoice": ""
+                }
+            else:
+                ret = {
+                    "returnStateInfo": {
+                        "returnCode": "0000",
+                        "returnMessage": "处理成功"
+                    },
+                    "invoice": json.loads(str(json_result).replace("'", "\""))
+                }
+
+        # 打印错误原因
+        except Exception as e:
+            print(e)
+            ret = {
+                "returnStateInfo": {
+                    "returnCode": "9999",
+                    "returnMessage": "处理失败:" + str(e)
+                },
+                "invoice": ""
+            }
+
+        return JsonResponse(ret)
+
+
+def Type_API(request):
+    if request.method == "POST":
+        base64_data = request.POST['picture']
+        # 随机文件名
+        filename, _ = generate_random_name()
+        # 拼接存放位置路径
+        file_path = os.path.join('upload', filename)
+        full_path = os.path.join('allstatic', file_path)
+
+        # 文件写入
+        with open(full_path, "wb") as f:
+            f.write(base64.b64decode(base64_data))
+
+        try:
+            # 识别 给前端传值
+            type = API.runType(full_path)
+            # ['quota', 'elect', 'airticket', 'special', 'trainticket']
+            # 01 *增值税专用发票
+            # 02 货运运输业增值税专用发票
+            # 03 机动车销售统一发票
+            # 04 *增值税普通发票
+            # 10 *增值税普通发票(电子)
+            # 11 *增值税普通发票(卷式)
+            # 91 出租车票
+            # 92 *火车票
+            # 93 *飞机票
+            # 94 汽车票
+            # 95 *定额发票
+            # 96 长途汽车票
+            # 97 通用机打发票
+            # 98 政府非税收收入一般缴款书
+            # 00 其他类型
+            # 注：增值税票目前不能区分具体种类，可统一返回01
+
+            if type == 'quota':
+                type = "95"
+            elif type == 'elect':
+                type = "10"
+            elif type == 'airticket':
+                type = "93"
+            elif type == 'special':
+                type = "01"
+            elif type == 'trainticket':
+                type = "92"
+            else:
+                type = "00"
+
+            ret = {
+                "returnCode": "0000",
+                "returnMessage": "处理成功",
+                "invoiceType": type
+            }
+
+        # 打印错误原因
+        except Exception as e:
+            print(e)
+            ret = {
+                "returnCode": "9999",
+                "returnMessage": "处理失败:" + str(e),
+                "invoiceType": type
+            }
+
+        return JsonResponse(ret)
+
+
+# 专票统一入口
+def ocrForSpecVat(request):
+    if request.method == "POST":
+        # POST压缩包中的文件
+        filename = request.POST['fileInZip']
+
+        # 文件已通过getFileList方法上传到upload目录，此时不需要上传了
+        # 拼接目录
+        file_path = os.path.join('upload', filename)
+        line_filename = os.path.join('line', filename)
+
+        full_path = os.path.join('allstatic', file_path)
+
+        try:
+            # 识别 给前端传值
+            json_result, timer, type = OcrForSpecVat.init(full_path)
+
+            ## type in ['quota', 'elect', 'airticket', 'special', 'trainticket']
+            if json_result == '':
+                json_result = None
+            ## type = 'special'
+            else:
+                json_result = json.loads(str(json_result).replace("'", "\""))
+
+            ret = {
+                'status': True,
+                'path': file_path,
+                'line': line_filename,
+                'result': json_result,
+                'timer': timer.__str__(),
+                'type': type
+            }
+
+        # 打印错误原因
+        except Exception as e:
+            print(e)
+            ret = {'status': False, 'path': file_path, 'result': str(e)}
+
+        return HttpResponse(json.dumps(ret))
 
 
 # 列出bug
@@ -288,6 +447,10 @@ def ocrForVat(request):
 
 # 首页
 def index(request):
+    return render(request, 'allInOne.html')
+
+
+def old(request):
     return render(request, 'index.html')
 
 
@@ -402,8 +565,12 @@ def surface(request):
 
 
 # 按日期生成文件名
-def generate_random_name(file_name):
+def generate_random_name(file_name=None):
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-    _, ext = os.path.splitext(file_name)
+
+    if file_name is None:
+        ext = ".jpg"
+    else:
+        _, ext = os.path.splitext(file_name)
 
     return timestamp + ext, timestamp

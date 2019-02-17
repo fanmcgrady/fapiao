@@ -1,4 +1,5 @@
 import copy
+
 import OCR
 import cv2
 import matplotlib.pyplot as pl
@@ -21,6 +22,7 @@ import muban
 
 from connector.TicToc import Timer
 import time
+
 
 def jwkj_get_filePath_fileName_fileExt(filename):  # 提取路径
     (filepath, tempfilename) = os.path.split(filename)
@@ -46,6 +48,18 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
     time1 = time.time()
 
     img = Image.open(filePath)
+    # img = cv2.imread(filePath, 1)
+
+    # 确认目录
+    # if os.path.exists(
+    #         jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
+    #             1]) == False:
+    #     os.mkdir(
+    #         jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/tmp/" + jwkj_get_filePath_fileName_fileExt(filePath)[
+    #             1])
+
+    # -----------------------------------------------------------二值化---------------------
+    isAdoptive = True
     imgL = Image.open(filePath)  # 若为simple 方法 调用pipe后的图为初始图
 
     # 二值化
@@ -71,12 +85,24 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
     if isAdoptive:
         # 自适应二值化
         imgL = cv2.adaptiveThreshold(imgL, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 5)
+    # else:
+    #     # 手动二值化
+    #     for i in range(h):
+    #         for j in range(w):
+    #             if imgL[i, j] > thresholding:
+    #                 imgL[i, j] = 255
+    #             else:
+    #                 imgL[i, j] = 0
 
     # 二值化图路径
+
     binaryzationSurfaceImagePath = jwkj_get_filePath_fileName_fileExt(filePath)[0] + "/binaryzationSurfaceImage.jpg"
+
     cv2.imwrite(binaryzationSurfaceImagePath, np.array(imgL))
+
     imgL = Image.open(binaryzationSurfaceImagePath)
-    #----------------------------------------------------二值化 ---------------------------------
+
+    # ----------------------------------------------------二值化 ---------------------------------
 
     # 裁剪（校验码处理）
     time2 = time.time()
@@ -88,7 +114,7 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
 
     for x in recT:
 
-        if typeP == 'elec':#电票
+        if typeP == 'elec':  # 电票
 
             sp = img.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
 
@@ -101,13 +127,14 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
 
             if x == 'verifyCode':
                 if len(recT[x]) == 2:
-                    sp1 = imgL.crop((recT[x][0][0], recT[x][0][1], recT[x][0][0] + recT[x][0][2], recT[x][0][1] + recT[x][0][3]))
+                    sp1 = imgL.crop(
+                        (recT[x][0][0], recT[x][0][1], recT[x][0][0] + recT[x][0][2], recT[x][0][1] + recT[x][0][3]))
                     sp2 = imgL.crop(
                         (recT[x][1][0], recT[x][1][1], recT[x][1][0] + recT[x][1][2], recT[x][1][1] + recT[x][1][3]))
                 else:
                     sp = imgL.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
 
-            elif x =='invoiceNo':
+            elif x == 'invoiceNo':
                 sp = img.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
             else:
                 sp = imgL.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
@@ -120,8 +147,8 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
         if x == 'verifyCode' and len(recT[x]) == 2:
             # if len(recT[x]) == 2:#存图  verifyCode例外（多图）
             sFPN1 = jwkj_get_filePath_fileName_fileExt(filePath)[0] + '/' + \
-                   jwkj_get_filePath_fileName_fileExt(filePath)[
-                       1] + "_" + x + "_1.jpg"
+                    jwkj_get_filePath_fileName_fileExt(filePath)[
+                        1] + "_" + x + "_1.jpg"
             sFPN2 = jwkj_get_filePath_fileName_fileExt(filePath)[0] + '/' + \
                     jwkj_get_filePath_fileName_fileExt(filePath)[
                         1] + "_" + x + "_2.jpg"
@@ -140,7 +167,7 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
             print('--------------  ---------------' + sFPN2)
         else:
             sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + '/' + jwkj_get_filePath_fileName_fileExt(filePath)[
-                   1] + "_" + x + ".jpg"
+                1] + "_" + x + ".jpg"
             print('--------------  ---------------' + sFPN)
             # cv2.imwrite(sFPN, sp)
             sp.save(sFPN)
@@ -151,7 +178,6 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
         # print(x +"  : "+sFPN)
         if pars == dict(textline_method='simple') and x == 'invoiceNo' and (typeP == 'special' or typeP == 'normal'):
             OCR.utils.convert(sFPN)
-
         if debug == False:
             # if (x != 'invoiceNo'):
             # # 测试如此识别并不能修正字体不能识别的问题
@@ -162,11 +188,11 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
                     # if len(recT[x]) == 2:
                     midResult1 = flow.OcrPic(sFPN1)
                     midResult2 = flow.OcrPic(sFPN2)
-                    midResult += midResult1 if len(midResult1) > 19 else ''
                     midResult += midResult2 if len(midResult2) > 19 else ''
+                    midResult += midResult1 if len(midResult1) > 19 else ''
                 else:
                     if x == 'verifyCode':
-                        #校验码
+                        # 校验码
                         mdrs = flow.OcrPic(sFPN)
                         midResult = mdrs if len(mdrs) > 19 else ''
                     else:
@@ -177,11 +203,11 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
                     # if len(recT[x]) == 2:
                     midResult1 = newOcr(sFPN1, typeP, x)
                     midResult2 = newOcr(sFPN2, typeP, x)
-                    midResult += midResult1 if len(midResult1) > 19 else ''
                     midResult += midResult2 if len(midResult2) > 19 else ''
+                    midResult += midResult1 if len(midResult1) > 19 else ''
                 else:
                     if x == 'verifyCode':
-                        #校验码
+                        # 校验码
                         mdrs = newOcr(sFPN, typeP, x)
                         midResult = mdrs if len(mdrs) > 19 else ''
                     elif typeP == 'elec' and x == 'invoiceAmount':
@@ -205,6 +231,33 @@ def CropPic(filePath, recT, typeT, origin_filePath, pars, typeP, debug=False, is
     pC = SemanticCorrect.posteriorCrt.posteriorCrt()
 
     print("origin_filePath " + origin_filePath)
+    # if typeT == 11 and debug == False:
+    #     if ocrResult['invoiceDate'][:4] == '开票日期' or len(ocrResult['invoiceDate']) < 4:
+    #
+    #         # 返回上级
+    #         imgl = Image.open(origin_filePath)
+    #         recT['invoiceDate'] = mubanDetectInvoiceDate(origin_filePath)['invoiceDate']
+    #         if recT['invoiceDate'] != None:
+    #             sp = imgl.crop((recT['invoiceDate'][0], recT['invoiceDate'][1],
+    #                             recT['invoiceDate'][0] + recT['invoiceDate'][2],
+    #                             recT['invoiceDate'][1] + recT['invoiceDate'][3]))
+    #
+    #             sFPN = jwkj_get_filePath_fileName_fileExt(origin_filePath)[0] + "/tmp/" + \
+    #                    jwkj_get_filePath_fileName_fileExt(origin_filePath)[1] + "/" + \
+    #                    jwkj_get_filePath_fileName_fileExt(origin_filePath)[
+    #                        1] + "_" + 'invoiceDateFix' + ".jpg"
+    #             sp.save(sFPN)
+    #
+    #             if isusebaidu:
+    #                 midResult = flow.OcrPic(sFPN)
+    #             else:
+    #                 midResult = newOcr(sFPN, typeP)
+    #             # midResult = flow.OcrPic(sFPN)
+    #
+    #             print('invoiceDateFix: ' + midResult)
+    #             ocrResult['invoiceDate'] = midResult
+    #         else:
+    #             print("find Circle error!")
 
     js = InterfaceType.JsonInterface.invoice()
     if typeT == 11:
@@ -237,14 +290,24 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
     print(typeP)
     print(pars)
 
-    pipe = fp.vat_invoice.pipeline.VatInvoicePipeline(typeP, pars=pars, debug=False)  # 请用debug=False
-    im = cv2.imread(filepath, 1)
+    # 'elec'：增值税电子发票
+    # 'special'：增值税专用发票
+    # 'normal'：增值税普通发票
+    # pars = dict(textline_method='textboxes')  # 使用 深度学习 方法，目前用的CPU，较慢 ?
+    # pars = dict(textline_method='simple')  # 使用 深度学习 方法，目前用的CPU，较慢 ?
 
+    pipe = fp.vat_invoice.pipeline.VatInvoicePipeline(typeP, pars=pars, debug=False)  # 请用debug=False
+    # pipe = fp.vat_invoice.pipeline.VatInvoicePipeline('special', debug=False) # 请用False
+    im = cv2.imread(filepath, 1)
+    # im = cv2.resize(im, None, fx=0.5, fy=0.5)
     pipe(im)
     timer.toc(content="行提取")
-
+    # pl.figure(figsize=(12, 12))
+    # pl.imshow(pipe.debug['result'])
+    # pl.show()
     attributeLine = {}
 
+    # atbArray = ['type', 'serial', 'time', 'tax_free_money', 'serial_tiny', 'verify']
     atbDic = {
         'type': 'invoiceCode',
         'serial': 'invoiceNo',
@@ -254,11 +317,17 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
         'verify': 'verifyCode'}
 
     # if typeP == 'special' or :
+    # print('type'+'  '+str(pipe.predict('type')))
+    # print('invoiceNo'+'  '+str(pipe.predict('serial')))
+    # print('invoiceDate'+'  '+str(pipe.predict('time')))
+    # print('invoiceAmount'+'  '+str(pipe.predict('tax_free_money')))
+    # print('invoiceNoS'+'  ')
+    # print(str(pipe.predict('serial_tiny')))
 
     for atb in atbDic.keys():
-         if not pipe.predict(atb) is None:
-             attributeLine[atbDic[atb]] = list(pipe.predict(atb))
-
+        if not pipe.predict(atb) is None:
+            #  print(atb+'  '+str(pipe.predict(atb)))
+            attributeLine[atbDic[atb]] = list(pipe.predict(atb))
 
     #     if pipe.predict('tax_free_money') is None:
     #         attributeLine = {
@@ -324,21 +393,20 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
     elif pars == dict(textline_method='textboxes'):
         wAxis = 0.02
         hAxis = 0.1
-
     for c in attributeLine:
         # print(attributeLine[c])
         if typeP == 'special' and pars == dict(textline_method='textboxes') and c in ['invoiceNo', 'invoiceAmount']:
             continue
 
-
         attributeLine[c][0] = np.array(attributeLine[c][0]).tolist()
 
-        if type(attributeLine[c][0]) == type([1,2,3]):
+        if type(attributeLine[c][0]) == type([1, 2, 3]):
 
             for ind, b in enumerate(attributeLine[c]):
                 # print(ind)
                 if ind != 0:
                     attributeLine[c][ind] = np.array(attributeLine[c][ind]).tolist()
+                continue
                 # print(attributeLine[c][ind])
                 attributeLine[c][ind][0] = attributeLine[c][ind][0] - wAxis * attributeLine[c][ind][2]
                 attributeLine[c][ind][1] = attributeLine[c][ind][1] - hAxis * attributeLine[c][ind][3]
@@ -351,6 +419,8 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
                 # print(attributeLine[c][ind])
 
         else:
+            if typeP == 'normal' and c == 'verifyCode':
+                continue
             attributeLine[c][0] = attributeLine[c][0] - wAxis * attributeLine[c][2]
             attributeLine[c][1] = attributeLine[c][1] - hAxis * attributeLine[c][3]
             attributeLine[c][2] = attributeLine[c][2] * (1 + 2 * wAxis)
@@ -367,7 +437,6 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
     #         attributeLine['invoiceDate'] = decWidth(attributeLine['invoiceDate'], float(86.0 / 221.0))
     #     for ind, c in enumerate(attributeLine['verifyCode']):
     #         attributeLine['verifyCode'][ind] = decWidth(attributeLine['verifyCode'][ind], float(90.0 / 324.0))
-
 
     print(attributeLine)
     timer.toc(content="行提取矫正")
@@ -386,13 +455,49 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
             jwkj_get_filePath_fileName_fileExt(filepath)[
                 1])
 
+    # img = Image.open(filepath)
     # 如为simple方法 先存储pipe。surface_image为初始图（后续识别定位基于该图）
+    # if pars == dict(textline_method='simple'):
 
     surfaceImagePath = jwkj_get_filePath_fileName_fileExt(filepath)[0] + "/tmp/" + \
                        jwkj_get_filePath_fileName_fileExt(filepath)[1] + "/origin.jpg"
 
     cv2.imwrite(surfaceImagePath, pipe.surface_image)
     filepathS = surfaceImagePath
+    # img = Image.open(filepathS)  # 若为simple 方法 调用pipe后的图为初始图
+    #
+    # # 二值化
+    # im = img.convert('L')
+    # img = np.array(im)
+    # h, w = img.shape
+    #
+    # # 是否采用自适应二值化方法
+    # # isAdoptive = False
+    # if type == 'elec':
+    #     isAdoptive = False  # 测试中
+    # else:
+    #     isAdoptive = True  # 测试中
+    #
+    # thresholding = 160
+    #
+    # if isAdoptive:
+    #     # 自适应二值化
+    #     img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 5)
+    # else:
+    #     # 手动二值化
+    #     for i in range(h):
+    #         for j in range(w):
+    #             if img[i, j] > thresholding:
+    #                 img[i, j] = 255
+    #             else:
+    #                 img[i, j] = 0
+    #
+    # # 二值化图路径
+    #
+    # binaryzationSurfaceImagePath = jwkj_get_filePath_fileName_fileExt(filepath)[0] + "/tmp/" + \
+    #                                jwkj_get_filePath_fileName_fileExt(filepath)[1] + "/binaryzationSurfaceImage.jpg"
+    #
+    # cv2.imwrite(binaryzationSurfaceImagePath, np.array(img))
 
     # 生成行提取的图片
     # print("4")
@@ -412,8 +517,8 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
     try:
         for x, y, w, h in plt_rects:
             p0 = int(round(x)), int(round(y))
-            p1 = int(round(x+w)), int(round(y+h))
-            cv2.rectangle(pipe.surface_image, p0, p1, (255,0,0), 4)
+            p1 = int(round(x + w)), int(round(y + h))
+            cv2.rectangle(pipe.surface_image, p0, p1, (255, 0, 0), 4)
 
         cv2.imwrite(pltpath, pipe.surface_image)
         # pl.savefig(pltpath)
@@ -495,6 +600,7 @@ def mubanDetectInvoiceDate(filepath, setKey='invoiceDate'):
             print("绘制行提取图片不支持bmp格式：{}".format(e))
 
     return attributeLine
+
 
 def textline(filepath):
     show_textline = False
@@ -705,10 +811,10 @@ print(jpgs[9])
 '''
 
 if __name__ == '__main__':
-    #dset = '/home/huangzheng/ocr/testPic/3/'
-    #dset1 = '/home/huangzheng/ocr/testPic/3simple/'
-    #jpgs = fp.util.path.files_in_dir(dset, '.jpg')
-    #for c in jpgs:
+    # dset = '/home/huangzheng/ocr/testPic/3/'
+    # dset1 = '/home/huangzheng/ocr/testPic/3simple/'
+    # jpgs = fp.util.path.files_in_dir(dset, '.jpg')
+    # for c in jpgs:
     #    print(c)
     #    # dset = 'D:/Development/data/2/'
     #    # c = 'Image_00147.jpg'

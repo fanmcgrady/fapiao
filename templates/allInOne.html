@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="static/blue/images/favicon.ico">
+
+    <title>用户界面 - 发票识别系统</title>
+
+    <!-- Base Css Files -->
+    <link href="static/blue/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Font Icons -->
+    <link href="static/blue/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="static/blue/assets/ionicon/css/ionicons.min.css" rel="stylesheet"/>
+    <link href="static/blue/css/material-design-iconic-font.min.css" rel="stylesheet">
+
+    <!-- animate css -->
+    <link href="static/blue/css/animate.css" rel="stylesheet"/>
+
+    <!-- Waves-effect -->
+    <link href="static/blue/css/waves-effect.css" rel="stylesheet">
+
+    <!-- Plugin Css-->
+    <link rel="stylesheet" href="static/blue/assets/magnific-popup/magnific-popup.css"/>
+    <link rel="stylesheet" href="static/blue/assets/jquery-datatables-editable/datatables.css"/>
+    <!-- Plugins css -->
+    <link href="static/blue/assets/modal-effect/css/component.css" rel="stylesheet">
+
+    <!-- Custom Files -->
+    <link href="static/blue/css/helper.css" rel="stylesheet" type="text/css"/>
+    <link href="static/blue/css/style.css" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="static/blue/js/modernizr.min.js"></script>
+    <style>
+        .table td, .table th {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table td:nth-child(4) {
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .table td:nth-child(5) {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        #result-table img {
+            height: 200px;
+        }
+    </style>
+
+</head>
+
+<body class="fixed-left">
+
+<!-- Begin page -->
+<div id="wrapper">
+
+    <!-- Top Bar Start -->
+    <div class="topbar">
+        <!-- LOGO -->
+        <div class="topbar-left">
+            <div class="text-center">
+                <a href="/" class="logo"><i class="md md-verified-user"></i> <span>发票识别系统统一上传入口 </span></a>
+            </div>
+        </div>
+        <!-- Button mobile view to collapse sidebar menu -->
+        <div class="navbar navbar-default" role="navigation">
+            <div class="container">
+                <div class="hidden-xs">
+                    <form class="navbar-form pull-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control search-bar" placeholder="用户界面">
+                        </div>
+                    </form>
+
+                    <ul class="nav navbar-nav navbar-right pull-right">
+                        <li>
+                            <a title="" href="#" id="btn-local-path" class="waves-effect waves-light"><i
+                                    class="md md-cloud-download"></i></a>
+                        </li>
+                        <li>
+                            <a href="#" id="btn-fullscreen" class="waves-effect waves-light"><i
+                                    class="md md-crop-free"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
+    <!-- Top Bar End -->
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="content-page">
+        <!-- Start content -->
+        <div class="content">
+            <div class="container">
+
+                <!-- Page-Title -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4 class="pull-left page-title">增值税发票识别展示</h4>
+                        <ol class="breadcrumb pull-right">
+                            <li><a href="/">首页</a></li>
+                            <li><a href="/old">原入口</a></li>
+                            <li class="active">增值税发票识别</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="row" id="upload_div">
+                    <!-- Horizontal form -->
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title text-danger" id="status">上传发票图片</h3></div>
+                            <div class="panel-body">
+                                <div class="input-group">
+                                    <input type="file" id="example-input1-group2" name="example-input1-group2"
+                                           placeholder="请选择要上传的文件或zip压缩包"
+                                           class="form-control input-lg">
+                                    <input type="text" id="path-input"
+                                           placeholder="请填写服务器文件路径"
+                                           class="form-control input-lg" style="display: none;"/>
+                                    <span class="input-group-btn">
+                                                <button type="button"
+                                                        class="btn-lg btn waves-effect waves-light btn-primary w-md"
+                                                        id="search"><i class="md md-verified-user"></i>&nbsp;<span
+                                                        id="button-tips">识别</span></button>
+                                            </span>
+                                </div>
+                            </div>
+
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>序号</th>
+                                                <th>原始图片</th>
+                                                <th>行提取结果</th>
+                                                <th>识别结果</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="result-table">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        共 <span class="text-primary" id="total">0</span> 个文件，已分析 <span
+                                            class="text-primary" id="current">0</span> 个文件
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:20px;">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <button id="btn-download" type="button"
+                                                class="btn-lg btn waves-effect waves-light btn-primary w-md">
+                                            <i class="md md-file-download"></i>&nbsp;
+                                            <span id="button-tips">下载识别结果</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div> <!-- panel -->
+                    </div> <!-- col -->
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">操作说明</h3>
+                            </div>
+                            <div class="panel-body">
+                                <ol>
+                                    <li>选择<span class="text-primary">单个图片</span>文件或者将多张图片打包成<span class="text-primary">zip压缩包批量上传</span>
+                                    </li>
+                                    <li>点击<span class="text-primary">识别</span>按钮，开始发票识别</li>
+                                    <li>分析完成后页面下方将显示结果</li>
+                                    <li>本页面展示增值税发票识别结果</li>
+                                    <li>IE低版本浏览器下存在兼容性问题，建议使用<span class="text-primary">Chrome浏览器、Firefox浏览器、其他一些国产浏览器的"极速模式"</span>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- container -->
+
+        </div> <!-- content -->
+
+        <footer class="footer text-right">
+            2018 © 四川大学信息安全与未来网络实验室
+        </footer>
+
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Right content here -->
+    <!-- ============================================================== -->
+
+</div>
+<!-- END wrapper -->
+
+<!-- jQuery  -->
+<script src="static/blue/js/jquery.min.js"></script>
+<script src="static/blue/js/bootstrap.min.js"></script>
+<script src="static/blue/js/waves.js"></script>
+<script src="static/blue/js/wow.min.js"></script>
+<script src="static/blue/js/jquery.nicescroll.js" type="text/javascript"></script>
+<script src="static/blue/js/jquery.scrollTo.min.js"></script>
+<script src="static/blue/assets/jquery-detectmobile/detect.js"></script>
+<script src="static/blue/assets/fastclick/fastclick.js"></script>
+<script src="static/blue/assets/jquery-slimscroll/jquery.slimscroll.js"></script>
+<script src="static/blue/assets/jquery-blockui/jquery.blockUI.js"></script>
+
+<!-- CUSTOM JS -->
+<script src="static/blue/js/jquery.app.js"></script>
+
+<!-- Modal-Effect -->
+<script src="static/blue/assets/modal-effect/js/classie.js"></script>
+<script src="static/blue/assets/modal-effect/js/modalEffects.js"></script>
+
+<!-- Examples -->
+<script src="static/blue/assets/magnific-popup/magnific-popup.js"></script>
+<script src="static/blue/assets/jquery-datatables-editable/jquery.dataTables.js"></script>
+<script src="static/blue/assets/datatables/dataTables.bootstrap.js"></script>
+<script src="static/blue/assets/jquery-datatables-editable/datatables.editable.init.js"></script>
+<script type="text/javascript" src="static/blue/assets/spinner/spinner.min.js"></script>
+<script src="static/blue/js/jquery.hotkeys.js"></script>
+<script src="static/blue/js/save.js"></script>
+
+<script>
+    var fileList;
+    var fileTotal;
+    var current;
+    var useServerPath = false;
+
+    var index;
+    var resultData = [];
+
+    // 初始化
+    function loadingShow() {
+        $("#button-tips").html("处理中...");
+        $("#status").text("识别中...");
+
+        // 初始化
+        fileList = [];
+        resultData = [];
+        fileTotal = 0;
+        current = 0;
+        index = 1;
+
+        // 清空表格底部计数
+        $("#total").text(0);
+        $("#current").text(0);
+
+        $("#result-table").empty();
+    }
+
+    function loadFiles() {
+        // 验证
+        if (useServerPath) {
+            if ($("#path-input").val() === "") {
+                alert("请填写服务器文件路径");
+                return;
+            }
+        } else if ($("#example-input1-group2").val() === "") {
+            alert("请上传文件");
+            return;
+        }
+
+        // 初始函数
+        loadingShow();
+
+        // 构造上传表单
+        var dic = new FormData();
+        // 取上传文件
+        var file = document.getElementById('example-input1-group2').files[0];
+        var pathInput = document.getElementById('path-input').value;
+        dic.append('fapiao', file);
+        dic.append('pathInput', pathInput);
+        dic.append('useServerPath', useServerPath);
+        $.ajax({
+            url: '/getFileList',
+            type: 'POST',
+            data: dic,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            dataType: 'JSON',
+            success: function (arg) {
+                if (arg.status) {
+                    // 矫正结果作为fileList
+                    fileList = arg.out;
+                    // 矫正结果文件数作为总文件数
+                    fileTotal = fileList.length;
+                    // 显示总文件数
+                    $("#total").html(fileTotal);
+
+                    // 识别
+                    ocrForVat();
+
+                } else {
+                    // 错误提示
+                    $("#result").text("出错了，请联系我们完善程序，错误信息如下：" + arg.out);
+                    $("#status").html("图片处理过程中出错啦，请联系我们完善程序，或换一张图片再试试");
+                }
+            }
+        })
+    }
+
+    function ocrForVat() {
+        current++;
+        // 分析完压缩包中的全部文件后返回
+        if (current > fileTotal) {
+            $("#status").html("分析完成");
+            // 按钮恢复
+            $("#button-tips").html("识别");
+            return;
+        }
+        // 循环取队列头
+        var currentFile = fileList.shift();
+        // 提示正在分析的文件
+        $("#status").html("<i class='fa fa-spin fa-spinner'></i>&nbsp;&nbsp;正在分析文件:  " + currentFile).addClass("text-danger");		//页面中的状态进度条
+        var dic = new FormData();
+        // 所有文件
+        dic.append('fileInZip', currentFile);
+
+        $.ajax({
+            url: '/ocrForSpecVat',
+            type: 'POST',
+            data: dic,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            dataType: 'JSON',
+            success: function (arg) {
+                // 构造表格
+                var tr = $('<tr></tr>').attr('style', 'font-weight: bold;');
+                // 原始图片
+                tr.append($('<td><p>' + index++ + '</p></td>'));
+                filename = arg.path.substring(arg.path.lastIndexOf('/') + 1);
+                tr.append($('<td><img src="static/' + arg.path + '"/><br/>' + filename + '</td>'));
+
+                if (arg.status) {
+                    if (arg.type === 'special') {
+                        // 行提取结果
+                        tr.append($('<td><img src="static/' + arg.line + '"/></td>'));
+
+                        // 显示识别结果
+                        var invoice = arg.result.invoice;
+                        var data = {
+                            "id": index - 1,
+                            "filename": filename,
+                            "path": "allstatic/" + arg.path,
+                            "invoice": invoice
+                        };
+
+                        // 向结果数组加入数据
+                        resultData.push(data);
+
+                        tr.append(
+                            $('<td></td>')
+                                .append($("<p></p>").text("发票代码：" + invoice.invoiceCode))
+                                .append($("<p></p>").text("发票号码：" + invoice.invoiceNo))
+                                .append($("<p></p>").text("发票日期：" + invoice.invoiceDate))
+                                .append($("<p></p>").text("不含税金额：" + invoice.invoiceAmount))
+                                .append($("<p></p>").html(arg.timer))
+                            {#.append($("<p></p>").text("总金额：" + invoice.totalAmount))#}
+                        );
+                    } else {
+                        var td = $('<td colspan="2"></td>');
+                        td.append($("<p></p>").html("不是增值税发票，该发票类型暂不识别：" + arg.type));
+                        tr.append(td);
+                    }
+                } else {
+                    // 出错合并单元格并提示出错信息
+                    // var length = arg.result.length;
+                    var td = $('<td colspan="2"></td>');
+                    td.append($("<p></p>").html(arg.result));
+                    tr.append(td);
+                    //tr.append($('<td colspan="2"><span class="label label-primary">' + arg.result + '</span></td>'));
+
+                }
+                // 操作按钮
+                var td = $("<td></td>");
+                var btn1 = $('<td><button class="btn-sm btn waves-effect waves-light btn-primary w-md"><i class="md md-file-upload"></i>&nbsp;<span>上报错误</span></button></td>');
+                btn1.click(function () {
+                    var sendtype = arg.type;
+                    sendBug(arg, sendtype);
+                    // console.log(arg);
+                });
+                var btn2 = $('<td><button class="btn-sm btn waves-effect waves-light btn-primary w-md" ><i class="md md-remove-red-eye"></i>&nbsp;<span>查看错误</span></button></td>');
+                btn2.click(function () {
+                    jumpBug();
+                });
+                td.append(btn1);
+                td.append("<br/>");
+                td.append(btn2);
+                tr.append(td);
+
+                // 显示结果图片
+                $('#result-table').append(tr);
+                // 显示当前处理完成文件数
+                $("#current").html(current);
+
+                // 下一个文件
+                ocrForVat();
+            }
+        })
+    }
+
+    function jumpBug() {
+        window.open("bug?");
+
+    }
+
+    function sendBug(arg, typeforvat) {
+        // 根据status的状态，判断向info里面提交什么数据
+        var info = "信息：" + '\n';
+        var path = arg.path;
+        var line = arg.line;
+        var invoice = arg.result.invoice;
+        var dic = new FormData();
+
+        if (arg.status) {
+            dic.append('path', path);
+            dic.append('line', line);
+            info += "发票类型：" + "专票或普票" + '\n';
+            info += "发票代码：" + invoice.invoiceCode + '\n';
+            info += "发票号码：" + invoice.invoiceNo + '\n';
+            info += "发票日期：" + invoice.invoiceDate + '\n';
+            info += "不含税金额：" + invoice.invoiceAmount + '\n';
+
+            dic.append('info', info);
+
+        } else {
+            dic.append('path', path);
+            dic.append('line', line);
+            info += "发票类型：" + typeforvat + '\n';
+            info += "未识别信息：" + '\n';
+            var resultLength = arg.result.length;
+            for (var i = 0; i < resultLength; i++) {
+                info += arg.result.substring(i, i + 1);
+                if (i % 30 === 0) {
+                    info += '\n';
+                }
+            }
+            dic.append('info', info);
+        }
+
+        //console.log(info);
+
+        $.ajax({
+            url: '/bug',
+            type: 'POST',
+            data: dic,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            dataType: 'JSON',
+            success: function (arg) {
+                if (arg.status) {
+                    alert("上报成功！");
+                } else {
+                    alert("上报失败！");
+                }
+            },
+
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert("出错了，请联系我们完善程序，错误信息如下：\n" + jqXHR.responseText);
+                $("#button-tips").html("识别");
+            }
+        });
+    }
+
+    function switchInput() {
+        useServerPath = true;
+        $("#example-input1-group2").hide();
+        $("#path-input").show().focus();
+    }
+
+    function saveJson() {
+        if (resultData.length > 0)
+            console.save(resultData, "result.json");
+        else
+            alert("没有要导出的数据");
+    }
+
+    jQuery(document).ready(function () {
+        $('#search').click(function () {
+            loadFiles();
+        });
+
+        // 绑定一些键盘快捷键
+        jQuery(document).bind('keydown', 'return', function () {
+            loadFiles();
+        }).bind('keydown', 'ctrl+k', function () {
+            switchInput();
+        });
+
+        jQuery("#path-input").bind('keydown', 'return', function () {
+            loadFiles();
+        });
+
+        jQuery("#btn-local-path").click(switchInput);
+        jQuery("#btn-download").click(saveJson);
+    });
+
+
+</script>
+</body>
+</html>
