@@ -77,7 +77,10 @@ def runType(filepath):
         im = caffe.io.load_image(filepath)
 
         invoice_type = ['quota', 'elect', 'airticket', 'spec_and_normal', 'spec_and_normal_bw', 'trainticket']
-        typeP = invoice_type[recog(im)]
+        index = recog(im)
+        if index < 0:
+            return "other"
+        typeP = invoice_type[index]
     except:
         return "other"
 
