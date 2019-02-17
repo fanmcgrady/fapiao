@@ -86,34 +86,6 @@ def runType(filepath):
 
     return typeP
 
-
-def base64str_to_im(img_data_str):
-    img_byte = base64.b64decode(img_data_str)
-    img_np_arr = np.fromstring(img_byte, np.uint8)
-    im = cv2.imdecode(img_np_arr, cv2.IMREAD_COLOR)
-    return im
-
-
-def delete_hand(img_im):
-    ret_text = post_for_bbox(img_im)
-    handObj = json.loads(ret_text)
-    if handObj['status'] == 'success':
-        body = handObj['body']
-        if 'hand' not in body:
-            return
-        hands = body['hand']
-        for hand in hands:
-            cv2.rectangle(img_im, (hand[0], hand[1]), (hand[2], hand[3]), (0, 255, 0), 1)
-            # logger.info(hand)
-    # logger.info(handObj)
-    cv2.imshow('pic', img_im)
-
-
 if __name__ == '__main__':
     filepath = "Image_00175.jpg"
-    cv2_img = cv2.imread(filepath)
-
-    base64_str = base64.b64encode(cv2.imencode('.jpg', cv2_img)[1]).decode()
-    print(base64_str)
-
-    # runType(filepath)
+    runType(filepath)
