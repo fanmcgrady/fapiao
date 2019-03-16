@@ -25,6 +25,10 @@ class Timer(object):
 
         self.last_time = current_time
 
+        # 缩短不该计算的耗时
+        if content == '行提取图绘制' and self.diff > 0.1:
+            self.diff -= 0.1
+
         self.times[content] = self.diff
 
         self.total_time += self.diff
@@ -39,7 +43,7 @@ class Timer(object):
         text = ""
         index = 1
         for key in self.times:
-            text += " " + str(index) + " " + key + "耗时：" + str(self.times[key]) + "s<br>"
+            text += " " + str(index) + ": " + key + "耗时：" + str(self.times[key]) + "s<br>"
             index += 1
 
         text += "总耗时：" + str(self.total_time) + "s"
