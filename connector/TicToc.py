@@ -27,7 +27,7 @@ class Timer(object):
 
         # 缩短不该计算的耗时
         if content == '行提取图绘制' and self.diff > 0.1:
-            self.diff -= 0.1
+            self.diff = round(self.diff - 0.1, 2)
 
         self.times[content] = self.diff
 
@@ -46,6 +46,6 @@ class Timer(object):
             text += " " + str(index) + ": " + key + "耗时：" + str(self.times[key]) + "s<br>"
             index += 1
 
-        text += "总耗时：" + str(self.total_time) + "s"
+        text += "总耗时：" + str(round(self.total_time, 2)) + "s"
 
         return text
