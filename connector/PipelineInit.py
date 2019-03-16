@@ -1,6 +1,7 @@
 import fp
 
 
+# 初始化pipeline，提高加载速度
 class PipelineInit(object):
     def __init__(self):
         print("init special pipe")
