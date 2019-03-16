@@ -127,7 +127,7 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='textbox
     print(pars)
 
     # pipe = fp.vat_invoice.pipeline.VatInvoicePipeline(typeP, pars=pars, debug=False)  # 请用debug=False
-    pipe = views.global_pipeline(typeP)
+    pipe = views.global_pipeline.get_pipe(typeP)
     im = cv2.imread(filepath, 1)
 
     pipe(im)

@@ -37,9 +37,9 @@ else:
     print("加载模型")
     from connector import connecter
 
-    from connector import pipelineInit
+    from connector import PipelineInit
 
-    global_pipeline = pipelineInit
+    global_pipeline = PipelineInit.PipelineInit()
 
 import datetime
 import json

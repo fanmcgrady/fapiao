@@ -18,5 +18,5 @@ class PipelineInit(object):
                       'normal': self.normal_pipe,
                       'elec': self.elec_pipe}
 
-    def __call__(self, type):
+    def get_pipe(self, type):
         return self._pipe[type]
