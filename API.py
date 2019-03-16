@@ -1,7 +1,4 @@
-import base64
 import sys
-
-import numpy as np
 
 sys.path.append("/home/huangzheng/ocr")
 
@@ -88,6 +85,7 @@ def runType(filepath):
         typeP = 'special'
 
     return typeP
+
 
 if __name__ == '__main__':
     filepath = "Image_00175.jpg"

@@ -301,6 +301,7 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='simple'
     im = cv2.imread(filepath, 1)
     # im = cv2.resize(im, None, fx=0.5, fy=0.5)
     pipe(im)
+
     timer.toc(content="行提取")
     # pl.figure(figsize=(12, 12))
     # pl.imshow(pipe.debug['result'])

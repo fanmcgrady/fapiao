@@ -275,38 +275,41 @@ def init(filepath, pars=dict(textline_method='textboxes')):  # type='special',
         return "", timer, typeP
 
     if not views.local_start:
-        res = scanQRc(filepath)
-        timer.toc(content="二维码识别")
+        # res = scanQRc(filepath)
+        # timer.toc(content="二维码识别")
+        #
+        # if res[0] != '':
+        #     # 显示二维码
+        #     plt_rects = []
+        #     plt_rects.append(
+        #         [res[1][1][0],
+        #          res[1][1][1],
+        #          res[1][3][0] - res[1][0][0],
+        #          res[1][0][1] - res[1][1][1]])
+        #     # 显示
+        #     vis_textline0 = fp.util.visualize.rects(cv2.imread(filepath, 0), plt_rects)
+        #     # 运行代码需要如下部分
+        #     pl.imshow(vis_textline0)
+        #     # 保存到line目录
+        #     pltpath = filepath.replace("upload", "line")
+        #     try:
+        #         pl.savefig(pltpath)
+        #     except Exception as e:
+        #         print("绘制行提取图片不支持bmp格式：{}".format(e))
+        #
+        #     resArray = getArrayFromStr(res[0])
+        #     # print(resArray)
+        #     js = InterfaceType.JsonInterface.invoice()
+        #     js.setVATInvoiceFromArray(resArray, typeP)
+        #
+        #     jsoni = js.dic
+        #     print(jsoni)
+        #     return json.dumps(jsoni).encode().decode("unicode-escape"), timer, typeP
+        # else:
+        #     return newMubanDetect(filepath, typeP, pars, timer)
 
-        if res[0] != '':
-            # 显示二维码
-            plt_rects = []
-            plt_rects.append(
-                [res[1][1][0],
-                 res[1][1][1],
-                 res[1][3][0] - res[1][0][0],
-                 res[1][0][1] - res[1][1][1]])
-            # 显示
-            vis_textline0 = fp.util.visualize.rects(cv2.imread(filepath, 0), plt_rects)
-            # 运行代码需要如下部分
-            pl.imshow(vis_textline0)
-            # 保存到line目录
-            pltpath = filepath.replace("upload", "line")
-            try:
-                pl.savefig(pltpath)
-            except Exception as e:
-                print("绘制行提取图片不支持bmp格式：{}".format(e))
-
-            resArray = getArrayFromStr(res[0])
-            # print(resArray)
-            js = InterfaceType.JsonInterface.invoice()
-            js.setVATInvoiceFromArray(resArray, typeP)
-
-            jsoni = js.dic
-            print(jsoni)
-            return json.dumps(jsoni).encode().decode("unicode-escape"), timer, typeP
-        else:
-            return newMubanDetect(filepath, typeP, pars, timer)
+        # 暂时关闭二维码
+        return newMubanDetect(filepath, typeP, pars, timer)
     else:
         # print('newMubanD')
         return newMubanDetect(filepath, typeP, pars, timer)
