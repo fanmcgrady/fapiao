@@ -35,6 +35,11 @@ else:
     import API
 
     print("加载模型")
+    from connector import connecter
+
+    from connector import pipelineInit
+
+    global_pipeline = pipelineInit
 
 import datetime
 import json
