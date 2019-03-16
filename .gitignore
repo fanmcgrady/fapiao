@@ -7,3 +7,9 @@ db.sqlite3
 
 # 忽略ln链接过来的ocr库
 ocr
+
+# 忽略ln链接过来的models库
+models
+
+# 忽略根目录下的jpg图片
+*.jpg
