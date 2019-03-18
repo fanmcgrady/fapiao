@@ -358,7 +358,7 @@
                 tr.append($('<td><img src="static/' + arg.path + '"/><br/>' + filename + '</td>'));
 
                 if (arg.status) {
-                    if (arg.type === 'special') {
+                    if (arg.type === 'special' || arg.type === 'normal') {
                         // 行提取结果
                         tr.append($('<td><img src="static/' + arg.line + '"/></td>'));
 
@@ -374,16 +374,31 @@
                         // 向结果数组加入数据
                         resultData.push(data);
 
-                        tr.append(
-                            $('<td></td>')
-                                .append($("<p></p>").text("发票代码：" + invoice.invoiceCode))
-                                .append($("<p></p>").text("发票号码：" + invoice.invoiceNo))
-                                .append($("<p></p>").text("发票日期：" + invoice.invoiceDate))
-                                .append($("<p></p>").text("不含税金额：" + invoice.invoiceAmount))
-                                .append($("<p></p>").html(arg.timer))
-                            {#.append($("<p></p>").text("总金额：" + invoice.totalAmount))#}
-                        );
-                    } else {
+                        if (arg.type === 'special') {
+                            tr.append(
+                                $('<td></td>')
+                                    .append($("<p></p>").text("发票代码：" + invoice.invoiceCode))
+                                    .append($("<p></p>").text("发票号码：" + invoice.invoiceNo))
+                                    .append($("<p></p>").text("发票日期：" + invoice.invoiceDate))
+                                    .append($("<p></p>").text("不含税金额：" + invoice.invoiceAmount))
+                                    .append($("<p></p>").html(arg.timer))
+                                {#.append($("<p></p>").text("总金额：" + invoice.totalAmount))#}
+                            );
+                        }
+                        else{
+                            tr.append(
+                                $('<td></td>')
+                                    .append($("<p></p>").text("发票代码：" + invoice.invoiceCode))
+                                    .append($("<p></p>").text("发票号码：" + invoice.invoiceNo))
+                                    .append($("<p></p>").text("发票日期：" + invoice.invoiceDate))
+                                    .append($("<p></p>").text("不含税金额：" + invoice.invoiceAmount))
+                                    .append($("<p></P>").text("校验码： "+ invoice.verifyCode))
+                                    .append($("<p></p>").html(arg.timer))
+                                {#.append($("<p></p>").text("总金额：" + invoice.totalAmount))#}
+                            );
+                        }
+                    }
+                    else {
                         var td = $('<td colspan="2"></td>');
                         td.append($("<p></p>").html("不是增值税发票，该发票类型暂不识别：" + arg.type));
                         tr.append(td);
