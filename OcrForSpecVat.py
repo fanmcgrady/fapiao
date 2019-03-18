@@ -78,20 +78,67 @@ def CropPic(filePath, recT, origin_filePath, pars, typeP, debug=False, isusebaid
     threshold = fp.core.thresh.HybridThreshold(rows=1, cols=4, local='gauss')
 
     for x in recT:
-        if x == 'invoiceNo':
+        if x == 'verifyCode' and len(recT[x]) == 2:
+                sp1 = imgL.crop(
+                    (
+                        recT[x][0][0], recT[x][0][1], recT[x][0][0] + recT[x][0][2],
+                        recT[x][0][1] + recT[x][0][3]))
+                sp2 = imgL.crop(
+                    (
+                        recT[x][1][0], recT[x][1][1], recT[x][1][0] + recT[x][1][2],
+                        recT[x][1][1] + recT[x][1][3]))
+        elif x == 'invoiceNo':
             sp = img.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
         else:
             sp = imgL.crop((recT[x][0], recT[x][1], recT[x][0] + recT[x][2], recT[x][1] + recT[x][3]))
 
-        sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + '/' + jwkj_get_filePath_fileName_fileExt(filePath)[
-            1] + "_" + x + ".jpg"
-        print('--------------  ---------------' + sFPN)
-        sp.save(sFPN)
+        if x == 'verifyCode' and len(recT[x]) == 2:
+            # if len(recT[x]) == 2:#存图  verifyCode例外（多图）
+            sFPN1 = jwkj_get_filePath_fileName_fileExt(filePath)[0] + '/' + \
+                    jwkj_get_filePath_fileName_fileExt(filePath)[
+                        1] + "_" + x + "_1.jpg"
+            sFPN2 = jwkj_get_filePath_fileName_fileExt(filePath)[0] + '/' + \
+                    jwkj_get_filePath_fileName_fileExt(filePath)[
+                        1] + "_" + x + "_2.jpg"
+
+            sp1.save(sFPN1)
+            sp2.save(sFPN2)
+
+            imcv1 = cv2.imread(sFPN1, 1)[:, :, 2]
+            imcv2 = cv2.imread(sFPN2, 1)[:, :, 2]
+            bi_im1 = threshold(imcv1)
+            bi_im2 = threshold(imcv2)
+            cv2.imwrite(sFPN1, bi_im1)
+            cv2.imwrite(sFPN2, bi_im2)
+
+            print('--------------  ---------------' + sFPN1)
+            print('--------------  ---------------' + sFPN2)
+        else:
+            sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + '/' + jwkj_get_filePath_fileName_fileExt(filePath)[
+                1] + "_" + x + ".jpg"
+            print('--------------  ---------------' + sFPN)
+            sp.save(sFPN)
+            if typeP == 'normal' and x == 'verifyCode':
+                imcv = cv2.imread(sFPN, 1)[:, :, 2]
+                bi_im = threshold(imcv)
+                cv2.imwrite(sFPN, bi_im)
+
         if debug == False:
             if isusebaidu:
                 midResult = flow.OcrPic(sFPN)
             else:
-                midResult = newOcr(sFPN, typeP, x)
+                midResult = ''
+                if x == 'verifyCode':  # 是校验码时需要判断大于19位
+                    if len(recT[x]) == 2:  # 两个框的情况
+                        midResult1 = newOcr(sFPN1, typeP, x)
+                        midResult2 = newOcr(sFPN2, typeP, x)
+                        midResult += midResult1 if len(midResult1) > 19 else ''
+                        midResult += midResult2 if len(midResult2) > 19 else ''
+                    else:
+                        mdrs = newOcr(sFPN, typeP, x)
+                        midResult = mdrs if len(mdrs) > 19 else ''  # 超过20位为疑似校验码
+                else:
+                    midResult = newOcr(sFPN, typeP, x)
 
             print(midResult + '   isUseBaidu: ' + str(isusebaidu))
             ocrResult[x] = midResult
@@ -142,6 +189,13 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='textbox
         'tax_free_money': 'invoiceAmount',
         'serial_tiny': 'invoiceNoS'}
 
+    print("***********============",typeP)
+
+    if pipe.predict('verify') != "":
+        atbDic['verify'] = 'verifyCode'
+    else:
+        typeP = 'special'
+
     for atb in atbDic.keys():
         if not pipe.predict(atb) is None:
             attributeLine[atbDic[atb]] = list(pipe.predict(atb))
@@ -149,19 +203,33 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='textbox
     wAxis = 0.02
     hAxis = 0.1
 
+    print("**********============",attributeLine)
+
     for c in attributeLine:
         # print(attributeLine[c])
         if c in ['invoiceNo', 'invoiceAmount']:
             continue
 
-        attributeLine[c][0] = attributeLine[c][0] - wAxis * attributeLine[c][2]
-        attributeLine[c][1] = attributeLine[c][1] - hAxis * attributeLine[c][3]
-        attributeLine[c][2] = attributeLine[c][2] * (1 + 2 * wAxis)
-        attributeLine[c][3] = attributeLine[c][3] * (1 + 2 * hAxis)
-        if attributeLine[c][0] < 0:
-            attributeLine[c][0] = 0
-        if attributeLine[c][1] < 0:
-            attributeLine[c][1] = 0
+        if c == 'verifyCode' and len(attributeLine[c]) == 2:
+            # 校验码提取到两个框
+            for i in range(len(attributeLine[c])):
+                attributeLine[c][i][0] = attributeLine[c][i][0] - wAxis * attributeLine[c][i][2]
+                attributeLine[c][i][1] = attributeLine[c][i][1] - hAxis * attributeLine[c][i][3]
+                attributeLine[c][i][2] = attributeLine[c][i][2] * (1 + 2 * wAxis)
+                attributeLine[c][i][3] = attributeLine[c][i][3] * (1 + 2 * hAxis)
+                if attributeLine[c][i][0] < 0:
+                    attributeLine[c][i][0] = 0
+                if attributeLine[c][i][1] < 0:
+                    attributeLine[c][i][1] = 0
+        else:
+            attributeLine[c][0] = attributeLine[c][0] - wAxis * attributeLine[c][2]
+            attributeLine[c][1] = attributeLine[c][1] - hAxis * attributeLine[c][3]
+            attributeLine[c][2] = attributeLine[c][2] * (1 + 2 * wAxis)
+            attributeLine[c][3] = attributeLine[c][3] * (1 + 2 * hAxis)
+            if attributeLine[c][0] < 0:
+                attributeLine[c][0] = 0
+            if attributeLine[c][1] < 0:
+                attributeLine[c][1] = 0
 
     print(attributeLine)
     timer.toc(content="行提取矫正")
@@ -269,8 +337,10 @@ def init(filepath, pars=dict(textline_method='textboxes')):  # type='special',
     invoice_type = ['quota', 'elect', 'airticket', 'spec_and_normal', 'spec_and_normal_bw', 'trainticket']
     typeP = invoice_type[recog(im)]
 
-    if typeP == 'spec_and_normal' or typeP == 'spec_and_normal_bw':
+    if typeP == 'spec_and_normal':
         typeP = 'special'
+    elif typeP == 'spec_and_normal_bw':
+        typeP = 'normal'
     else:
         return "", timer, typeP
 
