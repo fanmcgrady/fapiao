@@ -189,9 +189,9 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='textbox
         'tax_free_money': 'invoiceAmount',
         'serial_tiny': 'invoiceNoS'}
 
-    print("***********============",typeP)
-
-    if pipe.predict('verify') != "":
+    if pipe.predict('verify') is not None:
+        # 由于目前不论普票专票的分类结果都是spec_and_normal_bw，因此337行的处理结果都是Normal
+        # 在此通过行提取是否有校验码一项来判别普票和专票，普票则加入校验码项，专票则更改类型
         atbDic['verify'] = 'verifyCode'
     else:
         typeP = 'special'
@@ -202,8 +202,6 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='textbox
 
     wAxis = 0.02
     hAxis = 0.1
-
-    print("**********============",attributeLine)
 
     for c in attributeLine:
         # print(attributeLine[c])
@@ -222,6 +220,7 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='textbox
                 if attributeLine[c][i][1] < 0:
                     attributeLine[c][i][1] = 0
         else:
+            # 非校验码的情况
             attributeLine[c][0] = attributeLine[c][0] - wAxis * attributeLine[c][2]
             attributeLine[c][1] = attributeLine[c][1] - hAxis * attributeLine[c][3]
             attributeLine[c][2] = attributeLine[c][2] * (1 + 2 * wAxis)
