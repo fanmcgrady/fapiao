@@ -146,7 +146,7 @@ def CropPic(filePath, recT, origin_filePath, pars, typeP, debug=False, isusebaid
                     if len(midResult) == 11:
                         midResult = midResult[1:]
                     elif len(midResult) == 12 and typeP == "normal":
-                        if midResult[0] not in [0, 1, 2]:
+                        if midResult[0] not in ['0', '1', '2']:
                             midResult = midResult[2:]
                 else:
                     midResult = newOcr(sFPN, typeP, x)
