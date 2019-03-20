@@ -143,11 +143,14 @@ def CropPic(filePath, recT, origin_filePath, pars, typeP, debug=False, isusebaid
                     # 对于12位的普通发票 第1位为国家税务局、地方税务局代码，1为国家税务局、2为地方税务局，0为总局
                     # 因此对于普通发票预测结果为12位的代码，如果是第一位不是0、1、2则认为误判，只取后十位
                     midResult = newOcr(sFPN, typeP, x)
+                    if len(midResult) > 12:  # 超过12位的直接取后12位
+                        midResult = midResult[-12:]
+
                     if len(midResult) == 11:
-                        midResult = midResult[1:]
+                        midResult = midResult[-10:]
                     elif len(midResult) == 12 and typeP == "normal":
                         if midResult[0] not in ['0', '1', '2']:
-                            midResult = midResult[2:]
+                            midResult = midResult[-10:]
                 else:
                     midResult = newOcr(sFPN, typeP, x)
 
