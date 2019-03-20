@@ -351,7 +351,8 @@ def init(filepath, pars=dict(textline_method='textboxes')):  # type='special',
     typeP = invoice_type[recog(im)]
 
     if typeP == 'spec_and_normal':
-        typeP = 'special'
+        # typeP = 'special'
+        typeP = 'normal'
     elif typeP == 'spec_and_normal_bw':
         typeP = 'normal'
     else:
