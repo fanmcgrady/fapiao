@@ -347,7 +347,7 @@ def init(filepath, pars=dict(textline_method='textboxes')):  # type='special',
     recog = fp.TextBoxes.recog_invoice_type.InvoiTypeRecog()
     im = caffe.io.load_image(filepath)
 
-    invoice_type = ['quota', 'elect', 'airticket', 'spec_and_normal', 'spec_and_normal_bw', 'trainticket']
+    invoice_type = ['spec_and_normal', 'others']
     typeP = invoice_type[recog(im)]
 
     if typeP == 'spec_and_normal':
