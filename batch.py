@@ -292,6 +292,7 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='textbox
 
         cv2.imwrite(pltpath, pipe.surface_image)
     except Exception as e:
+        pass
         # print("绘制行提取图片不支持bmp格式：{}".format(e))
 
     timer.toc(content="行提取图绘制")
