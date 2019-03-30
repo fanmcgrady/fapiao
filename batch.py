@@ -1,4 +1,6 @@
 import copy
+import glob
+
 import OCR
 import cv2
 import matplotlib.pyplot as pl
@@ -360,65 +362,17 @@ def init(filepath, pars=dict(textline_method='textboxes')):  # type='special',
     else:
         return "", timer, typeP
 
-    if not views.local_start:
-        # res = scanQRc(filepath)
-        # timer.toc(content="二维码识别")
-        #
-        # if res[0] != '':
-        #     # 显示二维码
-        #     plt_rects = []
-        #     plt_rects.append(
-        #         [res[1][1][0],
-        #          res[1][1][1],
-        #          res[1][3][0] - res[1][0][0],
-        #          res[1][0][1] - res[1][1][1]])
-        #     # 显示
-        #     vis_textline0 = fp.util.visualize.rects(cv2.imread(filepath, 0), plt_rects)
-        #     # 运行代码需要如下部分
-        #     pl.imshow(vis_textline0)
-        #     # 保存到line目录
-        #     pltpath = filepath.replace("upload", "line")
-        #     try:
-        #         pl.savefig(pltpath)
-        #     except Exception as e:
-        #         print("绘制行提取图片不支持bmp格式：{}".format(e))
-        #
-        #     resArray = getArrayFromStr(res[0])
-        #     # print(resArray)
-        #     js = InterfaceType.JsonInterface.invoice()
-        #     js.setVATInvoiceFromArray(resArray, typeP)
-        #
-        #     jsoni = js.dic
-        #     print(jsoni)
-        #     return json.dumps(jsoni).encode().decode("unicode-escape"), timer, typeP
-        # else:
-        #     return newMubanDetect(filepath, typeP, pars, timer)
+    return newMubanDetect(filepath, typeP, pars, timer)
 
-        # 暂时关闭二维码
-        return newMubanDetect(filepath, typeP, pars, timer)
-    else:
-        # print('newMubanD')
-        return newMubanDetect(filepath, typeP, pars, timer)
-
-
-'''dset_dir = 'E:/DevelopT/pycharm_workspace/Ocr/Image'
-jpgs = fp.util.path.files_in_dir(dset_dir, '.png')
-print(jpgs[9])
-'''
 
 if __name__ == '__main__':
-    # dset = '/home/huangzheng/ocr/testPic/3/'
-    # dset1 = '/home/huangzheng/ocr/testPic/3simple/'
-    # jpgs = fp.util.path.files_in_dir(dset, '.jpg')
-    # for c in jpgs:
-    #    print(c)
-    #    # dset = 'D:/Development/data/2/'
-    #    # c = 'Image_00147.jpg'
-    #    init(os.path.join(dset, c), type='special', pars=dict(textline_method='textboxes'))
-    #    init(os.path.join(dset1, c), type='special', pars=dict(textline_method='simple'))
-    #    print('__________________________  ' + c + '  _______________________')
+    # print('args: image_path[option]')
+    # if len(sys.argv) == 2:
+    #     image_path = sys.argv[1]
+    # else:
+    #     image_path = '/home/public/Pics/Special.30.20181203/'
+    #
+    # im_names = glob.glob(os.path.join(image_path, "*.jpg"))
+    # for filename in im_names:
 
-    # init('/home/huangzheng/ocr/Image_00181.jpg', type='special', pars=dict(textline_method='textboxes'))
-    # init('/home/huangzheng/ocr/testPic/3/Image_00003.jpg', type='special', pars=dict(textline_method='simple'))
-    # init('Image_00131.jpg', type='elec', pars=dict(textline_method='simple'))
     init('/home/huangzheng/ocr/testPic/1/Image_00129.jpg')
