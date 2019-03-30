@@ -410,7 +410,7 @@ def batch_test():
 
     print(type(ocr_result), type(ocr_result[0]), ocr_result[0])
     print("Chinese infor query begin...")
-    # Get_Chinese_Info(ocr_result, result_save_path, invoicetype)
+    Get_Chinese_Info(ocr_result, result_save_path, invoicetype)
 
 
 
