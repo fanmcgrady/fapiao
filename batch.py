@@ -23,6 +23,7 @@ import InterfaceType
 import lineToAttribute.getAtbt
 import xmlToDict
 import muban
+from Get_Chinese_info import Get_Chinese_Info
 
 from connector.TicToc import Timer
 import time
@@ -298,9 +299,9 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='textbox
     jsonResult = CropPic(filepathS, attributeLine, filepath, pars, typeP, debug=False,
                          isusebaidu=False)  # ocr和分词
     timer.toc(content="切图ocr识别")
-    print(jsonResult)
+    # print(jsonResult)
 
-    return jsonResult, timer, typeP
+    return jsonResult
 
 
 def scanQRc(filepath):
@@ -365,13 +366,61 @@ def init(filepath, pars=dict(textline_method='textboxes')):  # type='special',
     return newMubanDetect(filepath, typeP, pars, timer)
 
 
-if __name__ == '__main__':
-    print('args: image_path[option]')
-    if len(sys.argv) == 2:
-        image_path = sys.argv[1]
+def batch_test():
+    # 参数表： 测试图片集路径，发票类型
+    if len(sys.argv) == 1:
+        images_dir = input("Please enter pictures dir:")
+        result_save_path = input("Please enter result save path:")
+        invoicetype = input("Please enter the invoice type(special=01, normal=04):")
+    elif len(sys.argv) == 3:
+        images_dir = sys.argv[1]
+        result_save_path = sys.argv[2]
+        invoicetype = sys.argv[3]
     else:
-        image_path = '/home/public/Pics/Special.30.20181203/'
+        print("Wrong input args.\n")
+        return
 
-    im_names = glob.glob(os.path.join(image_path, "*.jpg"))
-    for filename in im_names:
-        init(filename)
+    image_list = glob.glob(os.path.join(images_dir, "*.jpg"))
+    if len(image_list) == 0:
+        image_list = glob.glob(os.path.join(images_dir, "*.bmp"))
+        if len(image_list) == 0:
+            print("No pics in "+images_dir+" !\n")
+            return
+
+    print("Now begin to ocr...")
+    ocr_result = []
+    ocr_erorr_list = []
+    num_of_imges = len(image_list)
+    for img in image_list:
+        try:
+            ocr_result.append(init(img))
+        except Exception as _:
+            ocr_erorr_list.append(img)
+    print("ocr is complete, get %d / %d pics info." % (len(ocr_result), num_of_imges))
+
+    file_ocr_result = os.path.join(result_save_path, "ocr_result.json")
+    file_ocr_error_list = os.path.join(result_save_path, "ocr_error_files.txt")
+
+    print("Now saving the result...")
+    with open(file_ocr_result, 'w') as re, open(file_ocr_error_list, 'w') as er:
+        re.write(json.dumps(ocr_result, indent=4, ensure_ascii=False))
+        for i in ocr_erorr_list:
+            er.writelines(i+'\n')
+
+    print("Chinese infor query begin...")
+    Get_Chinese_Info(ocr_result, result_save_path, invoicetype)
+
+
+
+
+if __name__ == '__main__':
+    # print('args: image_path[option]')
+    # if len(sys.argv) == 2:
+    #     image_path = sys.argv[1]
+    # else:
+    #     image_path = '/home/public/Pics/Special.30.20181203/'
+    #
+    # im_names = glob.glob(os.path.join(image_path, "*.jpg"))
+    # for filename in im_names:
+    #     init(filename)
+    batch_test();
