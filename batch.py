@@ -1,19 +1,19 @@
 import copy
 import glob
-
-import OCR
 import cv2
 import matplotlib.pyplot as pl
 from PIL import Image
 # 加载黄政的代码
 import sys
 sys.path.append("/home/huangzheng/ocr")
+import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
+import OCR
 
 from connector import FindCircle, flow, connecter
 
 import json
-import os
+
 import numpy as np
 import SemanticCorrect.posteriorCrt
 import fp
