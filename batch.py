@@ -77,7 +77,7 @@ def CropPic(filePath, recT, origin_filePath, pars, typeP, debug=False, isusebaid
     # 裁剪（校验码处理）
     time2 = time.time()
 
-    print('二值化过程:   ' + str(time2 - time1))
+    # print('二值化过程:   ' + str(time2 - time1))
 
     # 校验码处理
     threshold = fp.core.thresh.HybridThreshold(rows=1, cols=4, local='gauss')
