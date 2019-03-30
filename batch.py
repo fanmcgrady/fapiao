@@ -394,7 +394,7 @@ def batch_test():
     num_of_imges = len(image_list)
     for img in image_list:
         try:
-            tuple_info = init(img)
+            tuple_info = json.loads(init(img))
             tuple_info['filename'] = img
             ocr_result.append(tuple_info)
         except Exception as _:
