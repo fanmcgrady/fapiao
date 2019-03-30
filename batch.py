@@ -61,9 +61,9 @@ def CropPic(filePath, recT, origin_filePath, pars, typeP, debug=False, isusebaid
             isAdoptive = True  # 测试中
 
     timex = time.time()
-    print("判断   " + str(timex - time1))
+    # print("判断   " + str(timex - time1))
 
-    print("isAdoptive:  " + str(isAdoptive))
+    # print("isAdoptive:  " + str(isAdoptive))
     if isAdoptive:
         # 自适应二值化
         imgL = cv2.adaptiveThreshold(imgL, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 5)
@@ -116,12 +116,12 @@ def CropPic(filePath, recT, origin_filePath, pars, typeP, debug=False, isusebaid
             cv2.imwrite(sFPN1, bi_im1)
             cv2.imwrite(sFPN2, bi_im2)
 
-            print('--------------  ---------------' + sFPN1)
-            print('--------------  ---------------' + sFPN2)
+            # print('--------------  ---------------' + sFPN1)
+            # print('--------------  ---------------' + sFPN2)
         else:
             sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + '/' + jwkj_get_filePath_fileName_fileExt(filePath)[
                 1] + "_" + x + ".jpg"
-            print('--------------  ---------------' + sFPN)
+            # print('--------------  ---------------' + sFPN)
             sp.save(sFPN)
             if typeP == 'normal' and x == 'verifyCode':
                 imcv = cv2.imread(sFPN, 1)[:, :, 2]
@@ -159,17 +159,17 @@ def CropPic(filePath, recT, origin_filePath, pars, typeP, debug=False, isusebaid
                 else:
                     midResult = newOcr(sFPN, typeP, x)
 
-            print(midResult + '   isUseBaidu: ' + str(isusebaidu))
+            # print(midResult + '   isUseBaidu: ' + str(isusebaidu))
             ocrResult[x] = midResult
 
     # 后矫正
     time6 = time.time()
-    print('切图识别：    ' + str(time6 - time2))
+    # print('切图识别：    ' + str(time6 - time2))
 
-    print(ocrResult)
+    # print(ocrResult)
     pC = SemanticCorrect.posteriorCrt.posteriorCrt()
 
-    print("origin_filePath " + origin_filePath)
+    # print("origin_filePath " + origin_filePath)
 
     js = InterfaceType.JsonInterface.invoice()
     pC.setVATParaFromVATDict(ocrResult)
@@ -177,20 +177,20 @@ def CropPic(filePath, recT, origin_filePath, pars, typeP, debug=False, isusebaid
         tms = pC.VATdic['invoiceNoS']
         pC.VATdic['invoiceNoS'] = pC.VATdic['invoiceNo']
         pC.VATdic['invoiceNo'] = tms
-        print('Use  invoiceNoS ---------------------------------')
+        # print('Use  invoiceNoS ---------------------------------')
     pC.startVATCrt()
     js.setValueWithDict(pC.VATdic)
     jsoni = js.dic
 
     time7 = time.time()
-    print('后矫正： ' + str(time7 - time6))
+    # print('后矫正： ' + str(time7 - time6))
 
     return json.dumps(jsoni).encode().decode("unicode-escape")
 
 
 def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='textboxes'), timer=None):
-    print(typeP)
-    print(pars)
+    # print(typeP)
+    # print(pars)
 
     # pipe = fp.vat_invoice.pipeline.VatInvoicePipeline(typeP, pars=pars, debug=False)  # 请用debug=False
     pipe = global_pipeline.get_pipe(typeP)
@@ -249,7 +249,7 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='textbox
             if attributeLine[c][1] < 0:
                 attributeLine[c][1] = 0
 
-    print(attributeLine)
+    # print(attributeLine)
     timer.toc(content="行提取矫正")
 
     # 新建目录tmp
@@ -292,7 +292,7 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='textbox
 
         cv2.imwrite(pltpath, pipe.surface_image)
     except Exception as e:
-        print("绘制行提取图片不支持bmp格式：{}".format(e))
+        # print("绘制行提取图片不支持bmp格式：{}".format(e))
 
     timer.toc(content="行提取图绘制")
 
@@ -407,8 +407,9 @@ def batch_test():
         for i in ocr_erorr_list:
             er.writelines(i+'\n')
 
+    print(type(ocr_result), type(ocr_result[0]), ocr_result[0])
     print("Chinese infor query begin...")
-    Get_Chinese_Info(ocr_result, result_save_path, invoicetype)
+    # Get_Chinese_Info(ocr_result, result_save_path, invoicetype)
 
 
 
