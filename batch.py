@@ -366,13 +366,12 @@ def init(filepath, pars=dict(textline_method='textboxes')):  # type='special',
 
 
 if __name__ == '__main__':
-    # print('args: image_path[option]')
-    # if len(sys.argv) == 2:
-    #     image_path = sys.argv[1]
-    # else:
-    #     image_path = '/home/public/Pics/Special.30.20181203/'
-    #
-    # im_names = glob.glob(os.path.join(image_path, "*.jpg"))
-    # for filename in im_names:
+    print('args: image_path[option]')
+    if len(sys.argv) == 2:
+        image_path = sys.argv[1]
+    else:
+        image_path = '/home/public/Pics/Special.30.20181203/'
 
-    init('/home/huangzheng/ocr/testPic/1/Image_00129.jpg')
+    im_names = glob.glob(os.path.join(image_path, "*.jpg"))
+    for filename in im_names:
+        init(filename)
