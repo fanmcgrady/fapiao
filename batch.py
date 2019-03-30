@@ -372,7 +372,7 @@ def batch_test():
         images_dir = input("Please enter pictures dir:")
         result_save_path = input("Please enter result save path:")
         invoicetype = input("Please enter the invoice type(special=01, normal=04):")
-    elif len(sys.argv) == 3:
+    elif len(sys.argv) == 4:
         images_dir = sys.argv[1]
         result_save_path = sys.argv[2]
         invoicetype = sys.argv[3]
