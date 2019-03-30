@@ -6,6 +6,7 @@ from PIL import Image
 # 加载黄政的代码
 import sys
 sys.path.append("/home/huangzheng/ocr")
+from Get_Chinese_Info import Get_Chinese_Info
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
 import OCR
@@ -23,7 +24,6 @@ import InterfaceType
 import lineToAttribute.getAtbt
 import xmlToDict
 import muban
-from Get_Chinese_info import Get_Chinese_Info
 
 from connector.TicToc import Timer
 import time
@@ -423,4 +423,4 @@ if __name__ == '__main__':
     # im_names = glob.glob(os.path.join(image_path, "*.jpg"))
     # for filename in im_names:
     #     init(filename)
-    batch_test();
+    batch_test()
