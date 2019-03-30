@@ -394,7 +394,9 @@ def batch_test():
     num_of_imges = len(image_list)
     for img in image_list:
         try:
-            ocr_result.append(init(img))
+            tuple_info = init(img)
+            tuple_info['filename'] = img
+            ocr_result.append(tuple_info)
         except Exception as _:
             ocr_erorr_list.append(img)
     print("ocr is complete, get %d / %d pics info." % (len(ocr_result), num_of_imges))
