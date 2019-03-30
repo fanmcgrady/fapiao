@@ -368,7 +368,10 @@ def init(filepath, pars=dict(textline_method='textboxes')):  # type='special',
 
 
 def batch_test():
-    # 参数表： 测试图片集路径，发票类型
+    # 参数表： 测试图片集路径，结果存储路径，发票类型
+    curr = time.strftime('%Y.%m.%d', time.localtime(time.time()))
+    os.makedirs(curr)
+
     if len(sys.argv) == 1:
         images_dir = input("Please enter pictures dir:")
         result_save_path = input("Please enter result save path:")
@@ -401,8 +404,8 @@ def batch_test():
             ocr_erorr_list.append(img)
     print("ocr is complete, get %d / %d pics info." % (len(ocr_result), num_of_imges))
 
-    file_ocr_result = os.path.join(result_save_path, "ocr_result.json")
-    file_ocr_error_list = os.path.join(result_save_path, "ocr_error_files.txt")
+    file_ocr_result = os.path.join(result_save_path, curr, "ocr_result.json")
+    file_ocr_error_list = os.path.join(result_save_path, curr, "ocr_error_files.txt")
 
     print("Now saving the result...")
     with open(file_ocr_result, 'w') as re, open(file_ocr_error_list, 'w') as er:
@@ -410,9 +413,8 @@ def batch_test():
         for i in ocr_erorr_list:
             er.writelines(i+'\n')
 
-    print(type(ocr_result), type(ocr_result[0]), ocr_result[0])
     print("Chinese infor query begin...")
-    Get_Chinese_Info(ocr_result, result_save_path, invoicetype)
+    Get_Chinese_Info(ocr_result, os.path.join(result_save_path, curr), invoicetype)
 
 
 
