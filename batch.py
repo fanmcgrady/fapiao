@@ -417,13 +417,16 @@ def batch_test():
             er.writelines(i+'\n')
 
     print("Chinese infor query begin...")
-    succeed = Get_Chinese_Info(ocr_result, result_save_path, invoicetype)
+    succeed, query_error = Get_Chinese_Info(ocr_result, result_save_path, invoicetype)
 
     file_result = str(succeed) + "(%d)_ocr_correct.txt" % num_of_imges
     file_result = os.path.join(result_save_path, file_result)
 
     with open(file_result, "w") as wp:
-        wp.write(file_result + "%.2f" % (succeed/num_of_imges))
+        wp.write(file_result + " %.2f " % (succeed/num_of_imges)+'\n')
+        wp.write("%d not find in web：没有查询到中文数据（不一定ocr错误）"%(num_of_imges-succeed)+'\n')
+        wp.write("%d ocr_error_files：ocr没有正确生成五元组"%(len(ocr_erorr_list))+'\n')
+        wp.write("%d query_error_pics：本地有中文数据，但五元组错误"%(query_error)+'\n')
 
 
 if __name__ == '__main__':
