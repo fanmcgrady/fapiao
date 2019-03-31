@@ -419,7 +419,7 @@ def batch_test():
     print("Chinese infor query begin...")
     succeed = Get_Chinese_Info(ocr_result, result_save_path, invoicetype)
 
-    file_result = str(succeed) + "/%d ocr correct.txt" % num_of_imges
+    file_result = str(succeed) + "(%d)_ocr_correct.txt" % num_of_imges
 
     with open(file_result, "w") as wp:
         wp.write(file_result + "%.2f" % (succeed/num_of_imges))
