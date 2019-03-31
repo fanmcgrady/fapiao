@@ -370,7 +370,6 @@ def init(filepath, pars=dict(textline_method='textboxes')):  # type='special',
 def batch_test():
     # 参数表： 测试图片集路径，结果存储路径，发票类型
     curr = time.strftime('%Y.%m.%d', time.localtime(time.time()))
-    os.makedirs(curr)
 
     if len(sys.argv) == 1:
         images_dir = input("Please enter pictures dir:")
@@ -383,6 +382,10 @@ def batch_test():
     else:
         print("Wrong input args.\n")
         return
+
+    result_save_path += connecter
+    if not os.path.exists(result_save_path):
+        os.makedirs(result_save_path)
 
     image_list = glob.glob(os.path.join(images_dir, "*.jpg"))
     if len(image_list) == 0:
