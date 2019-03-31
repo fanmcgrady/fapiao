@@ -408,7 +408,7 @@ def batch_test():
             ocr_erorr_list.append(img)
     print("ocr is complete, get %d / %d pics info." % (len(ocr_result), num_of_imges))
 
-    file_ocr_result = os.path.join(root_path, "ocr_result.json")
+    file_ocr_result = os.path.join(result_save_path, "ocr_result.json")
     file_ocr_error_list = os.path.join(result_save_path, "ocr_error_files.txt")
 
     print("Now saving the result...")
