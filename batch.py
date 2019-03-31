@@ -423,10 +423,10 @@ def batch_test():
     file_result = os.path.join(result_save_path, file_result)
 
     with open(file_result, "w") as wp:
-        wp.write(file_result + " %.2f " % (succeed/num_of_imges)+'\n')
-        wp.write("%d not find in web：没有查询到中文数据（不一定ocr错误）"%(num_of_imges-succeed)+'\n')
-        wp.write("%d ocr_error_files：ocr没有正确生成五元组"%(len(ocr_erorr_list))+'\n')
-        wp.write("%d query_error_pics：本地有中文数据，但五元组错误"%(query_error)+'\n')
+        wp.writelines(file_result + " %.2f " % (succeed/num_of_imges)+'\n')
+        wp.writelines("%d not find in web：没有查询到中文数据（不一定ocr错误）"%(num_of_imges-succeed)+'\n')
+        wp.writelines("%d ocr_error_files：ocr没有正确生成五元组"%(len(ocr_erorr_list))+'\n')
+        wp.writelines("%d query_error_pics：本地有中文数据，但五元组错误"%(query_error)+'\n')
 
 
 if __name__ == '__main__':
