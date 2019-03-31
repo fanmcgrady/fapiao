@@ -420,6 +420,7 @@ def batch_test():
     succeed = Get_Chinese_Info(ocr_result, result_save_path, invoicetype)
 
     file_result = str(succeed) + "(%d)_ocr_correct.txt" % num_of_imges
+    file_result = os.path.join(result_save_path, file_result)
 
     with open(file_result, "w") as wp:
         wp.write(file_result + "%.2f" % (succeed/num_of_imges))
