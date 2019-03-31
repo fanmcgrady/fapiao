@@ -407,8 +407,8 @@ def batch_test():
             ocr_erorr_list.append(img)
     print("ocr is complete, get %d / %d pics info." % (len(ocr_result), num_of_imges))
 
-    file_ocr_result = os.path.join(result_save_path, curr, "ocr_result.json")
-    file_ocr_error_list = os.path.join(result_save_path, curr, "ocr_error_files.txt")
+    file_ocr_result = os.path.join(result_save_path, "ocr_result.json")
+    file_ocr_error_list = os.path.join(result_save_path, "ocr_error_files.txt")
 
     print("Now saving the result...")
     with open(file_ocr_result, 'w') as re, open(file_ocr_error_list, 'w') as er:
@@ -417,7 +417,7 @@ def batch_test():
             er.writelines(i+'\n')
 
     print("Chinese infor query begin...")
-    succeed = Get_Chinese_Info(ocr_result, os.path.join(result_save_path, curr), invoicetype)
+    succeed = Get_Chinese_Info(ocr_result, result_save_path, invoicetype)
 
     file_result = str(succeed) + "/%d ocr correct.txt" % num_of_imges
 
