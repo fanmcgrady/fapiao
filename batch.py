@@ -383,7 +383,7 @@ def batch_test():
         print("Wrong input args.\n")
         return
 
-    result_save_path += connecter
+    result_save_path = os.path.join(result_save_path, curr)
     if not os.path.exists(result_save_path):
         os.makedirs(result_save_path)
 
@@ -425,16 +425,5 @@ def batch_test():
         wp.write(file_result + "%.2f" % (succeed/num_of_imges))
 
 
-
-
 if __name__ == '__main__':
-    # print('args: image_path[option]')
-    # if len(sys.argv) == 2:
-    #     image_path = sys.argv[1]
-    # else:
-    #     image_path = '/home/public/Pics/Special.30.20181203/'
-    #
-    # im_names = glob.glob(os.path.join(image_path, "*.jpg"))
-    # for filename in im_names:
-    #     init(filename)
     batch_test()
