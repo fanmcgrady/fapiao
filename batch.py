@@ -383,6 +383,7 @@ def batch_test():
         print("Wrong input args.\n")
         return
 
+    root_path = result_save_path
     result_save_path = os.path.join(result_save_path, curr)
     if not os.path.exists(result_save_path):
         os.makedirs(result_save_path)
@@ -407,7 +408,7 @@ def batch_test():
             ocr_erorr_list.append(img)
     print("ocr is complete, get %d / %d pics info." % (len(ocr_result), num_of_imges))
 
-    file_ocr_result = os.path.join(result_save_path, "ocr_result.json")
+    file_ocr_result = os.path.join(root_path, "ocr_result.json")
     file_ocr_error_list = os.path.join(result_save_path, "ocr_error_files.txt")
 
     print("Now saving the result...")
@@ -417,7 +418,7 @@ def batch_test():
             er.writelines(i+'\n')
 
     print("Chinese infor query begin...")
-    succeed, query_error = Get_Chinese_Info(ocr_result, result_save_path, invoicetype)
+    succeed, query_error = Get_Chinese_Info(ocr_result, result_save_path, invoicetype, root_path)
 
     file_result = str(succeed) + "(%d)_ocr_correct.txt" % num_of_imges
     file_result = os.path.join(result_save_path, file_result)
