@@ -6,6 +6,7 @@ from PIL import Image
 # 加载黄政的代码
 import sys
 sys.path.append("/home/huangzheng/ocr")
+from Get_Chinese_Info import Get_Chinese_Info
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
 import OCR
@@ -60,9 +61,9 @@ def CropPic(filePath, recT, origin_filePath, pars, typeP, debug=False, isusebaid
             isAdoptive = True  # 测试中
 
     timex = time.time()
-    print("判断   " + str(timex - time1))
+    # print("判断   " + str(timex - time1))
 
-    print("isAdoptive:  " + str(isAdoptive))
+    # print("isAdoptive:  " + str(isAdoptive))
     if isAdoptive:
         # 自适应二值化
         imgL = cv2.adaptiveThreshold(imgL, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 5)
@@ -76,7 +77,7 @@ def CropPic(filePath, recT, origin_filePath, pars, typeP, debug=False, isusebaid
     # 裁剪（校验码处理）
     time2 = time.time()
 
-    print('二值化过程:   ' + str(time2 - time1))
+    # print('二值化过程:   ' + str(time2 - time1))
 
     # 校验码处理
     threshold = fp.core.thresh.HybridThreshold(rows=1, cols=4, local='gauss')
@@ -115,12 +116,12 @@ def CropPic(filePath, recT, origin_filePath, pars, typeP, debug=False, isusebaid
             cv2.imwrite(sFPN1, bi_im1)
             cv2.imwrite(sFPN2, bi_im2)
 
-            print('--------------  ---------------' + sFPN1)
-            print('--------------  ---------------' + sFPN2)
+            # print('--------------  ---------------' + sFPN1)
+            # print('--------------  ---------------' + sFPN2)
         else:
             sFPN = jwkj_get_filePath_fileName_fileExt(filePath)[0] + '/' + jwkj_get_filePath_fileName_fileExt(filePath)[
                 1] + "_" + x + ".jpg"
-            print('--------------  ---------------' + sFPN)
+            # print('--------------  ---------------' + sFPN)
             sp.save(sFPN)
             if typeP == 'normal' and x == 'verifyCode':
                 imcv = cv2.imread(sFPN, 1)[:, :, 2]
@@ -158,17 +159,17 @@ def CropPic(filePath, recT, origin_filePath, pars, typeP, debug=False, isusebaid
                 else:
                     midResult = newOcr(sFPN, typeP, x)
 
-            print(midResult + '   isUseBaidu: ' + str(isusebaidu))
+            # print(midResult + '   isUseBaidu: ' + str(isusebaidu))
             ocrResult[x] = midResult
 
     # 后矫正
     time6 = time.time()
-    print('切图识别：    ' + str(time6 - time2))
+    # print('切图识别：    ' + str(time6 - time2))
 
-    print(ocrResult)
+    # print(ocrResult)
     pC = SemanticCorrect.posteriorCrt.posteriorCrt()
 
-    print("origin_filePath " + origin_filePath)
+    # print("origin_filePath " + origin_filePath)
 
     js = InterfaceType.JsonInterface.invoice()
     pC.setVATParaFromVATDict(ocrResult)
@@ -176,20 +177,20 @@ def CropPic(filePath, recT, origin_filePath, pars, typeP, debug=False, isusebaid
         tms = pC.VATdic['invoiceNoS']
         pC.VATdic['invoiceNoS'] = pC.VATdic['invoiceNo']
         pC.VATdic['invoiceNo'] = tms
-        print('Use  invoiceNoS ---------------------------------')
+        # print('Use  invoiceNoS ---------------------------------')
     pC.startVATCrt()
     js.setValueWithDict(pC.VATdic)
     jsoni = js.dic
 
     time7 = time.time()
-    print('后矫正： ' + str(time7 - time6))
+    # print('后矫正： ' + str(time7 - time6))
 
     return json.dumps(jsoni).encode().decode("unicode-escape")
 
 
 def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='textboxes'), timer=None):
-    print(typeP)
-    print(pars)
+    # print(typeP)
+    # print(pars)
 
     # pipe = fp.vat_invoice.pipeline.VatInvoicePipeline(typeP, pars=pars, debug=False)  # 请用debug=False
     pipe = global_pipeline.get_pipe(typeP)
@@ -248,7 +249,7 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='textbox
             if attributeLine[c][1] < 0:
                 attributeLine[c][1] = 0
 
-    print(attributeLine)
+    # print(attributeLine)
     timer.toc(content="行提取矫正")
 
     # 新建目录tmp
@@ -291,16 +292,17 @@ def newMubanDetect(filepath, typeP='special', pars=dict(textline_method='textbox
 
         cv2.imwrite(pltpath, pipe.surface_image)
     except Exception as e:
-        print("绘制行提取图片不支持bmp格式：{}".format(e))
+        pass
+        # print("绘制行提取图片不支持bmp格式：{}".format(e))
 
     timer.toc(content="行提取图绘制")
 
     jsonResult = CropPic(filepathS, attributeLine, filepath, pars, typeP, debug=False,
                          isusebaidu=False)  # ocr和分词
     timer.toc(content="切图ocr识别")
-    print(jsonResult)
+    # print(jsonResult)
 
-    return jsonResult, timer, typeP
+    return jsonResult
 
 
 def scanQRc(filepath):
@@ -365,13 +367,68 @@ def init(filepath, pars=dict(textline_method='textboxes')):  # type='special',
     return newMubanDetect(filepath, typeP, pars, timer)
 
 
-if __name__ == '__main__':
-    print('args: image_path[option]')
-    if len(sys.argv) == 2:
-        image_path = sys.argv[1]
-    else:
-        image_path = '/home/public/Pics/Special.30.20181203/'
+def batch_test():
+    # 参数表： 测试图片集路径，结果存储路径，发票类型
+    curr = time.strftime('%Y.%m.%d', time.localtime(time.time()))
 
-    im_names = glob.glob(os.path.join(image_path, "*.jpg"))
-    for filename in im_names:
-        init(filename)
+    if len(sys.argv) == 1:
+        images_dir = input("Please enter pictures dir:")
+        result_save_path = input("Please enter result save path:")
+        invoicetype = input("Please enter the invoice type(special=01, normal=04):")
+    elif len(sys.argv) == 4:
+        images_dir = sys.argv[1]
+        result_save_path = sys.argv[2]
+        invoicetype = sys.argv[3]
+    else:
+        print("Wrong input args.\n")
+        return
+
+    root_path = result_save_path
+    result_save_path = os.path.join(result_save_path, curr)
+    if not os.path.exists(result_save_path):
+        os.makedirs(result_save_path)
+
+    image_list = glob.glob(os.path.join(images_dir, "*.jpg"))
+    if len(image_list) == 0:
+        image_list = glob.glob(os.path.join(images_dir, "*.bmp"))
+        if len(image_list) == 0:
+            print("No pics in "+images_dir+" !\n")
+            return
+
+    print("Now begin to ocr...")
+    ocr_result = []
+    ocr_erorr_list = []
+    num_of_imges = len(image_list)
+    for img in image_list:
+        try:
+            tuple_info = json.loads(init(img))
+            tuple_info['filename'] = img
+            ocr_result.append(tuple_info)
+        except Exception as _:
+            ocr_erorr_list.append(img)
+    print("ocr is complete, get %d / %d pics info." % (len(ocr_result), num_of_imges))
+
+    file_ocr_result = os.path.join(result_save_path, "ocr_result.json")
+    file_ocr_error_list = os.path.join(result_save_path, "ocr_error_files.txt")
+
+    print("Now saving the result...")
+    with open(file_ocr_result, 'w') as re, open(file_ocr_error_list, 'w') as er:
+        re.write(json.dumps(ocr_result, indent=4, ensure_ascii=False))
+        for i in ocr_erorr_list:
+            er.writelines(i+'\n')
+
+    print("Chinese infor query begin...")
+    succeed, query_error = Get_Chinese_Info(ocr_result, result_save_path, invoicetype, root_path)
+
+    file_result = str(succeed) + "(%d)_ocr_correct.txt" % num_of_imges
+    file_result = os.path.join(result_save_path, file_result)
+
+    with open(file_result, "w") as wp:
+        wp.writelines(file_result + " %.2f " % (succeed/num_of_imges)+'\n')
+        wp.writelines("%d not find in web：没有查询到中文数据（不一定ocr错误）"%(num_of_imges-succeed)+'\n')
+        wp.writelines("%d ocr_error_files：ocr没有正确生成五元组"%(len(ocr_erorr_list))+'\n')
+        wp.writelines("%d query_error_pics：本地有中文数据，但五元组错误"%(query_error)+'\n')
+
+
+if __name__ == '__main__':
+    batch_test()
