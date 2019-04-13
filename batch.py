@@ -8,7 +8,7 @@ import sys
 sys.path.append("/home/huangzheng/ocr")
 from Get_Chinese_Info import Get_Chinese_Info
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0,2,3"
 import OCR
 
 from connector import FindCircle, flow, connecter
@@ -371,6 +371,7 @@ def batch_test():
     # 参数表： 测试图片集路径，结果存储路径，发票类型
     curr = time.strftime('%Y.%m.%d', time.localtime(time.time()))
 
+    do_ocr = "y"
     if len(sys.argv) == 1:
         images_dir = input("Please enter pictures dir:")
         result_save_path = input("Please enter result save path:")
@@ -379,6 +380,11 @@ def batch_test():
         images_dir = sys.argv[1]
         result_save_path = sys.argv[2]
         invoicetype = sys.argv[3]
+    elif len(sys.argv) == 5:
+        images_dir = sys.argv[1]
+        result_save_path = sys.argv[2]
+        invoicetype = sys.argv[3]
+        do_ocr = sys.argv[4]
     else:
         print("Wrong input args.\n")
         return
@@ -394,28 +400,39 @@ def batch_test():
         if len(image_list) == 0:
             print("No pics in "+images_dir+" !\n")
             return
-
-    print("Now begin to ocr...")
-    ocr_result = []
-    ocr_erorr_list = []
     num_of_imges = len(image_list)
-    for img in image_list:
-        try:
-            tuple_info = json.loads(init(img))
-            tuple_info['filename'] = img
-            ocr_result.append(tuple_info)
-        except Exception as _:
-            ocr_erorr_list.append(img)
-    print("ocr is complete, get %d / %d pics info." % (len(ocr_result), num_of_imges))
 
-    file_ocr_result = os.path.join(result_save_path, "ocr_result.json")
-    file_ocr_error_list = os.path.join(result_save_path, "ocr_error_files.txt")
+    if do_ocr == "y" or do_ocr == "Y":
+        # 是否执行ocr操作
+        print("Now begin to ocr...")
+        ocr_result = []
+        ocr_erorr_list = []
+        for img in image_list:
+            try:
+                tuple_info = json.loads(init(img))
+                tuple_info['filename'] = img
+                ocr_result.append(tuple_info)
+            except Exception as _:
+                ocr_erorr_list.append(img)
+        print("ocr is complete, get %d / %d pics info." % (len(ocr_result), num_of_imges))
 
-    print("Now saving the result...")
-    with open(file_ocr_result, 'w') as re, open(file_ocr_error_list, 'w') as er:
-        re.write(json.dumps(ocr_result, indent=4, ensure_ascii=False))
-        for i in ocr_erorr_list:
-            er.writelines(i+'\n')
+        file_ocr_result = os.path.join(result_save_path, "ocr_result.json")
+        file_ocr_error_list = os.path.join(result_save_path, "ocr_error_files.txt")
+
+        print("Now saving the result...")
+        with open(file_ocr_result, 'w') as re, open(file_ocr_error_list, 'w') as er:
+            re.write(json.dumps(ocr_result, indent=4, ensure_ascii=False))
+            for i in ocr_erorr_list:
+                er.writelines(i+'\n')
+    else:
+        # 不执行ocr直接用已有结果对比chinese_info.json
+        file_ocr_result = os.path.join(result_save_path, "ocr_result.json")
+        with open(file_ocr_result, "r", encoding="utf-8") as fp:
+            content = fp.read()
+            content = content.replace('¥', '￥')
+            if content.startswith(u'\ufeff'):
+                content = content.encode('utf8')[3:].decode('utf8')
+            ocr_result = json.loads(content)
 
     print("Chinese infor query begin...")
     succeed, query_error = Get_Chinese_Info(ocr_result, result_save_path, invoicetype, root_path)
@@ -423,12 +440,16 @@ def batch_test():
     file_result = str(succeed) + "(%d)_ocr_correct.txt" % num_of_imges
     file_result = os.path.join(result_save_path, file_result)
 
-    with open(file_result, "w") as wp:
-        wp.writelines(file_result + " %.2f " % (succeed/num_of_imges)+'\n')
-        wp.writelines("%d not find in web：没有查询到中文数据（不一定ocr错误）"%(num_of_imges-succeed)+'\n')
-        wp.writelines("%d ocr_error_files：ocr没有正确生成五元组"%(len(ocr_erorr_list))+'\n')
-        wp.writelines("%d query_error_pics：本地有中文数据，但五元组错误"%(query_error)+'\n')
-
+    try:
+        with open(file_result, "w") as wp:
+            wp.writelines(file_result + " %.2f " % (succeed/num_of_imges)+'\n')
+            wp.writelines("%d not find in web：没有查询到中文数据（不一定ocr错误）"%(num_of_imges-succeed)+'\n')
+            wp.writelines("%d query_error_pics：本地有中文数据，但五元组错误"%(query_error)+'\n')
+            # wp.writelines("%d ocr_error_files：ocr没有正确生成五元组"%(len(ocr_erorr_list))+'\n')
+    except Exception as e:
+        print(e)
+    finally:
+        print("Test end.")
 
 if __name__ == '__main__':
     batch_test()
