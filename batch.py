@@ -463,7 +463,8 @@ def train_ticket_batch_test(tickets_path, Type):
         print("******************"+tk_path+"**********************")
         try:
             tk_result, _ = Ocr.init(tk_path, Type)
-            tk_result = json.loads(tk_result, encoding="unicode-escape")
+            tk_result = json.loads(tk_result)
+            print("______________",tk_result)
             tickets_ocr_rsult.append(tk_result)
         except Exception as e:
             print(e)
@@ -475,7 +476,7 @@ if __name__ == '__main__':
     # batch_test()
     save_path = "/home/huangzheng/wangtao/20190423.20.BlueTrainTicket/result.json"
     js = train_ticket_batch_test("/home/huangzheng/wangtao/20190423.20.BlueTrainTicket", "blue")
-    with open(save_path, 'wb') as wp:
-        wp.write(json.dumps(js, indent=4).encode(encoding="utf-8"))
+    with open(save_path, 'w', encoding="utf-8") as wp:
+        wp.write(json.dumps(js, indent=4))
 
     print("end")
