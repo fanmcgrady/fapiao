@@ -458,6 +458,7 @@ def train_ticket_batch_test(tickets_path, Type):
     tickets_ocr_rsult = []
 
     tickets_list = glob.glob(tickets_path+"/*.jpg")
+    print(tickets_list)
     for tk_path in tickets_list:
         print("******************"+tk_path+"**********************")
         try:
