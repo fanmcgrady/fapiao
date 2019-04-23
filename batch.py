@@ -451,5 +451,24 @@ def batch_test():
     finally:
         print("Test end.")
 
+
+def train_ticket_batch_test(tickets_path, Type):
+    # 火车票批测试，返回ocr结果json
+    import Ocr
+    tickets_ocr_rsult = []
+
+    tickets_list = glob.glob(tickets_path+"/*.jpg")
+    for tk_path in tickets_list:
+        tk_result, _ = Ocr.init(tk_path, Type)
+        tickets_ocr_rsult.append(tk_result)
+
+    return tickets_ocr_rsult
+
+
 if __name__ == '__main__':
-    batch_test()
+    # batch_test()
+    save_path = "/home/huangzheng/wangtao/20190423.20.BlueTrainTicket/result.json"
+    js = train_ticket_batch_test("/home/huangzheng/wangtao/20190423.20.BlueTrainTicket", "blue")
+    with open(save_path, 'w') as wp:
+        wp.write(js)
+    print("end")
