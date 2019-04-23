@@ -296,5 +296,11 @@ print(type(xl))
 '''
 
 if __name__ == "__main__":
-    js, origin = init("/home/huangzheng/ocr/Image_00128.jpg", "blue")
-    print("js= "+str(js)+" "+"origin= "+str(origin))
+    try:
+        js, origin = init(sys.argv[1], "blue")
+        print("js= "+str(js)+" "+"origin= "+str(origin))
+    except Exception as e:
+        print(e)
+        js, origin = init("/home/huangzheng/ocr/Image_00128.jpg", "blue")
+        print("js= "+str(js)+" "+"origin= "+str(origin))
+
