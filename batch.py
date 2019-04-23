@@ -459,6 +459,7 @@ def train_ticket_batch_test(tickets_path, Type):
 
     tickets_list = glob.glob(tickets_path+"/*.jpg")
     for tk_path in tickets_list:
+        print("******************"+tk_path+"**********************")
         tk_result, _ = Ocr.init(tk_path, Type)
         tickets_ocr_rsult.append(tk_result)
 
