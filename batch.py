@@ -463,7 +463,7 @@ def train_ticket_batch_test(tickets_path, Type):
         print("******************"+tk_path+"**********************")
         try:
             tk_result, _ = Ocr.init(tk_path, Type)
-            tk_result = json.loads(tk_result)
+            tk_result = json.loads(tk_result, encoding="unicode-escape")
             tickets_ocr_rsult.append(tk_result)
         except Exception as e:
             print(e)
