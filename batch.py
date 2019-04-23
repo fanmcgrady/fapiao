@@ -460,8 +460,11 @@ def train_ticket_batch_test(tickets_path, Type):
     tickets_list = glob.glob(tickets_path+"/*.jpg")
     for tk_path in tickets_list:
         print("******************"+tk_path+"**********************")
-        tk_result, _ = Ocr.init(tk_path, Type)
-        tickets_ocr_rsult.append(tk_result)
+        try:
+            tk_result, _ = Ocr.init(tk_path, Type)
+            tickets_ocr_rsult.append(tk_result)
+        except Exception as e:
+            print(e)
 
     return tickets_ocr_rsult
 
@@ -469,10 +472,7 @@ def train_ticket_batch_test(tickets_path, Type):
 if __name__ == '__main__':
     # batch_test()
     save_path = "/home/huangzheng/wangtao/20190423.20.BlueTrainTicket/result.json"
-    try:
-        js = train_ticket_batch_test("/home/huangzheng/wangtao/20190423.20.BlueTrainTicket", "blue")
-        with open(save_path, 'w') as wp:
-            wp.write(js)
-        print("end")
-    except Exception as e:
-        print(e)
+    js = train_ticket_batch_test("/home/huangzheng/wangtao/20190423.20.BlueTrainTicket", "blue")
+    with open(save_path, 'w') as wp:
+        wp.write(js)
+    print("end")
