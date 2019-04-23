@@ -38,6 +38,7 @@ def surface(filename, type='blue'):
         # 未分类
     else:
         if type == 'blue' or type == 'excess':
+            # return out_filename, 1, pipe.textlines, cdic
             midProcessResult = PipeInvoice.getPipe('allstatic', filename, type, False)
         else:
             ##type == 'red'
@@ -290,3 +291,6 @@ print(jpgs[9])
 print(xl)
 print(type(xl))
 '''
+
+if __name__ == "__main__":
+    init("/home/huangzheng/ocr/Image_00128.jpg", "blue")
