@@ -12,6 +12,8 @@ import muban
 from connector import FindCircle, detectType, flow, PipeInvoice
 import xmlToDict
 
+import sys
+sys.path.append("/home/huangzheng/ocr")
 
 # 矫正 -> 行提取 -> ocr
 def init(filename, type):
