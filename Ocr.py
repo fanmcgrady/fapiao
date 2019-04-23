@@ -302,6 +302,7 @@ if __name__ == "__main__":
         print(sys.argv[1])
     except Exception as e:
         print(e)
-        js, origin = init("/home/huangzheng/ocr/Image_00128.jpg", "blue")
+        # js, origin = init("/home/huangzheng/ocr/Image_00128.jpg", "blue")
+        js, origin = init("/home/huangzheng/wangtao/20190423.20.BlueTrainTicket/Image_00102.jpg", "blue")
         print("js= "+str(js)+" "+"origin= "+str(origin))
         print("/home/huangzheng/ocr/Image_00128.jpg")
