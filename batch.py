@@ -469,7 +469,10 @@ def train_ticket_batch_test(tickets_path, Type):
 if __name__ == '__main__':
     # batch_test()
     save_path = "/home/huangzheng/wangtao/20190423.20.BlueTrainTicket/result.json"
-    js = train_ticket_batch_test("/home/huangzheng/wangtao/20190423.20.BlueTrainTicket", "blue")
-    with open(save_path, 'w') as wp:
-        wp.write(js)
-    print("end")
+    try:
+        js = train_ticket_batch_test("/home/huangzheng/wangtao/20190423.20.BlueTrainTicket", "blue")
+        with open(save_path, 'w') as wp:
+            wp.write(js)
+        print("end")
+    except Exception as e:
+        print(e)
