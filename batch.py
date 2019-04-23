@@ -8,7 +8,7 @@ import sys
 sys.path.append("/home/huangzheng/ocr")
 from Get_Chinese_Info import Get_Chinese_Info
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "0,2,3"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0,2"
 import OCR
 
 from connector import FindCircle, flow, connecter
@@ -464,6 +464,7 @@ def train_ticket_batch_test(tickets_path, Type):
         try:
             tk_result, _ = Ocr.init(tk_path, Type)
             tk_result = json.loads(tk_result)
+            tk_result["filename"] = tk_path.split('/')[-1]
             print("______________",tk_result)
             tickets_ocr_rsult.append(tk_result)
         except Exception as e:
