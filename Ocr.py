@@ -299,8 +299,9 @@ if __name__ == "__main__":
     try:
         js, origin = init(sys.argv[1], "blue")
         print("js= "+str(js)+" "+"origin= "+str(origin))
+        print(sys.argv[1])
     except Exception as e:
         print(e)
         js, origin = init("/home/huangzheng/ocr/Image_00128.jpg", "blue")
         print("js= "+str(js)+" "+"origin= "+str(origin))
-
+        print("/home/huangzheng/ocr/Image_00128.jpg")
