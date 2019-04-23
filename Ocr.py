@@ -1,3 +1,6 @@
+import sys
+sys.path.append("/home/huangzheng/ocr")
+
 import copy
 import os
 import shutil
@@ -12,8 +15,6 @@ import muban
 from connector import FindCircle, detectType, flow, PipeInvoice
 import xmlToDict
 
-import sys
-sys.path.append("/home/huangzheng/ocr")
 
 # 矫正 -> 行提取 -> ocr
 def init(filename, type):
@@ -295,4 +296,5 @@ print(type(xl))
 '''
 
 if __name__ == "__main__":
-    init("/home/huangzheng/ocr/Image_00128.jpg", "blue")
+    js, origin = init("/home/huangzheng/ocr/Image_00128.jpg", "blue")
+    print("js= "+str(js)+" "+"origin= "+str(origin))
