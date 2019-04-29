@@ -773,6 +773,7 @@ def cropToOcr(filePath, recT, typeT, debug=False, isusebaidu=True):
         if debug == False:
             # if (x != 'invoiceNo'):
             # # 测试如此识别并不能修正字体不能识别的问题
+            isusebaidu = False
             if isusebaidu:
                 midResult = OcrPic(sFPN)
             else:
