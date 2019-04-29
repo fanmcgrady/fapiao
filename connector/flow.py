@@ -777,7 +777,7 @@ def cropToOcr(filePath, recT, typeT, debug=False, isusebaidu=True):
                 midResult = OcrPic(sFPN)
             else:
                 print("==============================Using OCR3=========================")
-                midResult = connecter.OCR(sFPN, 'Normal', 'verifyCode')
+                midResult = connecter.OCR(sFPN, 'normal', 'verifyCode')
             # else:
             #     midResult = OcrNoPic(sFPN)
 
