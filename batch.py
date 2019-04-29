@@ -475,7 +475,7 @@ def train_ticket_batch_test(tickets_path, Type):
 
 if __name__ == '__main__':
     # batch_test()
-    save_path = "/home/huangzheng/wangtao/20190423.20.BlueTrainTicket/result.json"
+    save_path = "/home/huangzheng/wangtao/20190423.20.BlueTrainTicket/ocr3_0429_—result.json"
     js = train_ticket_batch_test("/home/huangzheng/wangtao/20190423.20.BlueTrainTicket", "blue")
     with open(save_path, 'w', encoding="utf-8") as wp:
         wp.write(json.dumps(js, indent=4, ensure_ascii=False).encode().decode("utf-8"))
