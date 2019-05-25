@@ -347,13 +347,30 @@ def init(filepath, pars=dict(textline_method='textboxes')):  # type='special',
     recog = fp.TextBoxes.recog_invoice_type.InvoiTypeRecog()
     im = caffe.io.load_image(filepath)
 
-    invoice_type = ['spec_and_normal', 'spec_and_normal']
-    typeP = invoice_type[recog(im)]
+    typeP = recog(im)
 
-    if typeP == 'spec_and_normal':
-        # typeP = 'special'
-        typeP = 'normal'
-    elif typeP == 'spec_and_normal_bw':
+    # ['quota', 'elect', 'airticket', 'special', 'trainticket']
+    # 01 *增值税专用发票
+    # 02 货运运输业增值税专用发票
+    # 03 机动车销售统一发票
+    # 04 *增值税普通发票
+    # 10 *增值税普通发票(电子)
+    # 11 *增值税普通发票(卷式)
+    # 91 出租车票
+    # 92 *火车票
+    # 93 *飞机票
+    # 94 汽车票
+    # 95 *定额发票
+    # 96 长途汽车票
+    # 97 通用机打发票
+    # 98 政府非税收收入一般缴款书
+    # 00 其他类型
+    # 注：增值税票目前不能区分具体种类，可统一返回01
+
+    if typeP == '01':
+        typeP = 'special'
+        # typeP = 'normal'
+    elif typeP == '04':
         typeP = 'normal'
     else:
         return "", timer, typeP
