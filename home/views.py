@@ -70,7 +70,9 @@ detr = fp.multi.muldetect.DetectMultiFp()
 
 # 多发票检测
 def multi(request):
-    if request.method == "POST":
+    if request.method == "GET":
+        return render(request, 'multi.html')
+    elif request.method == "POST":
         # POST压缩包中的文件
         filename = request.POST['fileInZip']
 
@@ -225,9 +227,7 @@ def Type_API(request):
 
 # 专票统一入口
 def ocrForSpecVat(request):
-    if request.method == "GET":
-        return render(request, 'multi.html')
-    elif request.method == "POST":
+    if request.method == "POST":
         # POST压缩包中的文件
         filename = request.POST['fileInZip']
 
