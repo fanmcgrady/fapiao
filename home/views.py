@@ -56,6 +56,58 @@ from .models import Bug
 from .models import BugTwo
 from .models import BugThree
 
+import sys, os
+import importlib
+import numpy as np
+import cv2
+import matplotlib.pyplot as pl
+
+import fp.multi.muldetect
+
+# detector for multi-FP
+detr = fp.multi.muldetect.DetectMultiFp()
+
+
+# 多发票检测
+def multi(request):
+    if request.method == "POST":
+        # POST压缩包中的文件
+        filename = request.POST['fileInZip']
+
+        # 文件已通过getFileList方法上传到upload目录，此时不需要上传了
+        # 拼接目录
+        file_path = os.path.join('upload', filename)
+        line_filename = os.path.join('line', filename)
+
+        full_path = os.path.join('allstatic', file_path)
+        line_path = os.path.join('allstatic', line_filename)
+
+        try:
+            # 识别
+            im = cv2.imread(full_path, 1)
+            res = detr(im)
+            for name, score, rect in res:
+                print('name:', name)
+                print('score:', score)
+                print('rect:', rect)
+
+            # draw results
+            im = fp.multi.muldetect.draw_result(im, res)
+            cv2.imwrite(line_path, im)
+
+            ret = {
+                'status': True,
+                'path': file_path,
+                'line': line_filename,
+                'result': res
+            }
+
+        # 打印错误原因
+        except Exception as e:
+            print(e)
+            ret = {'status': False, 'path': file_path, 'result': str(e)}
+
+        return HttpResponse(json.dumps(ret))
 
 # API
 def QR_API(request):
@@ -173,7 +225,9 @@ def Type_API(request):
 
 # 专票统一入口
 def ocrForSpecVat(request):
-    if request.method == "POST":
+    if request.method == "GET":
+        return render(request, 'multi.html')
+    elif request.method == "POST":
         # POST压缩包中的文件
         filename = request.POST['fileInZip']
 
