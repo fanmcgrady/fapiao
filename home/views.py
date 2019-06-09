@@ -111,6 +111,7 @@ def multi(request):
         except Exception as e:
             print(e)
             ret = {'status': False, 'path': file_path, 'result': str(e)}
+            traceback.print_exc()
 
         return HttpResponse(json.dumps(ret))
 
