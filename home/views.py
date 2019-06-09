@@ -106,6 +106,7 @@ def multi(request):
                 'line': line_filename,
                 'result': res
             }
+            print(ret)
 
         # 打印错误原因
         except Exception as e:
