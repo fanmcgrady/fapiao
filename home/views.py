@@ -73,16 +73,19 @@ def multi(request):
     if request.method == "GET":
         return render(request, 'multi.html')
     elif request.method == "POST":
-        # POST压缩包中的文件
-        filename = request.POST['fileInZip']
+        try:
+            # POST压缩包中的文件
+            filename = request.POST['fileInZip']
 
-        # 文件已通过getFileList方法上传到upload目录，此时不需要上传了
-        # 拼接目录
-        file_path = os.path.join('upload', filename)
-        line_filename = os.path.join('line', filename)
+            # 文件已通过getFileList方法上传到upload目录，此时不需要上传了
+            # 拼接目录
+            file_path = os.path.join('upload', filename)
+            line_filename = os.path.join('line', filename)
 
-        full_path = os.path.join('allstatic', file_path)
-        line_path = os.path.join('allstatic', line_filename)
+            full_path = os.path.join('allstatic', file_path)
+            line_path = os.path.join('allstatic', line_filename)
+        except Exception as e:
+            traceback.print_exc()
 
         try:
             # 识别
