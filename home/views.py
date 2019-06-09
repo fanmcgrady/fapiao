@@ -104,7 +104,7 @@ def multi(request):
                 'status': True,
                 'path': file_path,
                 'line': line_filename,
-                'result': res
+                'result': str(res)
             }
             print(ret)
 
