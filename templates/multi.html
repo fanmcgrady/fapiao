@@ -328,7 +328,7 @@
         dic.append('fileInZip', currentFile);
 
         $.ajax({
-            url: '/multi1',
+            url: '/multi',
             type: 'POST',
             data: dic,
             processData: false,  // tell jQuery not to process the data
@@ -337,21 +337,21 @@
             success: function (arg) {
                 console.log(arg);
                 // 构造表格
-                {#var tr = $('<tr></tr>').attr('style', 'font-weight: bold;');#}
-                {#// 原始图片#}
-                {#tr.append($('<td><p>' + index++ + '</p></td>'));#}
-                {#filename = arg.path.substring(arg.path.lastIndexOf('/') + 1);#}
-                {#tr.append($('<td><img src="static/' + arg.path + '"/><br/>' + filename + '</td>'));#}
-                {##}
-                {#tr.append($('<td><p class="label label-primary">' + arg.result + '<p/></td>'));#}
-                {##}
-                {#// 显示结果图片#}
-                {#$('#result-table').append(tr);#}
-                {#// 显示当前处理完成文件数#}
-                {#$("#current").html(current);#}
-                {##}
-                {#// 下一个文件#}
-                {#ocrForVat();#}
+                var tr = $('<tr></tr>').attr('style', 'font-weight: bold;');
+                // 原始图片
+                tr.append($('<td><p>' + index++ + '</p></td>'));
+                filename = arg.path.substring(arg.path.lastIndexOf('/') + 1);
+                tr.append($('<td><img src="static/' + arg.path + '"/><br/>' + filename + '</td>'));
+                tr.append($('<td><img src="static/' + arg.line + '"/><br/>' + filename + '</td>'));
+                tr.append($('<td><p class="label label-primary">' + arg.result + '<p/></td>'));
+
+                // 显示结果图片
+                $('#result-table').append(tr);
+                // 显示当前处理完成文件数
+                $("#current").html(current);
+
+                // 下一个文件
+                ocrForVat();
             }
         })
     }

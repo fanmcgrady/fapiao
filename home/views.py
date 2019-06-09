@@ -106,13 +106,11 @@ def multi(request):
                 'line': line_filename,
                 'result': str(res)
             }
-            print(ret)
 
         # 打印错误原因
         except Exception as e:
             print(e)
             ret = {'status': False, 'path': file_path, 'result': str(e)}
-            traceback.print_exc()
 
         return HttpResponse(json.dumps(ret))
 

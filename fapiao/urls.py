@@ -54,6 +54,6 @@ urlpatterns = [
     url(r"^getFileList$", home_views.getFileList),
 
     # 多票面检测
-    url(r"^multi1$", home_views.multi)
+    url(r"^multi$", home_views.multi)
 ]
 
