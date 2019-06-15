@@ -17,7 +17,8 @@ if local_start:
 else:
     print("服务器运行")
     # 加载黄政的代码
-    sys.path.append("/home/huangzheng/ocr")
+    sys.path.append("/home/ocr/organize")
+    # sys.path.append("/home/huangzheng/ocr")
     import ComputeDistance
 
     # 设置只用前两个GPU
@@ -27,7 +28,8 @@ else:
 
     # 取20个形似字
     print("读取全局字典")
-    global_dic = ComputeDistance.load_dict('/home/huangzheng/ocr/hei_20.json')
+    global_dic = ComputeDistance.load_dict('/home/ocr/organize/hei_20.json')
+    # global_dic = ComputeDistance.load_dict('/home/huangzheng/ocr/hei_20.json')
 
     import Ocr
     import OcrForVat
