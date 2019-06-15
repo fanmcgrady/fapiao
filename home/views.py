@@ -64,11 +64,12 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as pl
 
+print("加载多票面识别")
 import fp.multi.muldetect
 
 # detector for multi-FP
 detr = fp.multi.muldetect.DetectMultiFp()
-
+print("加载多票面识别完成")
 
 # 多发票检测
 def multi(request):
