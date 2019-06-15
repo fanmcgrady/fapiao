@@ -8,8 +8,8 @@ from PIL import Image
 from connector import FindCircle, flow, connecter
 from home import views
 
-if not views.local_start:
-    from scanQRCode.scan_qrcode import recog_qrcode, recog_qrcode_ex
+# if not views.local_start:
+# from scanQRCode.scan_qrcode import recog_qrcode, recog_qrcode_ex
 import json
 import os
 import numpy as np
