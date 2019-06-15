@@ -24,7 +24,7 @@ else:
     # 设置只用前两个GPU
     import os
 
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
+    # os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
 
     # 取20个形似字
     print("读取全局字典")
