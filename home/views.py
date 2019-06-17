@@ -42,7 +42,7 @@ else:
     import API
 
     print("加载模型")
-    from connector import connecter
+    # from connector import connecter
 
     from connector import PipelineInit
 
