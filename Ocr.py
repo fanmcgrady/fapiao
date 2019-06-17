@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/home/huangzheng/ocr")
+# sys.path.append("/home/huangzheng/ocr")
 
 import copy
 import os
