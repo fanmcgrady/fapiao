@@ -16,21 +16,19 @@ if local_start:
 
 else:
     print("服务器运行")
+    # 加载黄政的代码
+    sys.path.append("/home/ocr/organize")
+    # sys.path.append("/home/huangzheng/ocr")
 
     import fp.multi.muldetect
 
     detr = fp.multi.muldetect.DetectMultiFp()
     print("加载多票面识别完成")
 
-
-    # 加载黄政的代码
-    sys.path.append("/home/ocr/organize")
-    # sys.path.append("/home/huangzheng/ocr")
     import ComputeDistance
-
-    # 设置只用前两个GPU
     import os
 
+    # 设置只用前两个GPU
     # os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
 
     # 取20个形似字
