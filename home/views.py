@@ -42,11 +42,11 @@ else:
     import API
 
     print("加载模型")
-    # from connector import connecter
+    from connector import connecter
 
-    # from connector import PipelineInit
+    from connector import PipelineInit
 
-    # global_pipeline = PipelineInit.PipelineInit()
+    global_pipeline = PipelineInit.PipelineInit()
 
 import datetime
 import json
