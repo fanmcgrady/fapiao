@@ -29,15 +29,15 @@ else:
     import os
 
     # 设置只用前两个GPU
-    os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
 
     # 取20个形似字
     print("读取全局字典")
     global_dic = ComputeDistance.load_dict('/home/ocr/organize/hei_20.json')
     # global_dic = ComputeDistance.load_dict('/home/huangzheng/ocr/hei_20.json')
 
-    import Ocr
-    import OcrForVat
+    # import Ocr
+    # import OcrForVat
     import OcrForSpecVat
     import API
 
